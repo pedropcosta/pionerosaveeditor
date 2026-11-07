@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pionero Capital Save Game Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F8F9; --surface:#FFFFFF; --surface-2:#F7F8F9; --track:#F1F2F4; --ink:#172B4D; --ink-soft:#44546F;
+  --accent:#0C66E4; --accent-hover:#0055CC; --on-accent:#FFFFFF; --accent-text:#0C66E4; --accent-subtle:#E9F2FF; --tape:#CCE0FF;
+  --ok:#1F845A; --bad:#C9372C; --bad-text:#AE2E24; --line:#DCDFE4; --btn-border:#8590A2;
+  --focus:#388BFF; --input-bg:#FFFFFF; --input-border:#8590A2;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#18191A; --surface:#1F1F21; --surface-2:#2B2C2F; --track:#303134; --ink:#F8F8F8; --ink-soft:#A9ABAF;
+    --accent:#669DF1; --accent-hover:#8FB8F6; --on-accent:#1F1F21; --accent-text:#669DF1; --accent-subtle:#1C2B42; --tape:#123263;
+    --ok:#94C748; --bad:#F87168; --bad-text:#FD9891; --line:#38393C; --btn-border:#7E8188;
+    --focus:#8FB8F6; --input-bg:#242528; --input-border:#7E8188;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+    --bg:#18191A; --surface:#1F1F21; --surface-2:#2B2C2F; --track:#303134; --ink:#F8F8F8; --ink-soft:#A9ABAF;
+    --accent:#669DF1; --accent-hover:#8FB8F6; --on-accent:#1F1F21; --accent-text:#669DF1; --accent-subtle:#1C2B42; --tape:#123263;
+    --ok:#94C748; --bad:#F87168; --bad-text:#FD9891; --line:#38393C; --btn-border:#7E8188;
+    --focus:#8FB8F6; --input-bg:#242528; --input-border:#7E8188;
+    color-scheme: dark;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.5}
+main{max-width:980px;margin:0 auto;padding:40px 20px 80px}
+h1{font-weight:800;font-size:clamp(2.2rem,6vw,3.4rem);line-height:1;margin:0 0 8px;letter-spacing:-.01em}
+h1 .sub{display:block;font-weight:400}
+.notice{margin:0 0 28px;padding:12px 16px;border:1px solid var(--tape);border-left:5px solid var(--accent);border-radius:.5rem;background:var(--accent-subtle);color:var(--ink);font-size:.95rem}
+.lede{color:var(--ink-soft);margin:0 0 16px;max-width:60ch}
+.label{background:var(--surface);border:1px solid var(--line);border-radius:.5rem;padding:20px 22px;margin-bottom:22px;position:relative}
+.label h2{font-weight:750;font-size:1.45rem;margin:0 0 14px;line-height:1.1}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;width:100%;border:2px dashed var(--ink-soft);border-radius:6px;padding:28px 20px;text-align:center;cursor:pointer;background:var(--surface-2);color:var(--ink);border-color:var(--line)}
+.drop span{font-size:.85rem;color:var(--ink-soft);overflow-wrap:anywhere}
+.drop:hover,.drop.over{border-color:var(--accent);color:var(--accent-text);background:var(--surface)}
+.drop strong{display:block;font-size:1.3rem}
+.drop input{display:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px 18px}
+label.field{display:block;font-size:.9rem;color:var(--ink-soft)}
+label.field span.now{display:block;font-size:.8rem}
+input[type=number],input.num,select{width:100%;font:inherit;font-size:1.05rem;color:var(--ink);background:var(--input-bg);
+  border:1px solid var(--input-border);border-radius:.25rem;padding:8px 10px;margin-top:4px;font-variant-numeric:tabular-nums}
+input[type=number]:focus,input.num:focus,select:focus,td input[type=text]:focus{outline:none;border-color:var(--focus);box-shadow:inset 0 0 0 1px var(--focus)}
+button:focus-visible,.drop:focus-visible,.tab:focus-visible,input.chkbox:focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:none}
+input.changed{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.hint{font-size:.85rem;color:var(--ink-soft);margin:10px 0 0}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{white-space:nowrap;text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-weight:650;font-size:.85rem;color:var(--ink-soft)}
+th button.sort{all:unset;cursor:pointer;font:inherit;font-weight:650;color:inherit;display:inline-flex;gap:4px;align-items:center}
+th button.sort:hover{color:var(--accent-text)}
+th button.sort:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+th[aria-sort] button.sort{color:var(--ink)}
+th button.sort .arrow{font-size:.75rem;width:1em}
+td select{margin:0;padding:4px 8px;font-size:1rem;width:auto}
+.bulk{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.bulk select{width:auto;margin:0}
+button{font:inherit;font-weight:600;border:1px solid var(--btn-border);border-radius:.25rem;background:transparent;color:var(--ink);padding:8px 14px;cursor:pointer}
+button:hover:not(:disabled){background:var(--track)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-size:1.05rem;padding:11px 20px}
+button.primary:hover:not(:disabled){background:var(--accent-hover);border-color:var(--accent-hover)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.stamp{display:inline-block;border:3px solid var(--ok);color:var(--ok);font-weight:800;padding:2px 10px;transform:rotate(-3deg);margin-left:6px}
+.msg{margin:10px 0 0;padding:10px 12px;border-left:4px solid var(--accent);border-radius:.375rem;background:var(--surface-2)}
+.msg.bad{border-color:var(--bad);color:var(--bad-text)}
+.msg.ok{border-color:var(--ok)}
+ul.changes{margin:8px 0 0;padding-left:20px}
+.hidden{display:none}
+.cap{display:flex;align-items:center;gap:10px;min-width:180px}
+.bar{position:relative;flex:1;height:12px;min-width:110px;background:var(--track);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:flex}
+.bar .fill{display:block;height:100%;background:var(--accent)}
+.bar .fill.new{background:var(--tape)}
+.captext{white-space:nowrap;font-variant-numeric:tabular-nums;min-width:9.5em}
+.captext.short{min-width:3em;text-align:right}
+.bar.dmg .fill{background:var(--bad)}
+.chkrow{display:flex;gap:14px}
+label.chklbl{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.wrapw{flex-wrap:wrap;gap:10px 18px}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;border:1px solid var(--line);font-size:.85rem}
+.tag.bad{border-color:var(--bad);color:var(--bad-text)}
+input.chkbox{width:20px;height:20px;accent-color:var(--accent);cursor:pointer}
+input.chkbox:disabled{cursor:not-allowed;opacity:.4}
+.bar.fuel .fill{background:var(--ok)}
+.captext.mid{min-width:6.5em;text-align:right}
+#vehs .cap{min-width:0;gap:8px}
+#vehs .bar{min-width:56px;max-width:90px}
+#vehs td{padding:7px 5px}
+.stepper{display:inline-flex;align-items:center}
+.stepper button{padding:4px 10px;min-width:34px;font-size:1rem;line-height:1.2}
+.stepper input.num{width:96px;min-width:0;margin:0 4px;padding:4px 6px;font-size:1rem;text-align:right}
+.stepper input[type=number]::-webkit-inner-spin-button,.stepper input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.stepper input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.addform{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px 16px;align-items:end;margin:6px 0 14px}
+.addform button{height:44px}
+td input[type=text]{width:100%;min-width:120px;font:inherit;color:var(--ink);background:var(--input-bg);border:1px solid var(--input-border);border-radius:.25rem;padding:4px 8px}
+button.link{all:unset;cursor:pointer;color:var(--bad-text);font-weight:600}
+button.link:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.muted{color:var(--ink-soft)}
+h3{font-size:1rem;margin:18px 0 8px}
+.wrap{overflow-x:auto}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.theme{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:2rem;font-weight:600;font-size:.9rem;white-space:nowrap;margin-top:8px}
+.theme svg{width:18px;height:18px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:0 0 22px;flex-wrap:wrap}
+.tab{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-bottom:none;border-radius:.5rem .5rem 0 0;background:transparent;color:var(--accent-text);padding:10px 18px;margin-bottom:-1px;font-weight:600}
+.tab svg{width:18px;height:18px}
+.tab:hover:not([aria-selected="true"]){background:transparent;border-color:var(--track) var(--track) var(--line)}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);border-color:var(--line) var(--line) var(--surface)}
+footer{color:var(--ink-soft);font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){ .stamp{animation:thud .25s ease-out} @keyframes thud{from{transform:rotate(-3deg) scale(1.4);opacity:0}} }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+  <h1>Pionero Capital<span class="sub">Save Game Editor</span></h1>
+  <button type="button" class="theme" id="themeBtn" aria-pressed="false"><span id="themeIcon"></span><span id="themeText">Dark mode</span></button>
+  </div>
+  <p class="lede">Open your <code>savegame.gz</code>, change the values and save a new copy. Everything happens on your computer; the file never leaves the browser.</p>
+  <p class="notice" role="note"><strong>Unofficial tool, for testing purposes only.</strong> Not affiliated with or endorsed by the developers of Pionero Capital. Editing your save can break it; always keep a backup and use at your own risk.</p>
+
+  <section class="label">
+    <h2>Upload Save Game File</h2>
+    <label class="drop" id="drop" tabindex="0">
+      <strong>Choose or drop your savegame.gz</strong>
+      <span>Found in %LOCALAPPDATA%\PioneroCapital\Saved\LocalServer\Slots\slot0</span>
+      <input type="file" id="file" accept=".gz,application/gzip">
+    </label>
+    <p class="hint">Close the game before copying or replacing the file, and make sure no java.exe is left running. Always keep a backup of the slot0 folder.</p>
+    <div id="loadMsg"></div>
+  </section>
+
+  <div id="editor" class="hidden">
+    <div class="tabs" role="tablist" aria-label="Editor sections">
+      <button type="button" class="tab" role="tab" id="tab-character" aria-controls="panel-character" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>Character</button>
+      <button type="button" class="tab" role="tab" id="tab-company" aria-controls="panel-company" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2M10 21v-3h4v3"/></svg>Company</button>
+      <button type="button" class="tab" role="tab" id="tab-vehicles" aria-controls="panel-vehicles" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16v-3l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v3a1 1 0 0 1-1 1h-1M5 17H4a1 1 0 0 1-1-1M9 17h6"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 12h14"/></svg>Vehicles</button>
+    </div>
+
+    <div class="panel" id="panel-character" role="tabpanel" aria-labelledby="tab-character">
+    <section class="label">
+      <h2>Character</h2>
+      <div class="grid">
+        <label class="field">Personal money ($)<span class="now" id="now-cmoney"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="cmoney"></label>
+        <label class="field">Experience<span class="now" id="now-cxp"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="cxp"></label>
+        <label class="field">Skill points<span class="now" id="now-csp"></span><input type="number" id="csp" min="0" step="1"></label>
+      </div>
+    </section>
+
+    <section class="label" id="permSection">
+      <h2>Personal Permits</h2>
+      <p class="hint" id="permInfo" style="margin-top:0"></p>
+      <div class="bulk">
+        <button type="button" id="permAll">Unlock all</button>
+        <button type="button" id="permNone">Remove all</button>
+        <label class="chklbl"><input type="checkbox" id="permCharge" class="chkbox"> Charge skill points for new permits and refund removed ones</label>
+      </div>
+      <div class="wrap"><table>
+        <thead><tr><th>Permit</th><th>Tiers</th></tr></thead>
+        <tbody id="perms"></tbody>
+      </table></div>
+      <p class="hint">Selecting a tier also selects the ones it depends on; clearing a tier also clears the ones that depend on it. Without charging, permits are unlocked for free and your skill points are left as they are.</p>
+    </section>
+    </div>
+
+    <div class="panel" id="panel-company" role="tabpanel" aria-labelledby="tab-company" hidden>
+    <section class="label">
+      <h2>Company <span id="bizname"></span></h2>
+      <div id="bizpick" class="hidden"><label class="field">Company<select id="bizsel"></select></label></div>
+      <div class="grid">
+        <label class="field">Company money ($)<span class="now" id="now-bmoney"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="bmoney"></label>
+        <label class="field">Experience<span class="now" id="now-bxp"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="bxp"></label>
+      </div>
+      <p class="hint">Experience is for the current level (the left value in "1.300 / 3.500"). The game moves in steps of 100. To level up, set XP 100 below the cap and earn the rest by playing, so unlocks trigger properly.</p>
+    </section>
+
+    <section class="label">
+      <h2>Employees</h2>
+      <div class="bulk">
+        <span>Set all to</span>
+        <select id="bulkLevel"><option>1</option><option>2</option><option selected>3</option></select>
+        <button type="button" id="bulkBtn">Apply to all</button>
+      </div>
+      <div class="wrap"><table>
+        <thead><tr><th data-key="name"><button type="button" class="sort">Name<span class="arrow"></span></button></th><th data-key="prop"><button type="button" class="sort">Property<span class="arrow"></span></button></th><th data-key="skill"><button type="button" class="sort">Skill<span class="arrow"></span></button></th><th data-key="level"><button type="button" class="sort">Current<span class="arrow"></span></button></th><th data-key="next"><button type="button" class="sort">New<span class="arrow"></span></button></th><th data-key="salary"><button type="button" class="sort">Salary ($)<span class="arrow"></span></button></th></tr></thead>
+        <tbody id="emps"></tbody>
+      </table></div>
+      <p class="hint">The maximum skill level is 3.</p>
+    </section>
+
+    <section class="label">
+      <h2>Add Employees</h2>
+      <div class="wrap"><table>
+        <thead><tr><th>Property</th><th>Type</th><th>Employees</th><th>Free Slots</th></tr></thead>
+        <tbody id="props"></tbody>
+      </table></div>
+      <p class="notice" role="note" style="margin:14px 0 6px"><strong>Before adding employees:</strong> hire at least one employee of each role you want to create (Crafter, Delivery, Warehouse manager or Marketing) in the game first. The editor copies the appearance of new employees from the ones already in your save, so a role or gender with no one hired yet is not available here.</p>
+      <h3>New hires</h3>
+      <div class="addform">
+        <label class="field" style="grid-column:span 2">Property<select id="addProp"></select></label>
+        <label class="field">Role<select id="addSkill"></select></label>
+        <label class="field">Gender<select id="addGender"></select></label>
+        <label class="field">Skill level<select id="addLevel"><option>1</option><option>2</option><option selected>3</option></select></label>
+        <label class="field">Quantity<input type="number" id="addQty" min="1" step="1" value="1"></label>
+        <button type="button" id="addBtn">Add to list</button>
+      </div>
+      <div id="addMsg"></div>
+      <div class="wrap"><table id="pendingTbl" class="hidden">
+        <thead><tr><th>Name</th><th>Property</th><th>Role</th><th>Gender</th><th>Level</th><th></th></tr></thead>
+        <tbody id="pending"></tbody>
+      </table></div>
+      <p class="hint">New employees join without tasks, like a fresh hire from the agency. They appear when the next working day starts; assign them their tasks in the game. Names are generated automatically and can be edited before saving.</p>
+    </section>
+    </div>
+
+    <div class="panel" id="panel-vehicles" role="tabpanel" aria-labelledby="tab-vehicles" hidden>
+    <section class="label" id="vehSection">
+      <h2>Vehicles</h2>
+      <div class="bulk">
+        <button type="button" id="selDamaged">Select all damaged</button>
+        <button type="button" id="selFuel">Select all to refuel</button>
+        <button type="button" id="selNone">Clear selection</button>
+      </div>
+      <div class="wrap"><table>
+        <thead><tr><th>Repair</th><th>Refuel</th><th>Vehicle</th><th>Plate</th><th>Owner</th><th>Fuel</th><th>Engine damage</th><th>Body</th></tr></thead>
+        <tbody id="vehs"></tbody>
+      </table></div>
+      <p class="hint">Engine damage builds up with collisions; when it is high the engine light comes on, the car smokes and loses speed. Body damage is the dents in the bodywork. Repairing a vehicle fixes both. Refuelling fills the tank to its full capacity; it is only available for models whose tank size is confirmed.</p>
+    </section>
+
+    <section class="label" id="addVehSection">
+      <h2>Add Vehicles</h2>
+      <div class="wrap"><table>
+        <thead><tr><th>Fleet</th><th>Vehicles</th><th>Free Slots</th></tr></thead>
+        <tbody id="fleet"></tbody>
+      </table></div>
+      <h3>New vehicles</h3>
+      <div class="addform">
+        <label class="field">Owner<select id="vOwner"><option value="personal">Personal</option><option value="company">Company</option></select></label>
+        <label class="field">Model<select id="vModel"></select></label>
+        <label class="field">Colour<select id="vColor"></select></label>
+        <label class="field">Quantity<input type="number" id="vQty" min="1" step="1" value="1"></label>
+        <button type="button" id="vAddBtn">Add to list</button>
+      </div>
+      <div id="vMsg"></div>
+      <div class="wrap"><table id="vPendingTbl" class="hidden">
+        <thead><tr><th>Vehicle</th><th>Colour</th><th>Owner</th><th>Plate</th><th></th></tr></thead>
+        <tbody id="vPending"></tbody>
+      </table></div>
+      <p class="hint">New vehicles are delivered like new ones from the dealer: full tank, no damage, empty cargo. They appear in a row just in front of where your character was standing when the game was saved, so save while standing outside in an open area. Kabestie, Cangu and Cangu Deluxe can only be company vehicles, Classic Endurance and Secuestrator can be either, and all other models are personal only. Drive company vehicles into a warehouse yourself; parking spots (Iron Yard 6, Grand Depot 8 to 14, Cargo Garage 1 to 2) are assigned as they become free, and extra vehicles wait their turn.</p>
+    </section>
+    </div>
+
+    <section class="label">
+      <h2>Save Changes</h2>
+      <div id="summary"><p class="hint">No changes yet.</p></div>
+      <p><button type="button" class="primary" id="saveBtn" disabled>Export savegame.gz</button></p>
+      <div id="saveMsg"></div>
+    </section>
+  </div>
+
+  <footer>Built for the current version of the game. An update may change the save format; if a field cannot be found, the editor disables it rather than take the risk.</footer>
+</main>
+
+<script>
+const ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+const ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>';
+// CORE-START
+const MAX_INT = 2147483647;
+const RE_MONEY = /("#7D07":\{"#5E7A":\{"DOLLARS":\{"currency":"DOLLARS","amount":)(\d+)/g;
+const RE_XP = /("#85A3":\{"#AA97":)(\d+)(,"#85A3":)(\d+)(\})/g;
+const RE_SAL = /("#637B":\{"currency":"DOLLARS","amount":)(\d+)/g;
+const RE_SP = /("SKILLPOINTS":\{"currency":"SKILLPOINTS","amount":)(\d+)/;
+
+function countMatches(re, s){ re.lastIndex = 0; const m = s.match(re); return m ? m.length : 0; }
+
+// Finds the end index (exclusive) of the JSON object starting at s[start] === '{'
+function objectEnd(s, start){
+  let depth = 0, inStr = false, esc = false;
+  for (let i = start; i < s.length; i++){
+    const c = s[i];
+    if (inStr){ if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false; continue; }
+    if (c === '"') inStr = true;
+    else if (c === '{') depth++;
+    else if (c === '}'){ depth--; if (depth === 0) return i + 1; }
+  }
+  return -1;
+}
+
+function parseSave(text){
+  const lines = text.split('\n');
+  const recs = [];
+  let col = null;
+  lines.forEach((l, i) => {
+    const h = l.match(/^=== collection (\S+)/);
+    if (h){ col = h[1]; return; }
+    if (!l.trim() || !col) return;
+    let obj; try { obj = JSON.parse(l); } catch(e){ throw new Error('Line ' + (i+1) + ' is not valid JSON.'); }
+    recs.push({ idx: i, col, obj });
+  });
+  if (!recs.length) throw new Error('This file is not in the Pionero Capital save format.');
+  return { lines, recs };
+}
+
+function readModel(save){
+  const char = save.recs.find(r => r.col === 'character');
+  const bizs = save.recs.filter(r => r.col === 'business');
+  const emps = save.recs.filter(r => r.col === 'employees');
+  const m = { char: null, bizs: [], emps: [] };
+  if (char){
+    const L = save.lines[char.idx], o = char.obj;
+    const c = { idx: char.idx };
+    try { if (countMatches(RE_MONEY, L) === 1) c.money = o['#7D07']['#5E7A'].DOLLARS.amount; } catch(e){}
+    try { if (countMatches(RE_XP, L) === 1) { c.xp = o['#85A3']['#AA97']; c.level = o['#85A3']['#85A3']; } } catch(e){}
+    try { const sp = o['#7D07']['#5E7A'].SKILLPOINTS; if (sp && typeof sp.amount === 'number') c.sp = sp.amount; } catch(e){}
+    m.char = c;
+  }
+  bizs.forEach(b => {
+    const L = save.lines[b.idx], o = b.obj, x = { idx: b.idx, name: o['#3BFC'] || b.obj._id };
+    try { if (countMatches(RE_MONEY, L) === 1) x.money = o['#7D07']['#5E7A'].DOLLARS.amount; } catch(e){}
+    try { if (countMatches(RE_XP, L) === 1) { x.xp = o['#85A3']['#AA97']; x.level = o['#85A3']['#85A3']; } } catch(e){}
+    m.bizs.push(x);
+  });
+  emps.forEach(e => {
+    const sk = e.obj['#FEC7'];
+    if (sk && typeof sk === 'object') {
+      const sal = e.obj['#637B'] && typeof e.obj['#637B'].amount === 'number' && countMatches(RE_SAL, save.lines[e.idx]) === 1 ? e.obj['#637B'].amount : null;
+      Object.keys(sk).forEach(k => m.emps.push({ idx: e.idx, name: e.obj['#3BFC'] || e.obj._id, skill: k, level: sk[k], building: e.obj['#1563'] && e.obj['#1563'].id, salary: sal }));
+    }
+  });
+  return m;
+}
+
+function setMoney(line, v){
+  if (countMatches(RE_MONEY, line) !== 1) throw new Error('Money field not found.');
+  RE_MONEY.lastIndex = 0;
+  return line.replace(RE_MONEY, (a, p, n) => p + v);
+}
+function setXP(line, v){
+  if (countMatches(RE_XP, line) !== 1) throw new Error('Experience field not found.');
+  RE_XP.lastIndex = 0;
+  return line.replace(RE_XP, (a, p, x, mid, lv, end) => p + v + mid + lv + end);
+}
+function setSP(line, v){
+  const key = '"#7D07":{';
+  const s = line.indexOf(key);
+  if (s < 0) throw new Error('Character wallet not found.');
+  const ob = s + key.length - 1, oe = objectEnd(line, ob);
+  if (oe < 0) throw new Error('Character wallet is malformed.');
+  const seg = line.slice(ob, oe);
+  if (!RE_SP.test(seg)) throw new Error('Skill points not found.');
+  return line.slice(0, ob) + seg.replace(RE_SP, (a, p) => p + v) + line.slice(oe);
+}
+function setSalary(line, v){
+  if (countMatches(RE_SAL, line) !== 1) throw new Error('Salary field not found.');
+  RE_SAL.lastIndex = 0;
+  return line.replace(RE_SAL, (a, p) => p + v);
+}
+function setEmpSkill(line, skill, v){
+  const key = '"#FEC7":{';
+  const s = line.indexOf(key);
+  if (s < 0) throw new Error('Employee skills not found.');
+  const ob = s + key.length - 1, oe = objectEnd(line, ob);
+  const seg = line.slice(ob, oe);
+  const re = new RegExp('("' + skill.replace(/[^A-Z_]/g, '') + '":)(\\d+)');
+  if (!re.test(seg)) throw new Error('Skill ' + skill + ' not found.');
+  return line.slice(0, ob) + seg.replace(re, (a, p) => p + v) + line.slice(oe);
+}
+
+// edits: { cmoney, cxp, csp, biz: {idx, bmoney, bxp}, emps: [{idx, skill, level}] }
+function applyEdits(save, model, edits){
+  const lines = save.lines.slice();
+  const ci = model.char && model.char.idx;
+  if (edits.cmoney != null) lines[ci] = setMoney(lines[ci], edits.cmoney);
+  if (edits.cxp != null) lines[ci] = setXP(lines[ci], edits.cxp);
+  if (edits.csp != null) lines[ci] = setSP(lines[ci], edits.csp);
+  if (edits.permits){ lines[ci] = setPermits(lines[ci], edits.permits.list); if (edits.permits.spent != null) lines[ci] = setSpent(lines[ci], edits.permits.spent); }
+  if (edits.biz){
+    const bi = edits.biz.idx;
+    if (edits.biz.bmoney != null) lines[bi] = setMoney(lines[bi], edits.biz.bmoney);
+    if (edits.biz.bxp != null) lines[bi] = setXP(lines[bi], edits.biz.bxp);
+  }
+  (edits.emps || []).forEach(e => { lines[e.idx] = setEmpSkill(lines[e.idx], e.skill, e.level); });
+  (edits.salaries || []).forEach(e => { lines[e.idx] = setSalary(lines[e.idx], e.salary); });
+  (edits.repairs || []).forEach(r => { lines[r.idx] = repairLine(lines[r.idx], r); });
+  (edits.refuels || []).forEach(r => { lines[r.idx] = refuelLine(lines[r.idx], r.litres); });
+  const addedVeh = [];
+  if (edits.addVehicles && edits.addVehicles.length){
+    const fleet = readFleet(save);
+    if (fleet.lastIdx < 0) throw new Error('No vehicles collection found to add to.');
+    if (!fleet.pos || fleet.indoors) throw new Error('The character was inside a building when the game was saved; save again outdoors to add vehicles.');
+    const taken = new Set(fleet.ids);
+    edits.addVehicles.forEach(it => { if (!canOwn(it.model, it.owner)) throw new Error((MODEL_NAMES[it.model] || it.model) + ' cannot be a ' + it.owner + ' vehicle.'); });
+    const vLines = edits.addVehicles.map((item, i) => { const v = buildVehicleLine(fleet, item, i, edits.addVehicles.length, taken); addedVeh.push({ id: v.id, item }); return v.line; });
+    lines.splice(fleet.lastIdx + 1, 0, ...vLines);
+  }
+  const added = [];
+  if (edits.add && edits.add.length){
+    const world = readWorld(save);
+    if (world.pool.lastEmpIdx < 0) throw new Error('No employees collection found to add to.');
+    const taken = new Set(world.pool.ids);
+    let stamp = world.pool.maxStamp;
+    const newLines = edits.add.map(item => {
+      stamp += 5000 + rnd(55000);
+      const b = world.buildings.find(x => x.id === item.buildingId);
+      const biz = model.bizs.find(x => save.recs.find(r => r.idx === x.idx).obj._id === item.bizId);
+      const line = buildEmployeeLine(world, biz ? biz.name : '', item, stamp, taken);
+      added.push({ id: JSON.parse(line)._id, item });
+      return line;
+    });
+    lines.splice(world.pool.lastEmpIdx + 1, 0, ...newLines);
+  }
+  const text = lines.join('\n');
+  // Verify: every record line still valid JSON and values read back as requested
+  const check = readModel(parseSave(text));
+  const fail = (what) => { throw new Error('Verification failed: ' + what + '. Nothing was saved.'); };
+  if (edits.cmoney != null && check.char.money !== edits.cmoney) fail('personal money');
+  if (edits.cxp != null && check.char.xp !== edits.cxp) fail('personal experience');
+  if (edits.csp != null && check.char.sp !== edits.csp) fail('skill points');
+  if (edits.permits){
+    const pr = readPermits(parseSave(text));
+    if (!pr || JSON.stringify(pr.owned) !== JSON.stringify(edits.permits.list)) fail('permits');
+    if (edits.permits.spent != null && pr.spent !== edits.permits.spent) fail('skill points spent on permits');
+  }
+  if (edits.biz){
+    const b = check.bizs.find(x => x.idx === edits.biz.idx);
+    if (edits.biz.bmoney != null && b.money !== edits.biz.bmoney) fail('company money');
+    if (edits.biz.bxp != null && b.xp !== edits.biz.bxp) fail('company experience');
+  }
+  (edits.emps || []).forEach(e => {
+    const r = check.emps.find(x => x.idx === e.idx && x.skill === e.skill);
+    if (!r || r.level !== e.level) fail('skill of ' + (r ? r.name : 'employee'));
+  });
+  (edits.salaries || []).forEach(e => {
+    const r = check.emps.find(x => x.idx === e.idx);
+    if (!r || r.salary !== e.salary) fail('salary of ' + (r ? r.name : 'employee'));
+  });
+  if (edits.refuels && edits.refuels.length){
+    const vs = readVehicles(parseSave(text));
+    edits.refuels.forEach(r => { const v = vs.find(x => x.id === r.id); if (!v || Math.round(v.fuel * 1000) !== Math.round(r.litres * 1000)) fail('refuel of ' + (v ? v.name + ' ' + v.plate : 'vehicle')); });
+  }
+  if (edits.repairs && edits.repairs.length){
+    const vs = readVehicles(parseSave(text));
+    edits.repairs.forEach(r => { const v = vs.find(x => x.id === r.id); if (!v || (r.engine && v.engine !== 0) || (r.body && v.dents !== 0)) fail('repair of ' + (v ? v.name + ' ' + v.plate : 'vehicle')); });
+  }
+  if (addedVeh.length){
+    const ns = parseSave(text), f2 = readFleet(ns);
+    addedVeh.forEach(a => {
+      const r = ns.recs.filter(x => x.col === 'privatevehicles' && x.obj._id === a.id);
+      if (r.length !== 1) fail('new vehicle ' + a.item.plate);
+      const d = r[0].obj['#96F6']['#083D'];
+      if (d['#9229'] !== a.item.plate || d['#AC72'] !== a.item.color || r[0].obj['#96F6']['#5900'] !== TANK_L[a.item.model] * 1000) fail('new vehicle ' + a.item.plate);
+    });
+    const permList = (edits.permits && edits.permits.list) || (readPermits(ns) || { owned: [] }).owned;
+    if (f2.personal > personalLimit(permList)) fail('personal vehicles would exceed the limit of ' + personalLimit(permList));
+    if (f2.company > COMPANY_VEHICLE_LIMIT) fail('company vehicles would exceed the limit of ' + COMPANY_VEHICLE_LIMIT);
+  }
+  if (added.length){
+    const ns = parseSave(text), w2 = readWorld(ns);
+    added.forEach(a => {
+      const recs = ns.recs.filter(r => r.col === 'employees' && r.obj._id === a.id);
+      if (recs.length !== 1) fail('new employee ' + a.item.name);
+      const o = recs[0].obj;
+      if (o['#3BFC'] !== a.item.name || o['#1563'].id !== a.item.buildingId || o['#FEC7'][a.item.skill] !== a.item.level || o['#7D40'].items.length !== o['#9FC4']) fail('new employee ' + a.item.name);
+    });
+    w2.buildings.forEach(b => { if (b.count > b.limit && !b.unknown) fail(b.name + ' would exceed its limit of ' + b.limit); });
+  }
+  return text;
+}
+
+async function gunzipBytes(buf){
+  const s = new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'));
+  return new Uint8Array(await new Response(s).arrayBuffer());
+}
+async function gzipBytes(bytes){
+  const s = new Blob([bytes]).stream().pipeThrough(new CompressionStream('gzip'));
+  return new Uint8Array(await new Response(s).arrayBuffer());
+}
+
+// Property data keyed by the building type code (same in every save; IDs are random per save)
+const PROPS = {
+  '#838E.yaUxDD': { name: 'Iron Yard', kind: 'warehouse', limit: 12 },
+  '#838E.E35yJz': { name: 'Rusty Office', kind: 'office', limit: 8 },
+  '#838E.RmAH3N': { name: 'Grand Depot', kind: 'warehouse', limit: 26 },
+  '#838E.4UaZKz': { name: 'Glass Office', kind: 'office', limit: 8 },
+  '#838E.NpLIli': { name: 'Cargo Garage', kind: 'garage', limit: 5 },
+  '#838E.6Es4EG': { name: 'Motel Room', kind: 'home', limit: 0 },
+  '#838E.pTy3Qm': { name: 'Peluka Tower Apartment', kind: 'home', limit: 0 }
+};
+const KIND_LABEL = { warehouse: 'Warehouse', office: 'Office', garage: 'Garage', home: 'Home' };
+// Roles allowed per property kind.
+const KIND_SKILLS = { warehouse: ['CRAFTING', 'CUSTOMER_SERVICE', 'STOCK_MANAGEMENT'], office: ['MARKETING'], garage: ['CRAFTING', 'CUSTOMER_SERVICE', 'STOCK_MANAGEMENT'], home: [] };
+const SKILL_ROLE = { CRAFTING: 'crafter', CUSTOMER_SERVICE: 'delivery', STOCK_MANAGEMENT: 'stock', MARKETING: 'marketing' };
+const SKILL_LABEL = { CRAFTING: 'Crafter', CUSTOMER_SERVICE: 'Delivery', STOCK_MANAGEMENT: 'Warehouse manager', MARKETING: 'Marketing' };
+const FRESH_TASK = '{"type":"#1031E3DC","state":{"#B19A":[],"#2BC3":-1,"#0F08":0,"#DBBA":false,"#67D4":0}}';
+const ZERO_POS = '{"#C150":{"x":0.0,"y":0.0,"z":0.0},"#D341":{"x":0.0,"y":0.0,"z":0.0},"#7F2C":0}';
+
+function propInfo(type){ return PROPS[type] || { name: 'Unknown property (' + type + ')', kind: 'unknown', limit: 0, unknown: true }; }
+
+function readWorld(save){
+  const w = { buildings: [], pool: { dna: {}, traits: [], salaryMin: null, salaryMax: null, maxStamp: 0, ids: new Set(), names: new Set(), base: null, lastEmpIdx: -1 } };
+  save.recs.filter(r => r.col === 'building').forEach(r => {
+    const o = r.obj, owner = o['#975A'] || {};
+    const info = propInfo(o['#5524']);
+    w.buildings.push({ id: o._id, type: o['#5524'], ownerKind: owner['#5524'], bizId: owner['#7E7E'] && owner['#7E7E'].id, name: info.name, kind: info.kind, limit: info.limit, unknown: !!info.unknown, count: 0 });
+  });
+  save.recs.filter(r => r.col === 'employees').forEach(r => {
+    const o = r.obj, P = w.pool;
+    P.lastEmpIdx = Math.max(P.lastEmpIdx, r.idx);
+    P.ids.add(o._id); if (o['#3BFC']) P.names.add(o['#3BFC']);
+    const b = w.buildings.find(x => o['#1563'] && x.id === o['#1563'].id); if (b) b.count++;
+    const m = /^CharacterDNA\.dna_employee_([a-z]+)_(male|female)_/.exec(o['#FF09'] || '');
+    if (m){ const k = m[1] + '|' + m[2]; (P.dna[k] = P.dna[k] || []); if (!P.dna[k].some(d => d.dna === o['#FF09'])) P.dna[k].push({ dna: o['#FF09'], look: o['#BD44'] }); }
+    if (typeof o['#F1AE'] === 'number' && typeof o['#9FC4'] === 'number' && !P.traits.some(t => t[0] === o['#F1AE'])) P.traits.push([o['#F1AE'], o['#9FC4']]);
+    const sal = o['#637B'] && o['#637B'].amount;
+    if (typeof sal === 'number'){ P.salaryMin = P.salaryMin == null ? sal : Math.min(P.salaryMin, sal); P.salaryMax = P.salaryMax == null ? sal : Math.max(P.salaryMax, sal); }
+    if (typeof o['#A3C1'] === 'number') P.maxStamp = Math.max(P.maxStamp, o['#A3C1']);
+    // Prefer a never-placed fresh hire as the structural template
+    const fresh = o['#A30A'] && o['#A30A'].type === '#1031E3DC';
+    if (!P.base || (fresh && !(P.base['#A30A'] && P.base['#A30A'].type === '#1031E3DC'))) P.base = o;
+  });
+  return w;
+}
+
+function rnd(n){ const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; }
+function randId(prefix, taken){ let id; do { id = prefix; for (let i = 0; i < 8; i++) id += 'abcdefghijklmnopqrstuvwxyz'[rnd(26)]; } while (taken.has(id)); taken.add(id); return id; }
+function uuid4(){ const b = new Uint8Array(16); crypto.getRandomValues(b); b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128; const h = [...b].map(x => x.toString(16).padStart(2, '0')).join(''); return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20); }
+
+// item: { buildingId, skill, level, gender: 'Male'|'Female', name, dna, look, trait:[f1ae, 9fc4], salary }
+function buildEmployeeLine(world, bizName, item, stamp, takenIds){
+  const base = world.pool.base;
+  if (!base) throw new Error('No employee in this save to use as a template.');
+  const o = JSON.parse(JSON.stringify(base));
+  o._id = randId('employee_', takenIds);
+  o['#975A']['#7E7E'] = { id: item.bizId }; o['#975A']['#3BFC'] = bizName;
+  o['#1563'] = { id: item.buildingId };
+  o['#3BFC'] = item.name; o['#35AF'] = item.gender;
+  o['#FF09'] = item.dna; o['#BD44'] = JSON.parse(JSON.stringify(item.look));
+  o['#9FC4'] = item.trait[1]; o['#F1AE'] = item.trait[0];
+  o['#637B'] = { currency: 'DOLLARS', amount: item.salary };
+  o['#3508'] = item.bizId + ':' + uuid4();
+  o['#D623'] = '__POS__';
+  o['#7D40'] = { items: new Array(item.trait[1]).fill(null) };
+  o['#3805'] = 0;
+  o['#A30A'] = '__TASK__';
+  o['#7D07'] = { currency: 'DOLLARS', amount: 0 };
+  o['#FEC7'] = {}; o['#FEC7'][item.skill] = item.level;
+  o['#A3C1'] = stamp;
+  return JSON.stringify(o).replace('"__POS__"', ZERO_POS).replace('"__TASK__"', FRESH_TASK);
+}
+
+// ---- Vehicles
+const MODEL_NAMES = { cangu: 'Cangu', cangu02: 'Cangu Deluxe', classicendurance: 'Classic Endurance', classichauler: 'Classic Hauler', classicroider: 'Classic Roider', classicroyale: 'Classic Royale', classicviber: 'Classic Viber', extender: 'Extender', grandeur: 'Grandeur', heliosrs: 'Helios RS', igniter: 'Igniter', jagercompetition: 'Jager Competition', kabestie: 'Kabestie', kaisergt: 'Kaiser GT', luminer: 'Luminer', mercho: 'Mercho', pandero: 'Pandero', revelion: 'Revelion', roider: 'Roider', secuestrator: 'Secuestrator', striker: 'Striker', vantage: 'Vantage', vortex: 'Vortex', yaguarete: 'Yaguarete' };
+// Tank capacity in litres, confirmed from vehicles delivered new (full tank)
+const TANK_L = { cangu: 75, cangu02: 80, classicendurance: 65, classichauler: 90, classicroider: 62, classicroyale: 50, classicviber: 55, extender: 96, grandeur: 60, heliosrs: 80, igniter: 60, jagercompetition: 59, kabestie: 50, kaisergt: 58, luminer: 86, mercho: 66, pandero: 50, revelion: 65, roider: 61, secuestrator: 98, striker: 59, vantage: 85, vortex: 70, yaguarete: 82 };
+const RE_FUEL = /("#5900":)(\d+(?:\.\d+)?)/g;
+function refuelLine(line, litres){
+  if (countMatches(RE_FUEL, line) !== 1) throw new Error('Fuel value not found.');
+  RE_FUEL.lastIndex = 0;
+  return line.replace(RE_FUEL, (a, p) => p + Math.round(litres * 1000));
+}
+const RE_DMG = /("#CD0D":)(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/g;
+function arrayEnd(s, start){ // s[start] === '['
+  let depth = 0, inStr = false, esc = false;
+  for (let i = start; i < s.length; i++){
+    const c = s[i];
+    if (inStr){ if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false; continue; }
+    if (c === '"') inStr = true; else if (c === '[') depth++; else if (c === ']'){ depth--; if (depth === 0) return i + 1; }
+  }
+  return -1;
+}
+function clearArray(line, key){
+  const k = '"' + key + '":[';
+  const i = line.indexOf(k);
+  if (i < 0 || line.indexOf(k, i + 1) >= 0) throw new Error('Damage data (' + key + ') not found.');
+  const a = i + k.length - 1, e = arrayEnd(line, a);
+  if (e < 0) throw new Error('Damage data (' + key + ') is malformed.');
+  return line.slice(0, a) + '[]' + line.slice(e);
+}
+function readVehicles(save){
+  return save.recs.filter(r => r.col === 'privatevehicles').map(r => {
+    const o = r.obj, L = save.lines[r.idx];
+    const d = (o['#96F6'] && o['#96F6']['#083D']) || {};
+    const model = String(d['#5AE1'] || '').replace(/^VehicleModels\./, '');
+    const imp = d['#E9EF'] && Array.isArray(d['#E9EF'].impactPoints) ? d['#E9EF'].impactPoints.length : null;
+    const ok = countMatches(RE_DMG, L) === 1 && L.split('"impactPoints":[').length === 2 && L.split('"impactRadii":[').length === 2 && typeof d['#CD0D'] === 'number';
+    const owner = o['#975A'] && o['#975A']['#5524'] === 'BUSINESS' ? 'Company' : 'Personal';
+    const fuel = o['#96F6'] && typeof o['#96F6']['#5900'] === 'number' && countMatches(RE_FUEL, L) === 1 ? o['#96F6']['#5900'] / 1000 : null;
+    const tank = TANK_L[model] || null;
+    return { idx: r.idx, id: o._id, model, name: MODEL_NAMES[model] || model, plate: fmtPlate(d['#9229']), owner, engine: ok ? d['#CD0D'] : null, dents: imp, ok, fuel, tank };
+  });
+}
+function fmtPlate(p){ const m = /^([A-Z])(\d{2})(\d{2})$/.exec(p || ''); return m ? m[1] + '-' + m[2] + '-' + m[3] : (p || '—'); }
+// Engine damage: #CD0D (0..1). Body damage: the dents (impactPoints / impactRadii).
+function repairLine(line, what){
+  if (what.engine){
+    if (countMatches(RE_DMG, line) !== 1) throw new Error('Engine damage value not found.');
+    RE_DMG.lastIndex = 0;
+    line = line.replace(RE_DMG, (a, p) => p + '0.0');
+  }
+  if (what.body){ line = clearArray(line, 'impactPoints'); line = clearArray(line, 'impactRadii'); }
+  return line;
+}
+
+// ---- Personal permits (bought with skill points). Listed in dependency order.
+const PERMITS = [
+  { id: '#0AAD.CARY1a', branch: 'Carry Capacity', tier: 'I', cost: 2, req: null },
+  { id: '#0AAD.CARY2b', branch: 'Carry Capacity', tier: 'II', cost: 4, req: '#0AAD.CARY1a' },
+  { id: '#0AAD.CARY3c', branch: 'Carry Capacity', tier: 'III', cost: 6, req: '#0AAD.CARY2b' },
+  { id: '#0AAD.CARY4d', branch: 'Carry Capacity', tier: 'IV', cost: 6, req: '#0AAD.CARY3c' },
+  { id: '#0AAD.L9LQfN', branch: 'Immigrant Subsidy', tier: '', cost: 3, req: null },
+  { id: '#0AAD.VEH1pQ', branch: 'Personal Vehicle', tier: 'I', cost: 3, req: null },
+  { id: '#0AAD.vv9v3i', branch: 'Personal Vehicle', tier: 'II', cost: 4, req: '#0AAD.VEH1pQ' },
+  { id: '#0AAD.vbVSWu', branch: 'Personal Vehicle', tier: 'III', cost: 4, req: '#0AAD.vv9v3i' },
+  { id: '#0AAD.vLfpsR', branch: 'Personal Vehicle', tier: 'IV', cost: 5, req: '#0AAD.vbVSWu' },
+  { id: '#0AAD.WHEELc', branch: 'Vehicle Customization', tier: 'Wheel', cost: 2, req: '#0AAD.VEH1pQ' },
+  { id: '#0AAD.L3nvzq', branch: 'Vehicle Customization', tier: 'Headlight Color', cost: 3, req: '#0AAD.WHEELc' },
+  { id: '#0AAD.Uj2Emx', branch: 'Vehicle Customization', tier: 'Window Tint', cost: 4, req: '#0AAD.L3nvzq' },
+  { id: '#0AAD.META01', branch: 'Metabolism', tier: 'I', cost: 2, req: null },
+  { id: '#0AAD.META02', branch: 'Metabolism', tier: 'II', cost: 3, req: '#0AAD.META01' },
+  { id: '#0AAD.META03', branch: 'Metabolism', tier: 'III', cost: 4, req: '#0AAD.META02' },
+  { id: '#0AAD.F8Jj9F', branch: 'Metabolism', tier: 'IV', cost: 5, req: '#0AAD.META03' }
+];
+const PERMIT_BY_ID = Object.fromEntries(PERMITS.map(p => [p.id, p]));
+const RE_SPENT_SP = /("SKILLPOINTS":\{"currency":"SKILLPOINTS","amount":)(\d+)/;
+function readPermits(save){
+  const c = save.recs.find(r => r.col === 'character');
+  if (!c) return null;
+  const o = c.obj, L = save.lines[c.idx];
+  if (!Array.isArray(o['#7A4A']) || L.split('"#7A4A":[').length !== 2) return null;
+  let spent = null;
+  try { const sp = o['#050B']['#5E7A'].SKILLPOINTS; if (sp && typeof sp.amount === 'number') spent = sp.amount; } catch(e){}
+  return { idx: c.idx, owned: o['#7A4A'].slice(), spent };
+}
+function setPermits(line, list){
+  const k = '"#7A4A":[', i = line.indexOf(k);
+  if (i < 0 || line.indexOf(k, i + 1) >= 0) throw new Error('Permit list not found.');
+  const a = i + k.length - 1, e = arrayEnd(line, a);
+  if (e < 0) throw new Error('Permit list is malformed.');
+  return line.slice(0, a) + JSON.stringify(list) + line.slice(e);
+}
+function setSpent(line, v){
+  const key = '"#050B":{', s = line.indexOf(key);
+  if (s < 0) throw new Error('Permit spending record not found.');
+  const ob = s + key.length - 1, oe = objectEnd(line, ob), seg = line.slice(ob, oe);
+  if (!RE_SPENT_SP.test(seg)) throw new Error('Permit spending record not found.');
+  return line.slice(0, ob) + seg.replace(RE_SPENT_SP, (a, p) => p + v) + line.slice(oe);
+}
+
+// ---- New vehicles
+const VEH_COLORS = [
+  ['#55BA.Kweyv4','Pearl White'],['#55BA.OjilEv','Nitro Yellow'],['#55BA.PGMaN7','Champagne Beige'],['#55BA.SfIlRt','Obsidian Blue'],
+  ['#55BA.VgfMA2','Fire Orange'],['#55BA.a3ki8b','Burgundy Velvet'],['#55BA.a6MiUa','Slate Green'],['#55BA.aW9otP','Crimson Red'],
+  ['#55BA.cJUr7i','Racing Red'],['#55BA.d2MiUa','Sunset Orange'],['#55BA.hl1bDj','Twilight Purple'],['#55BA.jD99h3','Graphite Shadow'],
+  ['#55BA.l6fRe7','Midnight Black'],['#55BA.u0fue9','Deep Blue Pearl'],['#55BA.u0hRa1','Magnetic Gray'],['#55BA.u0hRe7','Lunar Silver'],
+  ['#55BA.ylzVqA','Forest Green Metallic'],['#55BA.6bla29','Titanium Frost'],['#55BA.7BpIWO','Frozen White'],['#55BA.C1WEWN','Miami Blue'],
+  ['#55BA.JzC0Q3','Grabber Lime']
+];
+const COLOR_NAME = Object.fromEntries(VEH_COLORS);
+// Cargo slots per purchasable model (from vehicles delivered new)
+const CARGO_SLOTS = { cangu: 16, cangu02: 20, classicendurance: 12, classichauler: 10, classicroider: 4, classicroyale: 6, classicviber: 6, extender: 10, grandeur: 8, heliosrs: 8, jagercompetition: 6, kabestie: 12, kaisergt: 6, luminer: 10, mercho: 8, pandero: 4, revelion: 4, roider: 4, secuestrator: 20, striker: 8, vantage: 10, vortex: 4, yaguarete: 10 };
+const COMPANY_VEHICLE_LIMIT = 25;
+// Who can own each model: company-only, both, or (default) personal-only
+const COMPANY_ONLY = ['kabestie', 'cangu', 'cangu02'], BOTH_OWNERS = ['classicendurance', 'secuestrator'];
+function canOwn(model, owner){ return owner === 'company' ? (COMPANY_ONLY.includes(model) || BOTH_OWNERS.includes(model)) : !COMPANY_ONLY.includes(model); }
+const PV_PERMITS = ['#0AAD.VEH1pQ', '#0AAD.vv9v3i', '#0AAD.vbVSWu', '#0AAD.vLfpsR'];
+function personalLimit(permitList){ return 1 + PV_PERMITS.filter(id => permitList.includes(id)).length; }
+const fnum = n => Number.isInteger(n) ? n.toFixed(1) : String(n);
+function readFleet(save){
+  const char = save.recs.find(r => r.col === 'character'), biz = save.recs.find(r => r.col === 'business');
+  const veh = save.recs.filter(r => r.col === 'privatevehicles');
+  const plates = new Set(save.recs.filter(r => r.col === 'privatevehicles' || r.col === 'rentvehicles').map(r => { try { return r.obj['#96F6']['#083D']['#9229']; } catch(e){ return null; } }).filter(Boolean));
+  const ids = new Set(save.recs.map(r => r.obj._id));
+  const company = veh.filter(r => r.obj['#975A'] && r.obj['#975A']['#5524'] === 'BUSINESS');
+  const personal = veh.filter(r => r.obj['#975A'] && r.obj['#975A']['#5524'] === 'CHARACTER');
+  let livery = 0; const withLivery = company.find(r => typeof r.obj['#96F6']['#083D']['#5287'] === 'number' && r.obj['#96F6']['#083D']['#5287'] !== 0);
+  if (withLivery) livery = withLivery.obj['#96F6']['#083D']['#5287'];
+  const pos = char && char.obj['#B50F'];
+  return { charId: char && char.obj._id, bizId: biz && biz.obj._id, company: company.length, personal: personal.length, plates, ids, livery,
+           lastIdx: veh.length ? Math.max(...veh.map(r => r.idx)) : -1, pos, indoors: !!(pos && pos['#7F2C']) };
+}
+function newPlate(taken){ let p; do { p = 'ABCDEF'[rnd(6)] + String(rnd(10000)).padStart(4, '0'); } while (taken.has(p)); taken.add(p); return p; }
+// item: { model, color, owner: 'personal'|'company', plate }, slot: index in the row of new vehicles
+function buildVehicleLine(fleet, item, slot, count, takenIds){
+  const p = fleet.pos['#C150'], yaw = fleet.pos['#D341'].z || 0, r = yaw * Math.PI / 180;
+  const fx = Math.cos(r), fy = Math.sin(r), rx = -fy, ry = fx;
+  const ahead = 600, gap = 350, off = (slot - (count - 1) / 2) * gap;
+  const x = p.x + fx * ahead + rx * off, y = p.y + fy * ahead + ry * off, z = p.z + 10;
+  const owner = item.owner === 'company'
+    ? '{"#5524":"BUSINESS","#7E7E":{"id":"' + fleet.bizId + '"},"#F939":{"id":""}}'
+    : '{"#5524":"CHARACTER","#7E7E":{"id":""},"#F939":{"id":"' + fleet.charId + '"}}';
+  const id = randId('privatevehicle_', takenIds);
+  const slots = new Array(CARGO_SLOTS[item.model]).fill('null').join(',');
+  const line = '{"_id":"' + id + '","#96F6":{"#B50F":{"#C150":{"x":' + fnum(x) + ',"y":' + fnum(y) + ',"z":' + fnum(z) + '},"#D341":{"x":0.0,"y":0.0,"z":' + fnum(yaw) + '},"#7F2C":0},' +
+    '"#083D":{"#5AE1":"VehicleModels.' + item.model + '","#AC72":"' + item.color + '","#F34D":{"#3D65":false,"#5D06":false,"#F241":false,"#CF02":false},"#4E0F":false,"#4001":false,"#6164":false,"#4687":0,"#85FC":false,"#8439":false,"#688F":{"#B01F":true,"#7A1D":"","#27A8":0.33},"#FAB4":false,"#E9EF":{"impactPoints":[],"impactRadii":[]},"#CD0D":0.0,"#5136":"VehicleWheelModels.default","#423A":0.0,"#C41C":{},"#EBC8":false,"#9229":"' + item.plate + '","#5287":' + (item.owner === 'company' ? fleet.livery : 0) + '},' +
+    '"#B746":{"items":[' + slots + ']},"#5900":' + (TANK_L[item.model] * 1000) + '},"#975A":' + owner + ',"#5389":{"#8604":{}},"#23C1":false,"#3A70":0,"#1AE2":{"#C150":{"x":0.0,"y":0.0,"z":0.0},"#D341":{"x":0.0,"y":0.0,"z":0.0},"#7F2C":0},"#CA14":{"id":""},"#0130":{"id":""},"#1CC4":0}';
+  return { id, line };
+}
+// CORE-END
+
+(function(){
+  const $ = id => document.getElementById(id);
+  // Tabs
+  const tabs = [...document.querySelectorAll('.tab')];
+  function selectTab(t, focus){
+    tabs.forEach(x => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; });
+    if (focus) t.focus();
+  }
+  tabs.forEach((t, i) => {
+    t.onclick = () => selectTab(t);
+    t.onkeydown = e => {
+      let j = null;
+      if (e.key === 'ArrowRight') j = (i + 1) % tabs.length; else if (e.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') j = 0; else if (e.key === 'End') j = tabs.length - 1;
+      if (j != null){ e.preventDefault(); selectTab(tabs[j], true); }
+    };
+  });
+  // Light / dark toggle
+  const root = document.documentElement, mq = window.matchMedia('(prefers-color-scheme: dark)');
+  let saved = null; try { saved = localStorage.getItem('pcse-theme'); } catch(e){}
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : mq.matches;
+  function paintTheme(){
+    const d = isDark();
+    $('themeIcon').innerHTML = d ? ICON_SUN : ICON_MOON;
+    $('themeText').textContent = d ? 'Light mode' : 'Dark mode';
+    $('themeBtn').setAttribute('aria-pressed', d);
+    $('themeBtn').setAttribute('aria-label', d ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
+  $('themeBtn').onclick = () => { const next = isDark() ? 'light' : 'dark'; root.dataset.theme = next; try { localStorage.setItem('pcse-theme', next); } catch(e){} paintTheme(); };
+  mq.addEventListener && mq.addEventListener('change', paintTheme);
+  paintTheme();
+  const fmt = n => typeof n === 'number' ? n.toLocaleString('de-DE') : '—';
+  // Thousands separators for display only; values are saved as plain integers.
+  const groupDots = str => String(str).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const readNum = inp => { const t = inp.value.replace(/\./g, '').trim(); return /^\d+$/.test(t) ? Number(t) : NaN; };
+  function attachThousands(inp){
+    inp.addEventListener('input', () => {
+      const pos = inp.selectionStart == null ? inp.value.length : inp.selectionStart;
+      const before = inp.value.slice(0, pos).replace(/\D/g, '').length;
+      const digits = inp.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '');
+      inp.value = digits ? groupDots(digits) : '';
+      let i = 0, c = 0; while (i < inp.value.length && c < before){ if (/\d/.test(inp.value[i])) c++; i++; }
+      try { inp.setSelectionRange(i, i); } catch(e){}
+    });
+  }
+  ['cmoney','cxp','bmoney','bxp'].forEach(id => attachThousands(document.getElementById(id)));
+  let save = null, model = null, bizIdx = 0;
+
+  function msg(el, text, kind){ el.innerHTML = ''; const p = document.createElement('p'); p.className = 'msg' + (kind ? ' ' + kind : ''); p.textContent = text; el.appendChild(p); }
+
+  function bindNum(id, value, nowText){
+    const inp = $(id);
+    $('now-' + id).textContent = nowText;
+    if (value == null){ inp.value = ''; inp.disabled = true; inp.title = 'Field not found in this save'; return; }
+    inp.disabled = false; inp.value = inp.classList.contains('num') ? groupDots(value) : value; inp.dataset.orig = value;
+    inp.oninput = refresh;
+  }
+
+  function fillBiz(){
+    const b = model.bizs[bizIdx];
+    $('bizname').textContent = b ? '· ' + b.name : '';
+    if (!b){ ['bmoney','bxp'].forEach(id => bindNum(id, null, 'Not found')); return; }
+    bindNum('bmoney', b.money, 'Current: ' + fmt(b.money));
+    bindNum('bxp', b.xp, b.xp != null ? 'Current: ' + fmt(b.xp) + ' (level ' + (b.level + 1) + ')' : 'Not found');
+  }
+
+  function render(){
+    world = readWorld(save); pending = [];
+    const c = model.char || {};
+    bindNum('cmoney', c.money, c.money != null ? 'Current: ' + fmt(c.money) : 'Not found');
+    bindNum('cxp', c.xp, c.xp != null ? 'Current: ' + fmt(c.xp) + ' (level ' + (c.level + 1) + ')' : 'Not found');
+    bindNum('csp', c.sp, c.sp != null ? 'Current: ' + fmt(c.sp) : 'Not found');
+    const sel = $('bizsel'); sel.innerHTML = '';
+    model.bizs.forEach((b, i) => { const o = document.createElement('option'); o.value = i; o.textContent = b.name; sel.appendChild(o); });
+    $('bizpick').classList.toggle('hidden', model.bizs.length < 2);
+    sel.onchange = () => { bizIdx = +sel.value; fillBiz(); refresh(); };
+    bizIdx = 0; fillBiz();
+    const tb = $('emps'); tb.innerHTML = '';
+    if (!model.emps.length){ const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="6">No employees in this save.</td>'; tb.appendChild(tr); }
+    model.emps.forEach((e, i) => {
+      const tr = document.createElement('tr');
+      const nice = e.skill.toLowerCase().replace(/_/g, ' ').replace(/^./, s => s.toUpperCase());
+      tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td><td></td>';
+      const bld = world.buildings.find(b => b.id === e.building);
+      e.prop = bld ? bld.name : '—';
+      tr.children[0].textContent = e.name; tr.children[1].textContent = e.prop; tr.children[2].textContent = nice; tr.children[3].textContent = e.level;
+      const s = document.createElement('select'); s.id = 'emp-' + i; s.setAttribute('aria-label', 'New level for ' + e.name);
+      [1,2,3].forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; if (v === e.level) o.selected = true; s.appendChild(o); });
+      if (e.level < 1 || e.level > 3){ const o = document.createElement('option'); o.value = e.level; o.textContent = e.level; o.selected = true; s.prepend(o); }
+      s.onchange = refresh;
+      tr.children[4].appendChild(s);
+      if (e.salary == null){ tr.children[5].textContent = '—'; }
+      else {
+        const st = document.createElement('div'); st.className = 'stepper';
+        const minus = document.createElement('button'); minus.type = 'button'; minus.textContent = '−'; minus.setAttribute('aria-label', 'Decrease salary of ' + e.name + ' by 10');
+        const inp = document.createElement('input'); inp.type = 'text'; inp.className = 'num'; inp.inputMode = 'numeric'; inp.autocomplete = 'off'; inp.id = 'sal-' + i; inp.value = groupDots(e.salary); attachThousands(inp); inp.dataset.orig = e.salary; inp.setAttribute('aria-label', 'Salary of ' + e.name);
+        const plus = document.createElement('button'); plus.type = 'button'; plus.textContent = '+'; plus.setAttribute('aria-label', 'Increase salary of ' + e.name + ' by 10');
+        const bump = d => { const v = readNum(inp); inp.value = groupDots(Math.max(0, (Number.isFinite(v) ? v : e.salary) + d)); refresh(); };
+        minus.onclick = () => bump(-10); plus.onclick = () => bump(10); inp.oninput = refresh;
+        st.append(minus, inp, plus); tr.children[5].appendChild(st);
+      }
+      tb.appendChild(tr);
+      e.tr = tr; e.nice = nice; e.i = i;
+    });
+    sortEmps();
+    renderProps(); renderPending(); $('addMsg').innerHTML = '';
+    renderVehicles();
+    renderPermits();
+    renderVehForm();
+    $('editor').classList.remove('hidden');
+    refresh();
+  }
+
+
+  let world = null, pending = [];
+  const FIRST = { Male: ['Lucas','Mateo','Hugo','Leo','Daniel','Tomas','Rafael','Diego','Martin','Adrian','Gabriel','Noah','Oliver','Felix','Marco','Elias','Andres','Simon','Pablo','Victor'],
+                  Female: ['Sofia','Lucia','Valeria','Emma','Olivia','Clara','Julia','Martina','Elena','Ines','Laura','Mia','Alba','Noa','Paula','Carla','Daniela','Irene','Lara','Vera'] };
+  function genName(gender, taken){
+    const used = new Set([...taken].map(n => n.split(' ')[0]));
+    const fresh = FIRST[gender].filter(f => !used.has(f)), pool = fresh.length ? fresh : FIRST[gender];
+    for (let t = 0; t < 400; t++){ const n = pool[rnd(pool.length)] + ' ' + 'ABCDEFGHIJKLMNOPRSTVW'[rnd(21)]; if (!taken.has(n)) { taken.add(n); return n; } }
+    return FIRST[gender][0] + ' ' + (taken.size + 1);
+  }
+  function bizBuildings(){ return world.buildings.filter(b => b.ownerKind === 'BUSINESS'); }
+  function freeOf(b){ return b.limit - b.count - pending.filter(p => p.buildingId === b.id).length; }
+  function gendersFor(skill){ return ['Male','Female'].filter(g => (world.pool.dna[SKILL_ROLE[skill] + '|' + g.toLowerCase()] || []).length); }
+
+  function renderProps(){
+    const tb = $('props'); tb.innerHTML = '';
+    bizBuildings().forEach(b => {
+      const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td>';
+      tr.children[0].textContent = b.name;
+      tr.children[1].textContent = b.unknown ? 'Unknown' : KIND_LABEL[b.kind];
+      const add = pending.filter(p => p.buildingId === b.id).length;
+      if (b.unknown){ tr.children[2].textContent = b.count; }
+      else {
+        const lim = Math.max(b.limit, 1), cur = Math.min(b.count, lim), extra = Math.min(add, lim - cur);
+        const wrap = document.createElement('div'); wrap.className = 'cap';
+        const bar = document.createElement('div'); bar.className = 'bar';
+        bar.setAttribute('role', 'progressbar'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', String(b.limit)); bar.setAttribute('aria-valuenow', String(b.count + add));
+        bar.setAttribute('aria-label', b.name + ': ' + (b.count + add) + ' of ' + b.limit + ' employees' + (add ? ', including ' + add + ' new' : ''));
+        const f1 = document.createElement('span'); f1.className = 'fill'; f1.style.width = (cur / lim * 100) + '%';
+        const f2 = document.createElement('span'); f2.className = 'fill new'; f2.style.width = (extra / lim * 100) + '%';
+        bar.append(f1, f2);
+        const t = document.createElement('span'); t.className = 'captext'; t.textContent = (b.count + add) + '/' + b.limit;
+        if (add){ const sm = document.createElement('span'); sm.className = 'muted'; sm.textContent = ' (+' + add + ' new)'; t.appendChild(sm); }
+        wrap.append(bar, t); tr.children[2].appendChild(wrap);
+      }
+      tr.children[3].textContent = b.unknown ? '—' : Math.max(0, freeOf(b));
+      tb.appendChild(tr);
+    });
+    const sel = $('addProp'), keep = sel.value; sel.innerHTML = '';
+    bizBuildings().forEach(b => {
+      const o = document.createElement('option'); o.value = b.id;
+      const skills = KIND_SKILLS[b.kind] || [];
+      let why = '';
+      if (b.unknown) why = 'unknown property'; else if (!skills.length) why = b.kind === 'garage' ? 'roles not confirmed yet' : 'no employees allowed'; else if (freeOf(b) <= 0) why = 'full';
+      o.textContent = b.name + (why ? ' (' + why + ')' : ' (' + freeOf(b) + ' free)');
+      o.disabled = !!why; sel.appendChild(o);
+    });
+    if (keep && [...sel.options].some(o => o.value === keep && !o.disabled)) sel.value = keep;
+    else { const first = [...sel.options].find(o => !o.disabled); if (first) sel.value = first.value; }
+    fillAddSkill();
+  }
+  function fillAddSkill(){
+    const b = world.buildings.find(x => x.id === $('addProp').value);
+    const sk = $('addSkill'), keep = sk.value; sk.innerHTML = '';
+    (b ? (KIND_SKILLS[b.kind] || []) : []).forEach(k => { const o = document.createElement('option'); o.value = k; o.textContent = SKILL_LABEL[k]; if (!gendersFor(k).length){ o.disabled = true; o.textContent += ' (hire one in the game first)'; } sk.appendChild(o); });
+    if ([...sk.options].some(o => o.value === keep && !o.disabled)) sk.value = keep;
+    else { const en = [...sk.options].findIndex(o => !o.disabled); sk.selectedIndex = en >= 0 ? en : 0; }
+    fillAddGender();
+  }
+  function fillAddGender(){
+    const g = $('addGender'), keep = g.value; g.innerHTML = '';
+    const gs = $('addSkill').value ? gendersFor($('addSkill').value) : [];
+    if (gs.length > 1){ const o = document.createElement('option'); o.value = 'Random'; o.textContent = 'Random'; g.appendChild(o); }
+    gs.forEach(x => { const o = document.createElement('option'); o.value = x; o.textContent = x; g.appendChild(o); });
+    if (!gs.length){ const o = document.createElement('option'); o.value = ''; o.textContent = '—'; g.appendChild(o); }
+    if ([...g.options].some(o => o.value === keep)) g.value = keep;
+    const b = world.buildings.find(x => x.id === $('addProp').value);
+    const free = b ? freeOf(b) : 0;
+    $('addQty').max = Math.max(1, free);
+    $('addBtn').disabled = !b || free <= 0 || !gs.length;
+  }
+  function renderPending(){
+    const tb = $('pending'); tb.innerHTML = '';
+    $('pendingTbl').classList.toggle('hidden', !pending.length);
+    pending.forEach((p, i) => {
+      const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td><td></td>';
+      const inp = document.createElement('input'); inp.type = 'text'; inp.value = p.name; inp.setAttribute('aria-label', 'Name of new employee ' + (i + 1));
+      inp.oninput = () => { p.name = inp.value.trim(); refresh(); };
+      tr.children[0].appendChild(inp);
+      tr.children[1].textContent = world.buildings.find(b => b.id === p.buildingId).name;
+      tr.children[2].textContent = SKILL_LABEL[p.skill]; tr.children[3].textContent = p.gender; tr.children[4].textContent = p.level;
+      const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'link'; rm.textContent = 'Remove'; rm.setAttribute('aria-label', 'Remove ' + p.name);
+      rm.onclick = () => { pending.splice(i, 1); renderPending(); renderProps(); refresh(); };
+      tr.children[5].appendChild(rm); tb.appendChild(tr);
+    });
+  }
+  function addPending(){
+    const b = world.buildings.find(x => x.id === $('addProp').value);
+    const skill = $('addSkill').value, level = Number($('addLevel').value);
+    const qty = Number($('addQty').value), free = freeOf(b);
+    if (!Number.isInteger(qty) || qty < 1){ msg($('addMsg'), 'Quantity must be a whole number of at least 1.', 'bad'); return; }
+    if (qty > free){ msg($('addMsg'), b.name + ' only has ' + free + ' free place' + (free === 1 ? '' : 's') + '.', 'bad'); return; }
+    $('addMsg').innerHTML = '';
+    const taken = new Set([...world.pool.names, ...pending.map(p => p.name)]);
+    const P = world.pool, gs = gendersFor(skill);
+    for (let n = 0; n < qty; n++){
+      const gender = $('addGender').value === 'Random' ? gs[rnd(gs.length)] : $('addGender').value;
+      const looks = P.dna[SKILL_ROLE[skill] + '|' + gender.toLowerCase()];
+      const look = looks[rnd(looks.length)];
+      const trait = P.traits[rnd(P.traits.length)];
+      const lo = P.salaryMin != null ? P.salaryMin : 400, hi = P.salaryMax != null ? P.salaryMax : 600;
+      pending.push({ buildingId: b.id, bizId: b.bizId, skill, level, gender, name: genName(gender, taken), dna: look.dna, look: look.look, trait, salary: lo + rnd(hi - lo + 1) });
+    }
+    renderPending(); renderProps(); refresh();
+  }
+
+
+  let vehicles = [];
+  function renderVehicles(){
+    vehicles = readVehicles(save);
+    const tb = $('vehs'); tb.innerHTML = '';
+    if (!vehicles.length){ const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="8">No vehicles in this save.</td>'; tb.appendChild(tr); }
+    vehicles.forEach((v, i) => {
+      const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+      tr.children[2].textContent = v.name; tr.children[3].textContent = v.plate; tr.children[4].textContent = v.owner;
+      // Fuel
+      const fmtL = n => n.toLocaleString('de-DE', { maximumFractionDigits: 1 });
+      if (v.fuel == null){ tr.children[5].textContent = '—'; }
+      else if (v.tank){
+        const pct = Math.min(100, v.fuel / v.tank * 100);
+        const wrap = document.createElement('div'); wrap.className = 'cap';
+        const bar = document.createElement('div'); bar.className = 'bar fuel'; bar.setAttribute('role', 'meter'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', String(v.tank)); bar.setAttribute('aria-valuenow', String(v.fuel)); bar.setAttribute('aria-label', 'Fuel of ' + v.name + ' ' + v.plate);
+        const f = document.createElement('span'); f.className = 'fill'; f.style.width = pct + '%'; bar.appendChild(f);
+        const t = document.createElement('span'); t.className = 'captext mid'; t.textContent = fmtL(v.fuel) + ' / ' + v.tank + ' L';
+        wrap.append(bar, t); tr.children[5].appendChild(wrap);
+      } else { const sp = document.createElement('span'); sp.textContent = fmtL(v.fuel) + ' L'; const u = document.createElement('span'); u.className = 'muted'; u.textContent = ' (tank size unknown)'; tr.children[5].append(sp, u); }
+      const fc = document.createElement('input'); fc.type = 'checkbox'; fc.id = 'vehf-' + i; fc.className = 'chkf chk';
+      fc.classList.remove('chk'); fc.classList.add('chkbox');
+      fc.setAttribute('aria-label', 'Refuel ' + v.name + ' ' + v.plate);
+      if (v.fuel == null || !v.tank || Math.round(v.fuel * 1000) >= v.tank * 1000){ fc.disabled = true; fc.title = !v.tank ? 'Tank size unknown' : 'Tank is full'; }
+      fc.onchange = refresh; tr.children[1].appendChild(fc);
+      // Damage
+      if (v.engine == null){ tr.children[6].textContent = 'Not found'; tr.children[7].textContent = '—'; tr.children[0].textContent = '—'; }
+      else {
+        const pct = Math.round(Math.min(1, Math.max(0, v.engine)) * 100);
+        const wrap = document.createElement('div'); wrap.className = 'cap';
+        const bar = document.createElement('div'); bar.className = 'bar dmg'; bar.setAttribute('role', 'meter'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', '100'); bar.setAttribute('aria-valuenow', String(pct)); bar.setAttribute('aria-label', 'Engine damage of ' + v.name + ' ' + v.plate);
+        const f = document.createElement('span'); f.className = 'fill'; f.style.width = pct + '%'; bar.appendChild(f);
+        const t = document.createElement('span'); t.className = 'captext short'; t.textContent = (v.engine > 0 && pct === 0 ? '<1' : pct) + '%';
+        wrap.append(bar, t); tr.children[6].appendChild(wrap);
+        const dented = v.dents > 0;
+        const bs = document.createElement('span'); bs.className = dented ? 'tag bad' : 'tag'; bs.textContent = dented ? 'Dented' : 'OK'; tr.children[7].appendChild(bs);
+        const cb = document.createElement('input'); cb.type = 'checkbox'; cb.id = 'veh-' + i; cb.className = 'chk chkbox';
+        cb.setAttribute('aria-label', 'Repair ' + v.name + ' ' + v.plate);
+        if (!(v.engine > 0) && !dented){ cb.disabled = true; cb.title = 'No damage'; }
+        cb.onchange = refresh; tr.children[0].appendChild(cb);
+      }
+      tb.appendChild(tr);
+    });
+  }
+
+
+  let permState = null;
+  function renderPermits(){
+    permState = readPermits(save);
+    const sec = $('permSection');
+    if (!permState){ sec.classList.add('hidden'); return; }
+    sec.classList.remove('hidden');
+    const unknown = permState.owned.filter(id => !PERMIT_BY_ID[id]);
+    $('permInfo').textContent = 'Owned: ' + permState.owned.filter(id => PERMIT_BY_ID[id]).length + ' of ' + PERMITS.length +
+      (permState.spent != null ? ' · Skill points spent on permits: ' + permState.spent : '') +
+      (unknown.length ? ' · ' + unknown.length + ' unrecognised permit(s) will be kept as they are' : '');
+    const tb = $('perms'); tb.innerHTML = '';
+    const branches = [...new Set(PERMITS.map(p => p.branch))];
+    branches.forEach(br => {
+      const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td>';
+      tr.children[0].textContent = br;
+      const row = document.createElement('div'); row.className = 'chkrow wrapw';
+      PERMITS.filter(p => p.branch === br).forEach(p => {
+        const l = document.createElement('label'); l.className = 'chklbl permchip';
+        const cb = document.createElement('input'); cb.type = 'checkbox'; cb.className = 'chkbox permcb'; cb.dataset.id = p.id;
+        cb.checked = permState.owned.includes(p.id);
+        cb.setAttribute('aria-label', br + (p.tier ? ' ' + p.tier : ''));
+        cb.onchange = () => { permToggle(p.id, cb.checked); refresh(); };
+        const t = document.createElement('span'); t.textContent = (p.tier || 'Unlock');
+        l.append(cb, t); row.appendChild(l);
+      });
+      tr.children[1].appendChild(row); tb.appendChild(tr);
+    });
+  }
+  function permBox(id){ return document.querySelector('.permcb[data-id="' + id + '"]'); }
+  function permToggle(id, on){
+    if (on){ let r = PERMIT_BY_ID[id].req; while (r){ permBox(r).checked = true; r = PERMIT_BY_ID[r].req; } }
+    else { const clear = x => PERMITS.filter(p => p.req === x).forEach(p => { permBox(p.id).checked = false; clear(p.id); }); clear(id); }
+  }
+
+
+  let vPending = [], fleet = null;
+  function permListNow(){ if (!permState) return []; const want = PERMITS.filter(p => permBox(p.id) && permBox(p.id).checked).map(p => p.id); return permState.owned.filter(id => !PERMIT_BY_ID[id]).concat(want); }
+  function fleetFree(owner){
+    const lim = owner === 'company' ? COMPANY_VEHICLE_LIMIT : personalLimit(permListNow());
+    const cur = owner === 'company' ? fleet.company : fleet.personal;
+    return { lim, cur, add: vPending.filter(v => v.owner === owner).length, free: lim - cur - vPending.filter(v => v.owner === owner).length };
+  }
+  function renderFleet(){
+    if (!fleet) return;
+    const tb = $('fleet'); tb.innerHTML = '';
+    [['personal', 'Personal (1 + Personal Vehicle permits)'], ['company', 'Company']].forEach(([k, label]) => {
+      const f = fleetFree(k);
+      const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td>';
+      tr.children[0].textContent = label;
+      const lim = Math.max(f.lim, 1), cur = Math.min(f.cur, lim), extra = Math.max(0, Math.min(f.add, lim - cur));
+      const wrap = document.createElement('div'); wrap.className = 'cap';
+      const bar = document.createElement('div'); bar.className = 'bar'; bar.setAttribute('role', 'progressbar'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', String(f.lim)); bar.setAttribute('aria-valuenow', String(f.cur + f.add)); bar.setAttribute('aria-label', label + ': ' + (f.cur + f.add) + ' of ' + f.lim + ' vehicles');
+      const f1 = document.createElement('span'); f1.className = 'fill'; f1.style.width = (cur / lim * 100) + '%';
+      const f2 = document.createElement('span'); f2.className = 'fill new'; f2.style.width = (extra / lim * 100) + '%';
+      bar.append(f1, f2);
+      const t = document.createElement('span'); t.className = 'captext'; t.textContent = (f.cur + f.add) + '/' + f.lim;
+      if (f.add){ const sm = document.createElement('span'); sm.className = 'muted'; sm.textContent = ' (+' + f.add + ' new)'; t.appendChild(sm); }
+      wrap.append(bar, t); tr.children[1].appendChild(wrap);
+      tr.children[2].textContent = Math.max(0, f.free) + (f.free < 0 ? ' (over the limit)' : '');
+      tb.appendChild(tr);
+    });
+    const blocked = !fleet.pos || fleet.indoors;
+    $('vAddBtn').disabled = blocked || fleetFree($('vOwner').value).free <= 0;
+    if (blocked) msg($('vMsg'), 'Your character was inside a building when this game was saved. Save again while standing outside to add vehicles.', 'bad');
+  }
+  function renderVehForm(){
+    fleet = readFleet(save); vPending = [];
+    fillVModels();
+    const cs = $('vColor'); cs.innerHTML = '<option value="random">Random</option>';
+    VEH_COLORS.forEach(([code, name]) => { const o = document.createElement('option'); o.value = code; o.textContent = name; cs.appendChild(o); });
+    $('vMsg').innerHTML = ''; renderVPending(); renderFleet();
+  }
+  function fillVModels(){
+    const ms = $('vModel'), keep = ms.value, owner = $('vOwner').value; ms.innerHTML = '';
+    Object.keys(CARGO_SLOTS).filter(m => TANK_L[m] && canOwn(m, owner)).sort((a, b) => (MODEL_NAMES[a] || a).localeCompare(MODEL_NAMES[b] || b)).forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = MODEL_NAMES[m] || m; ms.appendChild(o); });
+    if ([...ms.options].some(o => o.value === keep)) ms.value = keep;
+  }
+  function renderVPending(){
+    const tb = $('vPending'); tb.innerHTML = ''; $('vPendingTbl').classList.toggle('hidden', !vPending.length);
+    vPending.forEach((v, i) => {
+      const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td>';
+      tr.children[0].textContent = MODEL_NAMES[v.model] || v.model; tr.children[1].textContent = COLOR_NAME[v.color] || v.color;
+      tr.children[2].textContent = v.owner === 'company' ? 'Company' : 'Personal'; tr.children[3].textContent = fmtPlate(v.plate);
+      const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'link'; rm.textContent = 'Remove'; rm.setAttribute('aria-label', 'Remove ' + (MODEL_NAMES[v.model] || v.model) + ' ' + fmtPlate(v.plate));
+      rm.onclick = () => { vPending.splice(i, 1); renderVPending(); renderFleet(); refresh(); };
+      tr.children[4].appendChild(rm); tb.appendChild(tr);
+    });
+  }
+  function addVehicles(){
+    const owner = $('vOwner').value, qty = Number($('vQty').value), f = fleetFree(owner);
+    if (!canOwn($('vModel').value, owner)){ msg($('vMsg'), (MODEL_NAMES[$('vModel').value] || $('vModel').value) + ' cannot be a ' + owner + ' vehicle.', 'bad'); return; }
+    if (!Number.isInteger(qty) || qty < 1){ msg($('vMsg'), 'Quantity must be a whole number of at least 1.', 'bad'); return; }
+    if (qty > f.free){ msg($('vMsg'), (owner === 'company' ? 'Company' : 'Personal') + ' vehicles only have ' + Math.max(0, f.free) + ' free slot' + (f.free === 1 ? '' : 's') + '.', 'bad'); return; }
+    $('vMsg').innerHTML = '';
+    const taken = new Set([...fleet.plates, ...vPending.map(v => v.plate)]);
+    for (let n = 0; n < qty; n++){
+      const color = $('vColor').value === 'random' ? VEH_COLORS[rnd(VEH_COLORS.length)][0] : $('vColor').value;
+      vPending.push({ model: $('vModel').value, color, owner, plate: newPlate(taken) });
+    }
+    renderVPending(); renderFleet(); refresh();
+  }
+
+  let sortKey = 'skill', sortDir = 1;
+  function sortEmps(){
+    if (!model || !model.emps.length || !model.emps[0].tr) return;
+    const coll = new Intl.Collator('en', { sensitivity: 'base' });
+    const val = e => sortKey === 'name' ? e.name : sortKey === 'prop' ? e.prop : sortKey === 'skill' ? e.nice : sortKey === 'level' ? e.level : sortKey === 'salary' ? ($('sal-' + e.i) ? (readNum($('sal-' + e.i)) || 0) : -1) : Number($('emp-' + e.i).value);
+    const rows = model.emps.slice().sort((a, b) => {
+      const va = val(a), vb = val(b);
+      let c = typeof va === 'number' ? va - vb : coll.compare(va, vb);
+      if (c === 0 && sortKey !== 'name') c = coll.compare(a.name, b.name);
+      if (c === 0 && sortKey !== 'skill') c = coll.compare(a.nice, b.nice);
+      return c * sortDir;
+    });
+    const tb = $('emps'); rows.forEach(e => tb.appendChild(e.tr));
+    document.querySelectorAll('th[data-key]').forEach(th => {
+      const on = th.dataset.key === sortKey;
+      if (on) th.setAttribute('aria-sort', sortDir === 1 ? 'ascending' : 'descending'); else th.removeAttribute('aria-sort');
+      th.querySelector('.arrow').textContent = on ? (sortDir === 1 ? '▲' : '▼') : '';
+    });
+  }
+  document.querySelectorAll('th[data-key] button.sort').forEach(btn => {
+    btn.onclick = () => {
+      const k = btn.parentElement.dataset.key;
+      if (k === sortKey) sortDir = -sortDir; else { sortKey = k; sortDir = 1; }
+      sortEmps();
+    };
+  });
+
+  function collect(){
+    const edits = { emps: [] }, changes = [], errors = [];
+    const num = (id, label) => {
+      const inp = $(id); if (inp.disabled) return null;
+      inp.classList.remove('changed');
+      if (inp.value.trim() === '') return null;
+      const v = inp.classList.contains('num') ? readNum(inp) : Number(inp.value), o = Number(inp.dataset.orig);
+      if (!Number.isInteger(v) || v < 0 || v > MAX_INT){ errors.push(label + ': use a whole number between 0 and ' + fmt(MAX_INT) + '.'); return null; }
+      if (v === o) return null;
+      inp.classList.add('changed');
+      changes.push(label + ': ' + fmt(o) + ' → ' + fmt(v));
+      return v;
+    };
+    edits.cmoney = num('cmoney', 'Personal money');
+    edits.cxp = num('cxp', 'Personal experience');
+    edits.csp = num('csp', 'Skill points');
+    if (permState){
+      const want = new Set(PERMITS.filter(p => permBox(p.id) && permBox(p.id).checked).map(p => p.id));
+      const keep = permState.owned.filter(id => !PERMIT_BY_ID[id] || want.has(id));
+      const add = PERMITS.filter(p => want.has(p.id) && !permState.owned.includes(p.id)).map(p => p.id);
+      const removed = permState.owned.filter(id => PERMIT_BY_ID[id] && !want.has(id));
+      if (add.length || removed.length){
+        const delta = add.reduce((t, id) => t + PERMIT_BY_ID[id].cost, 0) - removed.reduce((t, id) => t + PERMIT_BY_ID[id].cost, 0);
+        edits.permits = { list: keep.concat(add), spent: null };
+        changes.push('Permits: ' + [add.length ? add.length + ' unlocked' : '', removed.length ? removed.length + ' removed' : ''].filter(Boolean).join(', '));
+        if ($('permCharge').checked){
+          const base = edits.csp != null ? edits.csp : (model.char ? model.char.sp : null);
+          if (base == null) errors.push('Skill points not found, so permits cannot be charged.');
+          else {
+            const after = base - delta;
+            if (after < 0) errors.push('Not enough skill points: these permits need ' + delta + ' and you have ' + base + '.');
+            else { if (after !== base) changes.push('Skill points: ' + fmt(base) + ' → ' + fmt(after) + ' (permits)'); edits.csp = after; }
+          }
+          if (permState.spent != null) edits.permits.spent = Math.max(0, permState.spent + delta);
+        }
+      }
+    }
+    const b = model.bizs[bizIdx];
+    if (b){
+      const bm = num('bmoney', 'Company money'), bx = num('bxp', 'Company experience');
+      if (bm != null || bx != null) edits.biz = { idx: b.idx, bmoney: bm, bxp: bx };
+    }
+    let empChanged = 0;
+    model.emps.forEach((e, i) => {
+      const v = Number($('emp-' + i).value);
+      if (v !== e.level){ edits.emps.push({ idx: e.idx, skill: e.skill, level: v }); empChanged++; }
+    });
+    if (empChanged) changes.push('Skills changed for ' + empChanged + ' employee' + (empChanged > 1 ? 's' : ''));
+    edits.salaries = []; const salSeen = new Set();
+    model.emps.forEach((e, i) => {
+      const inp = $('sal-' + i); if (!inp || salSeen.has(e.idx)) return; salSeen.add(e.idx);
+      inp.classList.remove('changed');
+      const v = readNum(inp);
+      if (!Number.isInteger(v) || v < 0 || v > MAX_INT){ errors.push('Salary of ' + e.name + ': use a whole number of 0 or more.'); return; }
+      if (v !== e.salary){ inp.classList.add('changed'); edits.salaries.push({ idx: e.idx, salary: v }); }
+    });
+    if (edits.salaries.length) changes.push('Salaries changed for ' + edits.salaries.length + ' employee' + (edits.salaries.length > 1 ? 's' : ''));
+    edits.repairs = vehicles.map((v, i) => ({ v, c: $('veh-' + i) })).filter(x => x.c && x.c.checked && !x.c.disabled).map(x => ({ idx: x.v.idx, id: x.v.id, engine: x.v.engine > 0, body: x.v.dents > 0 }));
+    if (edits.repairs.length) changes.push('Repair ' + edits.repairs.length + ' vehicle' + (edits.repairs.length > 1 ? 's' : ''));
+    edits.refuels = vehicles.map((v, i) => ({ v, c: $('vehf-' + i) })).filter(x => x.c && x.c.checked && !x.c.disabled).map(x => ({ idx: x.v.idx, id: x.v.id, litres: x.v.tank }));
+    if (edits.refuels.length) changes.push('Refuel ' + edits.refuels.length + ' vehicle' + (edits.refuels.length > 1 ? 's' : ''));
+    if (vPending.length){
+      const f = fleetFree('personal'), fc = fleetFree('company');
+      if (f.free < 0) errors.push('Too many personal vehicles: the limit is ' + f.lim + ' (1 + Personal Vehicle permits).');
+      if (fc.free < 0) errors.push('Too many company vehicles: the limit is ' + fc.lim + '.');
+      edits.addVehicles = vPending.map(v => Object.assign({}, v));
+      changes.push('New vehicles: ' + vPending.length + ' (' + [f.add ? f.add + ' personal' : '', fc.add ? fc.add + ' company' : ''].filter(Boolean).join(', ') + ')');
+    }
+    if (pending.length){
+      const names = new Set(world.pool.names);
+      pending.forEach(p => {
+        if (!p.name) errors.push('Every new employee needs a name.');
+        else if (names.has(p.name)) errors.push('The name "' + p.name + '" is already in use.');
+        names.add(p.name);
+      });
+      edits.add = pending.map(p => Object.assign({}, p));
+      const per = {};
+      pending.forEach(p => { const n = world.buildings.find(b => b.id === p.buildingId).name; per[n] = (per[n] || 0) + 1; });
+      changes.push('New employees: ' + Object.keys(per).map(k => per[k] + ' at ' + k).join(', '));
+    }
+    return { edits, changes, errors: [...new Set(errors)] };
+  }
+
+  function refresh(){
+    if (fleet) renderFleet();
+    const { changes, errors } = collect();
+    const box = $('summary'); box.innerHTML = '';
+    if (errors.length){ errors.forEach(t => msg(box, t, 'bad')); $('saveBtn').disabled = true; return; }
+    if (!changes.length){ box.innerHTML = '<p class="hint">No changes yet.</p>'; $('saveBtn').disabled = true; return; }
+    const ul = document.createElement('ul'); ul.className = 'changes';
+    changes.forEach(t => { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+    box.appendChild(ul); $('saveBtn').disabled = false; $('saveMsg').innerHTML = '';
+  }
+
+  $('selDamaged').onclick = () => { document.querySelectorAll('#vehs .chk').forEach(c => { if (!c.disabled) c.checked = true; }); refresh(); };
+  $('permAll').onclick = () => { document.querySelectorAll('.permcb').forEach(c => { c.checked = true; }); refresh(); };
+  $('permNone').onclick = () => { document.querySelectorAll('.permcb').forEach(c => { c.checked = false; }); refresh(); };
+  $('permCharge').onchange = refresh;
+  $('vAddBtn').onclick = addVehicles;
+  $('vOwner').onchange = () => { fillVModels(); renderFleet(); };
+  $('selFuel').onclick = () => { document.querySelectorAll('#vehs .chkf').forEach(c => { if (!c.disabled) c.checked = true; }); refresh(); };
+  $('selNone').onclick = () => { document.querySelectorAll('#vehs .chk, #vehs .chkf').forEach(c => { c.checked = false; }); refresh(); };
+  $('addProp').onchange = fillAddSkill;
+  $('addSkill').onchange = fillAddGender;
+  $('addBtn').onclick = addPending;
+  $('bulkBtn').onclick = () => { const v = $('bulkLevel').value; model.emps.forEach((e, i) => { $('emp-' + i).value = v; }); refresh(); };
+
+  $('saveBtn').onclick = async () => {
+    const { edits, errors } = collect();
+    if (errors.length) return;
+    try {
+      const text = applyEdits(save, model, edits);
+      const gz = await gzipBytes(new TextEncoder().encode(text));
+      const url = URL.createObjectURL(new Blob([gz], { type: 'application/gzip' }));
+      const a = document.createElement('a'); a.href = url; a.download = 'savegame.gz';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      const box = $('saveMsg'); box.innerHTML = '';
+      const p = document.createElement('p'); p.className = 'msg ok';
+      p.innerHTML = 'Exported and verified <span class="stamp">OK</span><br>With the game closed, replace the savegame.gz in your slot0 folder with this file.';
+      box.appendChild(p);
+    } catch(err){ msg($('saveMsg'), err.message, 'bad'); }
+  };
+
+  async function load(file){
+    $('editor').classList.add('hidden');
+    try {
+      if (typeof DecompressionStream === 'undefined') throw new Error('This browser does not support gzip decompression. Use a recent version of Chrome, Edge or Firefox.');
+      const buf = await file.arrayBuffer();
+      let bytes;
+      try { bytes = await gunzipBytes(buf); } catch(e){ throw new Error('Could not decompress the file. Check that you picked savegame.gz (not the .bak or another file).'); }
+      save = parseSave(new TextDecoder('utf-8').decode(bytes));
+      model = readModel(save);
+      if (!model.char && !model.bizs.length) throw new Error('No character or company found in this file.');
+      msg($('loadMsg'), 'Loaded: ' + file.name + ' (' + model.emps.length + ' employee skills).', 'ok');
+      render();
+    } catch(err){ msg($('loadMsg'), err.message, 'bad'); }
+  }
+
+  const drop = $('drop'), fileInp = $('file');
+  fileInp.onchange = () => { if (fileInp.files[0]) load(fileInp.files[0]); fileInp.value = ''; };
+  drop.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); fileInp.click(); } };
+  ['dragenter','dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f) load(f); });
+})();
+</script>
+</body>
+</html>
