@@ -35,7 +35,7 @@
 html{background:var(--bg)}
 body{margin:0;background:var(--bg);color:var(--ink);
   font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.5}
-main{max-width:980px;margin:0 auto;padding:40px 20px 80px}
+main{max-width:1080px;margin:0 auto;padding:40px 20px 80px}
 h1{font-weight:800;font-size:clamp(2.2rem,6vw,3.4rem);line-height:1;margin:0 0 8px;letter-spacing:-.01em}
 h1 .sub{display:block;font-weight:400}
 .notice{margin:0 0 28px;padding:12px 16px;border:1px solid var(--tape);border-left:5px solid var(--accent);border-radius:.5rem;background:var(--accent-subtle);color:var(--ink);font-size:.95rem}
@@ -78,6 +78,17 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .msg.ok{border-color:var(--ok)}
 ul.changes{margin:8px 0 0;padding-left:20px}
 .hidden{display:none}
+#bulkModel{width:170px}
+#bulkOwner{width:auto}
+#vehs select.propsel{width:128px}
+#vehs select.colsel{width:150px}
+#vehs .captext.mid{min-width:5.6em}
+#vehs td{padding:7px 4px}
+#vehs .bar{min-width:48px;max-width:70px}
+#emps tr.grp td{border-top:2px solid var(--ink-soft)}
+#emps tr.subgrp td{border-top:1px dashed var(--ink-soft)}
+select.propsel{width:150px;margin:0;padding:4px 8px;font-size:.95rem}
+select.changed{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .cap{display:flex;align-items:center;gap:10px;min-width:180px}
 .bar{position:relative;flex:1;height:12px;min-width:110px;background:var(--track);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:flex}
 .bar .fill{display:block;height:100%;background:var(--accent)}
@@ -85,6 +96,10 @@ ul.changes{margin:8px 0 0;padding-left:20px}
 .captext{white-space:nowrap;font-variant-numeric:tabular-nums;min-width:9.5em}
 .captext.short{min-width:3em;text-align:right}
 .bar.dmg .fill{background:var(--bad)}
+.bar.need .fill{background:#E2B203}
+.bar.need.low .fill{background:var(--bad)}
+.needrow{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.needrow .cap{flex:0 1 360px}
 .chkrow{display:flex;gap:14px}
 label.chklbl{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
 .wrapw{flex-wrap:wrap;gap:10px 18px}
@@ -96,9 +111,17 @@ input.chkbox:disabled{cursor:not-allowed;opacity:.4}
 .captext.mid{min-width:6.5em;text-align:right}
 #vehs .cap{min-width:0;gap:8px}
 #vehs .bar{min-width:56px;max-width:90px}
-#vehs td{padding:7px 5px}
+#vehs td{padding:7px 3px}
+#vehs select.propsel{width:130px;padding:4px 4px;font-size:.9rem}
+#vehs select.colsel{width:140px}
+#vehs .bar{min-width:36px;max-width:48px}
+#vehs .captext.mid{min-width:4.6em;font-size:.9rem}
+#vehs .stepper button{padding:4px 7px;min-width:28px}
+#vehs .stepper input.num.cargo{width:40px;margin:0 2px}
+#vehs th{padding-left:3px;padding-right:3px;font-size:.9rem}
 .stepper{display:inline-flex;align-items:center}
 .stepper button{padding:4px 10px;min-width:34px;font-size:1rem;line-height:1.2}
+.stepper input.num.cargo{width:48px}
 .stepper input.num{width:96px;min-width:0;margin:0 4px;padding:4px 6px;font-size:1rem;text-align:right}
 .stepper input[type=number]::-webkit-inner-spin-button,.stepper input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 .stepper input[type=number]{-moz-appearance:textfield;appearance:textfield}
@@ -120,6 +143,25 @@ h3{font-size:1rem;margin:18px 0 8px}
 .tab[aria-selected="true"]{background:var(--surface);color:var(--ink);border-color:var(--line) var(--line) var(--surface)}
 footer{color:var(--ink-soft);font-size:.85rem}
 @media (prefers-reduced-motion:no-preference){ .stamp{animation:thud .25s ease-out} @keyframes thud{from{transform:rotate(-3deg) scale(1.4);opacity:0}} }
+
+#stor .prop{margin:0 0 22px}
+#stor .prophead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+#salesSel{width:auto;min-width:220px}
+#stor h3,#sales h3{margin:0;font-size:1.1rem;font-weight:700}
+#stor td.r,#sales td.r{text-align:right}
+#stor .cap{min-width:0;gap:8px}
+#stor .bar{min-width:90px;max-width:140px}
+#stor button.on{background:var(--accent-subtle);border-color:var(--accent);color:var(--accent-text)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+.card{background:var(--surface-2);border:1px solid var(--line);border-radius:.5rem;padding:12px 14px}
+.card .k{font-size:.8rem;color:var(--ink-soft)} .card .v{font-size:1.5rem;font-weight:750;font-variant-numeric:tabular-nums} .card .s{font-size:.78rem;color:var(--ink-soft)}
+.label.inner{background:var(--surface);margin-bottom:18px;padding:16px 18px}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--ink-soft);font-size:11px;font-variant-numeric:tabular-nums}
+.chart .gl{stroke:var(--line);stroke-width:1}
+.ch-s0{fill:var(--accent);background:var(--accent)} .ch-s1{fill:var(--ok);background:var(--ok)}
+.legend{display:flex;gap:18px;font-size:.85rem;color:var(--ink-soft);margin-top:6px}
+.legend .sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 </style>
 </head>
 <body>
@@ -135,10 +177,10 @@ footer{color:var(--ink-soft);font-size:.85rem}
     <h2>Upload Save Game File</h2>
     <label class="drop" id="drop" tabindex="0">
       <strong>Choose or drop your savegame.gz</strong>
-      <span>Found in %LOCALAPPDATA%\PioneroCapital\Saved\LocalServer\Slots\slot0</span>
+      <span>Found in %LOCALAPPDATA%\PioneroCapital\Saved\LocalServer\Slots</span>
       <input type="file" id="file" accept=".gz,application/gzip">
     </label>
-    <p class="hint">Close the game before copying or replacing the file, and make sure no java.exe is left running. Always keep a backup of the slot0 folder.</p>
+    <p class="hint">Close the game before copying or replacing the file, and make sure no java.exe is left running. Always keep a backup of your save slot folder.</p>
     <div id="loadMsg"></div>
   </section>
 
@@ -147,6 +189,8 @@ footer{color:var(--ink-soft);font-size:.85rem}
       <button type="button" class="tab" role="tab" id="tab-character" aria-controls="panel-character" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>Character</button>
       <button type="button" class="tab" role="tab" id="tab-company" aria-controls="panel-company" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2M10 21v-3h4v3"/></svg>Company</button>
       <button type="button" class="tab" role="tab" id="tab-vehicles" aria-controls="panel-vehicles" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16v-3l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v3a1 1 0 0 1-1 1h-1M5 17H4a1 1 0 0 1-1-1M9 17h6"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 12h14"/></svg>Vehicles</button>
+      <button type="button" class="tab" role="tab" id="tab-storage" aria-controls="panel-storage" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13"/><path d="M7 21v-6h10v6M7 11h10"/></svg>Storage</button>
+      <button type="button" class="tab" role="tab" id="tab-sales" aria-controls="panel-sales" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Sales</button>
     </div>
 
     <div class="panel" id="panel-character" role="tabpanel" aria-labelledby="tab-character">
@@ -156,6 +200,14 @@ footer{color:var(--ink-soft);font-size:.85rem}
         <label class="field">Personal money ($)<span class="now" id="now-cmoney"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="cmoney"></label>
         <label class="field">Experience<span class="now" id="now-cxp"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="cxp"></label>
         <label class="field">Skill points<span class="now" id="now-csp"></span><input type="number" id="csp" min="0" step="1"></label>
+      </div>
+      <div id="needBox" class="hidden">
+        <h3>Needs</h3>
+        <div class="needrow">
+          <div class="cap"><div class="bar need" id="needBar" role="meter" aria-valuemin="0" aria-valuemax="100" aria-label="Needs level"><span class="fill" id="needFill"></span></div><span class="captext short" id="needText"></span></div>
+          <label class="chklbl"><input type="checkbox" id="needRestore" class="chkbox"> Restore to full</label>
+        </div>
+        <p class="hint">The traffic-light indicator in the game: red when low, yellow from about a third. Eating raises it; it drops over time.</p>
       </div>
     </section>
 
@@ -194,10 +246,10 @@ footer{color:var(--ink-soft);font-size:.85rem}
         <button type="button" id="bulkBtn">Apply to all</button>
       </div>
       <div class="wrap"><table>
-        <thead><tr><th data-key="name"><button type="button" class="sort">Name<span class="arrow"></span></button></th><th data-key="prop"><button type="button" class="sort">Property<span class="arrow"></span></button></th><th data-key="skill"><button type="button" class="sort">Skill<span class="arrow"></span></button></th><th data-key="level"><button type="button" class="sort">Current<span class="arrow"></span></button></th><th data-key="next"><button type="button" class="sort">New<span class="arrow"></span></button></th><th data-key="salary"><button type="button" class="sort">Salary ($)<span class="arrow"></span></button></th></tr></thead>
+        <thead><tr><th data-key="name"><button type="button" class="sort">Name<span class="arrow"></span></button></th><th data-key="prop"><button type="button" class="sort">Property<span class="arrow"></span></button></th><th data-key="skill"><button type="button" class="sort">Role<span class="arrow"></span></button></th><th data-key="level"><button type="button" class="sort">Skill level<span class="arrow"></span></button></th><th data-key="next"><button type="button" class="sort">New level<span class="arrow"></span></button></th><th data-key="salary"><button type="button" class="sort">Salary ($)<span class="arrow"></span></button></th></tr></thead>
         <tbody id="emps"></tbody>
       </table></div>
-      <p class="hint">The maximum skill level is 3.</p>
+      <p class="hint">The maximum skill level is 3. Moving an employee to another property only lists properties that accept their role and have free places. A moved employee starts there like a fresh hire: no tasks and no vehicle, placed by the game when the next working day starts, so assign their tasks again.</p>
     </section>
 
     <section class="label">
@@ -206,7 +258,7 @@ footer{color:var(--ink-soft);font-size:.85rem}
         <thead><tr><th>Property</th><th>Type</th><th>Employees</th><th>Free Slots</th></tr></thead>
         <tbody id="props"></tbody>
       </table></div>
-      <p class="notice" role="note" style="margin:14px 0 6px"><strong>Before adding employees:</strong> hire at least one employee of each role you want to create (Crafter, Delivery, Warehouse manager or Marketing) in the game first. The editor copies the appearance of new employees from the ones already in your save, so a role or gender with no one hired yet is not available here.</p>
+      <p class="notice" role="note" style="margin:14px 0 6px"><strong>About appearances:</strong> new employees use character models taken from real hires, from a built-in library plus the employees in your save. Every role is available for both genders, even if no one with that role or gender is hired in your save yet.</p>
       <h3>New hires</h3>
       <div class="addform">
         <label class="field" style="grid-column:span 2">Property<select id="addProp"></select></label>
@@ -233,11 +285,18 @@ footer{color:var(--ink-soft);font-size:.85rem}
         <button type="button" id="selFuel">Select all to refuel</button>
         <button type="button" id="selNone">Clear selection</button>
       </div>
+      <div class="bulk">
+        <span>Change the model of all</span>
+        <select id="bulkOwner" class="propsel"><option value="Company">company vehicles</option><option value="Personal">personal vehicles</option></select>
+        <span>to</span>
+        <select id="bulkModel" class="propsel"></select>
+        <button type="button" id="bulkModelBtn">Apply</button>
+      </div>
       <div class="wrap"><table>
-        <thead><tr><th>Repair</th><th>Refuel</th><th>Vehicle</th><th>Plate</th><th>Owner</th><th>Fuel</th><th>Engine damage</th><th>Body</th></tr></thead>
+        <thead><tr><th>Repair</th><th>Refuel</th><th>Vehicle</th><th>Colour</th><th>Plate</th><th>Owner</th><th>Cargo slots</th><th>Fuel</th><th>Engine damage</th><th>Body</th></tr></thead>
         <tbody id="vehs"></tbody>
       </table></div>
-      <p class="hint">Engine damage builds up with collisions; when it is high the engine light comes on, the car smokes and loses speed. Body damage is the dents in the bodywork. Repairing a vehicle fixes both. Refuelling fills the tank to its full capacity; it is only available for models whose tank size is confirmed.</p>
+      <p class="hint">Engine damage builds up with collisions; when it is high the engine light comes on, the car smokes and loses speed. Body damage is the dents in the bodywork. Repairing a vehicle fixes both. Refuelling fills the tank to its full capacity; it is only available for models whose tank size is confirmed. Cargo slots can be raised up to 48 (six rows of 8 in the inventory screen); slots holding items cannot be removed. Changing a vehicle's model keeps its plate, colour, owner, driver and cargo, sets the cargo slots to the new model's size (never fewer than the slots in use), clears the dents and caps the fuel to the new tank.</p>
     </section>
 
     <section class="label" id="addVehSection">
@@ -260,6 +319,22 @@ footer{color:var(--ink-soft);font-size:.85rem}
         <tbody id="vPending"></tbody>
       </table></div>
       <p class="hint">New vehicles are delivered like new ones from the dealer: full tank, no damage, empty cargo. They appear in a row just in front of where your character was standing when the game was saved, so save while standing outside in an open area. Kabestie, Cangu and Cangu Deluxe can only be company vehicles, Classic Endurance and Secuestrator can be either, and all other models are personal only. Drive company vehicles into a warehouse yourself; parking spots (Iron Yard 6, Grand Depot 8 to 14, Cargo Garage 1 to 2) are assigned as they become free, and extra vehicles wait their turn.</p>
+    </section>
+    </div>
+
+    <div class="panel" id="panel-storage" role="tabpanel" aria-labelledby="tab-storage" hidden>
+    <section class="label">
+      <h2>Storage</h2>
+      <p class="lede">Stock of every item on the storage shelves of each property, against the capacity of the shelves assigned to it (shelves × 40 slots × stack size). Refill fills every slot of the assigned shelves with that item.</p>
+      <div id="stor"></div>
+      <p class="hint">Stack sizes: consumables 12, products 6, packed items 1. Refilled slots copy their hidden data from an existing item of the same kind in your save, so an item the save has never contained cannot be refilled. Shelves holding other items are left alone.</p>
+    </section>
+    </div>
+
+    <div class="panel" id="panel-sales" role="tabpanel" aria-labelledby="tab-sales" hidden>
+    <section class="label">
+      <h2>Sales</h2>
+      <div id="sales"></div>
     </section>
     </div>
 
@@ -386,6 +461,7 @@ function applyEdits(save, model, edits){
   if (edits.cmoney != null) lines[ci] = setMoney(lines[ci], edits.cmoney);
   if (edits.cxp != null) lines[ci] = setXP(lines[ci], edits.cxp);
   if (edits.csp != null) lines[ci] = setSP(lines[ci], edits.csp);
+  if (edits.need != null) lines[ci] = setNeed(lines[ci], edits.need);
   if (edits.permits){ lines[ci] = setPermits(lines[ci], edits.permits.list); if (edits.permits.spent != null) lines[ci] = setSpent(lines[ci], edits.permits.spent); }
   if (edits.biz){
     const bi = edits.biz.idx;
@@ -394,8 +470,17 @@ function applyEdits(save, model, edits){
   }
   (edits.emps || []).forEach(e => { lines[e.idx] = setEmpSkill(lines[e.idx], e.skill, e.level); });
   (edits.salaries || []).forEach(e => { lines[e.idx] = setSalary(lines[e.idx], e.salary); });
+  (edits.moves || []).forEach(m => {
+    lines[m.idx] = moveEmployeeLine(lines[m.idx], m.to);
+    // Release vehicles driven by the moved employee
+    save.recs.filter(r => r.col === 'privatevehicles' && r.obj['#0130'] && r.obj['#0130'].id === m.id).forEach(r => { lines[r.idx] = lines[r.idx].replace('"#0130":{"id":"' + m.id + '"}', '"#0130":{"id":""}'); });
+  });
   (edits.repairs || []).forEach(r => { lines[r.idx] = repairLine(lines[r.idx], r); });
   (edits.refuels || []).forEach(r => { lines[r.idx] = refuelLine(lines[r.idx], r.litres); });
+  (edits.models || []).forEach(r => { lines[r.idx] = setModelLine(lines[r.idx], r.model); });
+  (edits.colors || []).forEach(r => { lines[r.idx] = setColorLine(lines[r.idx], r.color); });
+  (edits.cargo || []).forEach(r => { lines[r.idx] = setCargo(lines[r.idx], r.slots); });
+  (edits.refill || []).forEach(r => { lines[r.idx] = fillShelfLine(lines[r.idx], r.code, r.qty, r.tag, r.slots); });
   const addedVeh = [];
   if (edits.addVehicles && edits.addVehicles.length){
     const fleet = readFleet(save);
@@ -409,7 +494,7 @@ function applyEdits(save, model, edits){
   const added = [];
   if (edits.add && edits.add.length){
     const world = readWorld(save);
-    if (world.pool.lastEmpIdx < 0) throw new Error('No employees collection found to add to.');
+    if (world.pool.lastEmpIdx < 0){ const h = lines.findIndex(l => /^=== collection employees\b/.test(l)); if (h < 0) throw new Error('No employees collection found to add to.'); world.pool.lastEmpIdx = h; }
     const taken = new Set(world.pool.ids);
     let stamp = world.pool.maxStamp;
     const newLines = edits.add.map(item => {
@@ -429,6 +514,7 @@ function applyEdits(save, model, edits){
   if (edits.cmoney != null && check.char.money !== edits.cmoney) fail('personal money');
   if (edits.cxp != null && check.char.xp !== edits.cxp) fail('personal experience');
   if (edits.csp != null && check.char.sp !== edits.csp) fail('skill points');
+  if (edits.need != null){ const n = readNeed(parseSave(text)); if (!n || n.value !== edits.need) fail('needs'); }
   if (edits.permits){
     const pr = readPermits(parseSave(text));
     if (!pr || JSON.stringify(pr.owned) !== JSON.stringify(edits.permits.list)) fail('permits');
@@ -443,10 +529,31 @@ function applyEdits(save, model, edits){
     const r = check.emps.find(x => x.idx === e.idx && x.skill === e.skill);
     if (!r || r.level !== e.level) fail('skill of ' + (r ? r.name : 'employee'));
   });
+  if (edits.moves && edits.moves.length){
+    const ns = parseSave(text), w3 = readWorld(ns);
+    edits.moves.forEach(m => {
+      const r = ns.recs.find(x => x.col === 'employees' && x.obj._id === m.id);
+      if (!r || r.obj['#1563'].id !== m.to || r.obj['#A30A'].type !== '#1031E3DC') fail('move of employee ' + (r ? r.obj['#3BFC'] : ''));
+      if (ns.recs.some(x => x.col === 'privatevehicles' && x.obj['#0130'] && x.obj['#0130'].id === m.id)) fail('vehicle release for ' + r.obj['#3BFC']);
+    });
+    w3.buildings.forEach(b => { if (!b.unknown && b.count > b.limit) fail(b.name + ' would exceed its limit of ' + b.limit); });
+  }
   (edits.salaries || []).forEach(e => {
     const r = check.emps.find(x => x.idx === e.idx);
     if (!r || r.salary !== e.salary) fail('salary of ' + (r ? r.name : 'employee'));
   });
+  if (edits.colors && edits.colors.length){
+    const vs = readVehicles(parseSave(text));
+    edits.colors.forEach(r => { const v = vs.find(x => x.id === r.id); if (!v || v.color !== r.color) fail('colour of ' + (v ? v.name + ' ' + v.plate : 'vehicle')); });
+  }
+  if (edits.models && edits.models.length){
+    const vs = readVehicles(parseSave(text));
+    edits.models.forEach(r => { const v = vs.find(x => x.id === r.id); if (!v || v.model !== r.model || v.dents !== 0 || (v.tank && v.fuel > v.tank)) fail('model change of ' + (v ? v.plate : 'vehicle')); });
+  }
+  if (edits.cargo && edits.cargo.length){
+    const vs = readVehicles(parseSave(text));
+    edits.cargo.forEach(r => { const v = vs.find(x => x.id === r.id); if (!v || v.cargo !== r.slots) fail('cargo of ' + (v ? v.name + ' ' + v.plate : 'vehicle')); });
+  }
   if (edits.refuels && edits.refuels.length){
     const vs = readVehicles(parseSave(text));
     edits.refuels.forEach(r => { const v = vs.find(x => x.id === r.id); if (!v || Math.round(v.fuel * 1000) !== Math.round(r.litres * 1000)) fail('refuel of ' + (v ? v.name + ' ' + v.plate : 'vehicle')); });
@@ -454,6 +561,14 @@ function applyEdits(save, model, edits){
   if (edits.repairs && edits.repairs.length){
     const vs = readVehicles(parseSave(text));
     edits.repairs.forEach(r => { const v = vs.find(x => x.id === r.id); if (!v || (r.engine && v.engine !== 0) || (r.body && v.dents !== 0)) fail('repair of ' + (v ? v.name + ' ' + v.plate : 'vehicle')); });
+  }
+  if (edits.refill && edits.refill.length){
+    const ns = parseSave(text);
+    edits.refill.forEach(r => {
+      const rec = ns.recs.find(x => x.col === 'furniture' && x.obj._id === r.id);
+      const it = rec && rec.obj['#9D2C'] && rec.obj['#9D2C'].state && rec.obj['#9D2C'].state['#7D40'] && rec.obj['#9D2C'].state['#7D40'].items;
+      if (!it || it.length !== r.slots || !it.every(x => x && x['#5524'] === ITEM_PREFIX + r.code && x['#887A'] === r.qty && x['#5287'] === r.tag)) fail('shelf refill of ' + (ITEMS[r.code] ? ITEMS[r.code][0] : r.code));
+    });
   }
   if (addedVeh.length){
     const ns = parseSave(text), f2 = readFleet(ns);
@@ -494,7 +609,7 @@ const PROPS = {
   '#838E.yaUxDD': { name: 'Iron Yard', kind: 'warehouse', limit: 12 },
   '#838E.E35yJz': { name: 'Rusty Office', kind: 'office', limit: 8 },
   '#838E.RmAH3N': { name: 'Grand Depot', kind: 'warehouse', limit: 26 },
-  '#838E.4UaZKz': { name: 'Glass Office', kind: 'office', limit: 8 },
+  '#838E.4UaZKz': { name: 'Glass Office', kind: 'office', limit: 16 },
   '#838E.NpLIli': { name: 'Cargo Garage', kind: 'garage', limit: 5 },
   '#838E.6Es4EG': { name: 'Motel Room', kind: 'home', limit: 0 },
   '#838E.pTy3Qm': { name: 'Peluka Tower Apartment', kind: 'home', limit: 0 }
@@ -531,6 +646,12 @@ function readWorld(save){
     const fresh = o['#A30A'] && o['#A30A'].type === '#1031E3DC';
     if (!P.base || (fresh && !(P.base['#A30A'] && P.base['#A30A'].type === '#1031E3DC'))) P.base = o;
   });
+  const P = w.pool;
+  Object.keys(KNOWN_DNA).forEach(k => { P.dna[k] = P.dna[k] || []; KNOWN_DNA[k].forEach(d => { if (!P.dna[k].some(x => x.dna === d)) P.dna[k].push({ dna: d, look: DEFAULT_LOOK }); }); });
+  KNOWN_TRAITS.forEach(t => { if (!P.traits.some(x => x[0] === t[0])) P.traits.push(t); });
+  if (!P.base) P.base = BASE_EMPLOYEE;
+  if (P.salaryMin == null){ P.salaryMin = 330; P.salaryMax = 634; }
+  P.maxStamp = Math.max(P.maxStamp, BASE_EMPLOYEE['#A3C1']);
   return w;
 }
 
@@ -599,7 +720,10 @@ function readVehicles(save){
     const owner = o['#975A'] && o['#975A']['#5524'] === 'BUSINESS' ? 'Company' : 'Personal';
     const fuel = o['#96F6'] && typeof o['#96F6']['#5900'] === 'number' && countMatches(RE_FUEL, L) === 1 ? o['#96F6']['#5900'] / 1000 : null;
     const tank = TANK_L[model] || null;
-    return { idx: r.idx, id: o._id, model, name: MODEL_NAMES[model] || model, plate: fmtPlate(d['#9229']), owner, engine: ok ? d['#CD0D'] : null, dents: imp, ok, fuel, tank };
+    let cargo = null, lastUsed = -1;
+    try { const it = o['#96F6']['#B746'].items; if (Array.isArray(it) && L.split('"#B746":{"items":[').length === 2){ cargo = it.length; it.forEach((x, i) => { if (x != null) lastUsed = i; }); } } catch(e){}
+    const color = typeof d['#AC72'] === 'string' && countMatches(RE_COLOR, L) === 1 ? d['#AC72'] : null;
+    return { idx: r.idx, id: o._id, model, color, name: MODEL_NAMES[model] || model, plate: fmtPlate(d['#9229']), owner, engine: ok ? d['#CD0D'] : null, dents: imp, ok, fuel, tank, cargo, lastUsed };
   });
 }
 function fmtPlate(p){ const m = /^([A-Z])(\d{2})(\d{2})$/.exec(p || ''); return m ? m[1] + '-' + m[2] + '-' + m[3] : (p || '—'); }
@@ -708,6 +832,196 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
     '"#B746":{"items":[' + slots + ']},"#5900":' + (TANK_L[item.model] * 1000) + '},"#975A":' + owner + ',"#5389":{"#8604":{}},"#23C1":false,"#3A70":0,"#1AE2":{"#C150":{"x":0.0,"y":0.0,"z":0.0},"#D341":{"x":0.0,"y":0.0,"z":0.0},"#7F2C":0},"#CA14":{"id":""},"#0130":{"id":""},"#1CC4":0}';
   return { id, line };
 }
+
+// ---- Character needs (#0FF9): level 0..100, higher is better
+const RE_NEED = /("#0FF9":\{"#43F1\.mPLpK3":\{"#85A3":)(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/;
+function readNeed(save){
+  const c = save.recs.find(r => r.col === 'character');
+  if (!c) return null;
+  try { const v = c.obj['#0FF9']['#43F1.mPLpK3']['#85A3']; if (typeof v === 'number' && RE_NEED.test(save.lines[c.idx])) return { idx: c.idx, value: v }; } catch(e){}
+  return null;
+}
+function setNeed(line, v){ if (!RE_NEED.test(line)) throw new Error('Needs value not found.'); return line.replace(RE_NEED, (a, p) => p + fnum(v)); }
+
+// Built-in library of employee appearances seen in real hires (valid game models), used alongside the save's own
+const KNOWN_DNA = { 'crafter|female': ['CharacterDNA.dna_employee_crafter_female_employee_crafter_01', 'CharacterDNA.dna_employee_crafter_female_employee_crafter_02', 'CharacterDNA.dna_employee_crafter_female_employee_crafter_05', 'CharacterDNA.dna_employee_crafter_female_employee_crafter_10'],
+  'crafter|male': ['CharacterDNA.dna_employee_crafter_male_employee_crafter_05', 'CharacterDNA.dna_employee_crafter_male_employee_crafter_08', 'CharacterDNA.dna_employee_crafter_male_employee_crafter_20'],
+  'delivery|male': ['CharacterDNA.dna_employee_delivery_male_employee_delivery_01', 'CharacterDNA.dna_employee_delivery_male_employee_delivery_03', 'CharacterDNA.dna_employee_delivery_male_employee_delivery_18', 'CharacterDNA.dna_employee_delivery_male_employee_delivery_19'],
+  'marketing|female': ['CharacterDNA.dna_employee_marketing_female_employee_marketing_07', 'CharacterDNA.dna_employee_marketing_female_employee_marketing_11', 'CharacterDNA.dna_employee_marketing_female_employee_marketing_14', 'CharacterDNA.dna_employee_marketing_female_employee_marketing_17'],
+  'marketing|male': ['CharacterDNA.dna_employee_marketing_male_employee_marketing_01', 'CharacterDNA.dna_employee_marketing_male_employee_marketing_02', 'CharacterDNA.dna_employee_marketing_male_employee_marketing_06', 'CharacterDNA.dna_employee_marketing_male_employee_marketing_07'],
+  'stock|female': ['CharacterDNA.dna_employee_stock_female_employee_stock_06', 'CharacterDNA.dna_employee_stock_female_employee_stock_04'],
+  'delivery|female': ['CharacterDNA.dna_employee_delivery_female_employee_delivery_06'],
+  'stock|male': ['CharacterDNA.dna_employee_stock_male_employee_stock_03', 'CharacterDNA.dna_employee_stock_male_employee_stock_04', 'CharacterDNA.dna_employee_stock_male_employee_stock_08', 'CharacterDNA.dna_employee_stock_male_employee_stock_07'] };
+const DEFAULT_LOOK = {"bodyIndex":0,"faceIndex":0,"eyesIndex":0,"skinIndex":0,"hairIndex":-1,"hairColorIndex":0,"beardIndex":0,"mustacheIndex":0,"eyebrowsIndex":0,"ageingIndex":0,"frecklesIndex":0,"lipstickIndex":0,"makeupIndex":0,"tattooIndex":0,"ethnicity":0};
+const KNOWN_TRAITS = [[887503681, 6], [1742810335, 7], [-1807454463, 8], [-196513505, 9], [-1796951359, 10]];
+const BASE_EMPLOYEE = {"_id":"","#5524":"#A3D5.","#975A":{"#5524":"BUSINESS","#7E7E":{"id":""},"#F939":{"id":""},"#3BFC":""},"#1563":{"id":""},"#3BFC":"","#35AF":"Female","#FF09":"","#BD44":{},"#F238":{"#A6F6":{"#5AE1":"ClothTop.default","#C8E6":0},"#B2EE":{"#5AE1":"ClothBottom.default","#C8E6":0},"#7E85":{"#5AE1":"ClothShoes.default","#C8E6":0},"#474F":{"#5AE1":"ClothHeadwear.default","#C8E6":0},"#74C1":{"#5AE1":"ClothGlasses.default","#C8E6":0}},"#9FC4":6,"#637B":{"currency":"DOLLARS","amount":0},"#3508":"","#D623":{},"#7D40":{"items":[]},"#3805":0,"#A30A":{},"#F1AE":0,"#7D07":{"currency":"DOLLARS","amount":0},"#FEC7":{},"#A3C1":1152279514};
+
+// ---- Cargo capacity: the length of the vehicle's item list (null = empty slot)
+const CARGO_MAX = 48;
+function setCargo(line, n){
+  const k = '"#B746":{"items":[', i = line.indexOf(k);
+  if (i < 0 || line.indexOf(k, i + 1) >= 0) throw new Error('Cargo slots not found.');
+  const a = i + k.length - 1, e = arrayEnd(line, a);
+  let arr = line.slice(a, e);
+  const cur = JSON.parse(arr);
+  if (n > cur.length){ const add = new Array(n - cur.length).fill('null').join(','); arr = cur.length ? arr.slice(0, -1) + ',' + add + ']' : '[' + add + ']'; }
+  else if (n < cur.length){
+    if (cur.slice(n).some(x => x != null)) throw new Error('Cannot remove cargo slots that contain items.');
+    for (let j = 0; j < cur.length - n; j++){ if (arr.endsWith(',null]')) arr = arr.slice(0, -6) + ']'; else if (arr === '[null]') arr = '[]'; else throw new Error('Unexpected cargo format.'); }
+  }
+  return line.slice(0, a) + arr + line.slice(e);
+}
+
+// ---- Move an employee to another building: reset to the fresh-hire state so the server places them next workday
+function replaceObject(line, key, newText){
+  const k = '"' + key + '":{', i = line.indexOf(k);
+  if (i < 0 || line.indexOf(k, i + 1) >= 0) throw new Error('Employee field ' + key + ' not found.');
+  const a = i + k.length - 1, e = objectEnd(line, a);
+  if (e < 0) throw new Error('Employee field ' + key + ' is malformed.');
+  return line.slice(0, a) + newText + line.slice(e);
+}
+function moveEmployeeLine(line, buildingId){
+  line = replaceObject(line, '#1563', '{"id":"' + buildingId + '"}');
+  line = replaceObject(line, '#A30A', FRESH_TASK);
+  return replaceObject(line, '#D623', ZERO_POS);
+}
+
+// ---- Change a vehicle's model, keeping plate, colour, owner, position, driver and cargo items
+function setModelLine(line, model){
+  const re = /("#5AE1":"VehicleModels\.)([A-Za-z0-9_]+)(")/;
+  if (!re.test(line)) throw new Error('Vehicle model not found.');
+  line = line.replace(re, (a, p, m, q) => p + model + q);
+  // Dents are stored as points on the old body, so they are cleared
+  line = clearArray(line, 'impactPoints'); line = clearArray(line, 'impactRadii');
+  const tank = TANK_L[model];
+  if (tank){ const m = /"#5900":(\d+(?:\.\d+)?)/.exec(line); if (m && Number(m[1]) > tank * 1000) line = refuelLine(line, tank); }
+  return line;
+}
+
+// ---- Vehicle colour (#AC72 holds the colour code; every model accepts every colour)
+const RE_COLOR = /("#AC72":")([^"]*)(")/g;
+function setColorLine(line, code){
+  if (countMatches(RE_COLOR, line) !== 1) throw new Error('Vehicle colour not found.');
+  RE_COLOR.lastIndex = 0;
+  return line.replace(RE_COLOR, (a, p, c, q) => p + code + q);
+}
+// ---------- Storage and sales ----------
+const SHELF_TYPE = '#2BC150EA', ITEM_PREFIX = '#15B4.', STICKER = 'HphFzi';
+const STACK_OF = { consumable: 12, product: 6, packed: 1 };
+const CAT_ORDER = { consumable: 0, product: 1, packed: 2, other: 3 };
+const CAT_LABEL = { consumable: 'Consumable', product: 'Product', packed: 'Packed', other: 'Other' };
+const ITEMS = {
+  jf45zO: ['Adhesive Paper', 'consumable'], MgqTHQ: ['Ink Bottle', 'consumable'], HphFzi: ['Sticker', 'consumable'],
+  byzonV: ['Empty Box M1', 'consumable'], goAnmX: ['Empty Box B1', 'consumable'], '96EJ13': ['Empty Box F1', 'consumable'],
+  YPLRGS: ['Book', 'product'], HWFRrC: ['Sneakers', 'product'], JzVmjv: ['Wall Clock', 'product'], '2Cqp9s': ['Lava Lamp', 'product'],
+  '08Z0oL': ['Headset', 'product'], YFbWqV: ['Cap', 'product'], '5u6l7c': ['Aviator Sunglasses', 'product'], BTJpOR: ['Drone', 'product'], TE9VHp: ['AIPHON', 'product'],
+  ZWl79A: ['Book (packed)', 'packed'], J6uYWd: ['Sneakers (packed)', 'packed'], x4GtAh: ['Wall Clock (packed)', 'packed'], xnVvWy: ['Lava Lamp (packed)', 'packed'],
+  zi0Eoe: ['Headset (packed)', 'packed'], s4VMjj: ['Cap (packed)', 'packed'], '399ELL': ['Aviator Sunglasses (packed)', 'packed'], oPdwig: ['AIPHON (packed)', 'packed'], UMEPpy: ['Drone (packed)', 'packed']
+};
+// Each packed item = 1 product + 1 box + 1 sticker. All 9 packed codes confirmed by inventory tests.
+const PACKED_INFO = [
+  { packed: 'ZWl79A', product: 'YPLRGS', box: 'byzonV' }, { packed: 'J6uYWd', product: 'HWFRrC', box: 'byzonV' },
+  { packed: 'x4GtAh', product: 'JzVmjv', box: 'goAnmX' }, { packed: 'xnVvWy', product: '2Cqp9s', box: '96EJ13' },
+  { packed: 'zi0Eoe', product: '08Z0oL', box: 'byzonV' }, { packed: 's4VMjj', product: 'YFbWqV', box: 'byzonV' },
+  { packed: '399ELL', product: '5u6l7c', box: 'byzonV' }, { packed: 'oPdwig', product: 'TE9VHp', box: 'byzonV' },
+  { packed: 'UMEPpy', product: 'BTJpOR', box: '96EJ13' }
+];
+function itemInfo(code){
+  const it = ITEMS[code];
+  const cat = it ? it[1] : 'other';
+  return { code, name: it ? it[0] : code, cat, stack: STACK_OF[cat] || null, known: !!it };
+}
+function topKey(m){ let b = null, n = -1; Object.keys(m || {}).forEach(t => { if (m[t] > n){ n = m[t]; b = Number(t); } }); return b; }
+function bumpMap(m, k){ m[k] = (m[k] || 0) + 1; }
+
+// Storage shelves, per property, with stock, capacity and a refill plan per product.
+function readStorage(save){
+  const blds = {};
+  save.recs.forEach(r => { if (r.col === 'building') blds[r.obj._id] = propInfo(r.obj['#5524']).name; });
+  const globalTags = {};
+  const walk = o => {
+    if (Array.isArray(o)) o.forEach(walk);
+    else if (o && typeof o === 'object'){
+      if (typeof o['#5524'] === 'string' && o['#5524'].startsWith(ITEM_PREFIX) && '#887A' in o && typeof o['#5287'] === 'number'){
+        const c = o['#5524'].slice(ITEM_PREFIX.length); bumpMap(globalTags[c] = globalTags[c] || {}, o['#5287']);
+      } else Object.keys(o).forEach(k => walk(o[k]));
+    }
+  };
+  const props = {};
+  save.recs.forEach(r => {
+    if (['furniture', 'character', 'privatevehicles', 'rentvehicles', 'employees'].includes(r.col)) walk(r.obj);
+    if (r.col !== 'furniture') return;
+    const o = r.obj, d = o['#9D2C'];
+    if (!d || d.type !== SHELF_TYPE || !d.state || !d.state['#7D40'] || !Array.isArray(d.state['#7D40'].items)) return;
+    const bid = o['#1563'] && o['#1563'].id; if (!bid) return;
+    const P = props[bid] = props[bid] || { id: bid, name: blds[bid] || 'Unknown property', shelves: [] };
+    const items = d.state['#7D40'].items, q = {}, tags = {};
+    items.forEach(x => {
+      if (!x) return;
+      const c = String(x['#5524'] || '').replace(ITEM_PREFIX, '');
+      q[c] = (q[c] || 0) + (typeof x['#887A'] === 'number' ? x['#887A'] : 0);
+      if (typeof x['#5287'] === 'number') bumpMap(tags[c] = tags[c] || {}, x['#5287']);
+    });
+    const assigned = String(d.state['#E271'] || '').replace(ITEM_PREFIX, '');
+    P.shelves.push({ idx: r.idx, id: o._id, slots: items.length, assigned, q, tags, simple: save.lines[r.idx].split('"#7D40":{"items":[').length === 2, items: items.map(x => x ? String(x['#5524']).replace(ITEM_PREFIX, '') : null) });
+  });
+  return Object.values(props).map(P => {
+    const codes = new Set();
+    P.shelves.forEach(s => { if (s.assigned) codes.add(s.assigned); Object.keys(s.q).forEach(c => { if (ITEMS[c]) codes.add(c); }); });
+    const propTags = {};
+    P.shelves.forEach(s => Object.keys(s.tags).forEach(c => Object.keys(s.tags[c]).forEach(t => { propTags[c] = propTags[c] || {}; propTags[c][t] = (propTags[c][t] || 0) + s.tags[c][t]; })));
+    const rows = [...codes].map(code => {
+      const info = itemInfo(code);
+      const own = P.shelves.filter(s => s.assigned === code);
+      const stock = P.shelves.reduce((t, s) => t + (s.q[code] || 0), 0);
+      const slots = own.reduce((t, s) => t + s.slots, 0);
+      const capacity = info.stack ? slots * info.stack : null;
+      const usable = own.filter(s => s.simple && s.items.every(c => c === null || c === code));
+      let plan = null, reason = '';
+      if (!own.length) reason = 'No shelf is assigned to this product.';
+      else if (!info.stack) reason = 'Stack size unknown for this item.';
+      else if (!usable.length) reason = 'The assigned shelves hold other items.';
+      else {
+        const shelves = usable.map(s => {
+          let t = topKey(s.tags[code]); if (t == null) t = topKey(propTags[code]); if (t == null) t = topKey(globalTags[code]);
+          if (t == null && info.cat !== 'packed' && code !== STICKER) t = 0;
+          return { idx: s.idx, id: s.id, slots: s.slots, tag: t, have: s.q[code] || 0 };
+        });
+        if (shelves.some(s => s.tag == null)) reason = 'No example of this item was found in the save to copy its data from.';
+        else plan = { shelves, qty: info.stack, add: shelves.reduce((t, s) => t + s.slots * info.stack - s.have, 0), skipped: own.length - usable.length };
+      }
+      return { code, info, shelves: own.length, slots, capacity, stock, plan, reason };
+    }).sort((a, b) => (CAT_ORDER[a.info.cat] - CAT_ORDER[b.info.cat]) || a.info.name.localeCompare(b.info.name));
+    return { id: P.id, name: P.name, shelfCount: P.shelves.length, rows };
+  });
+}
+
+function fillShelfLine(line, code, qty, tag, slots){
+  const M = '"#7D40":{"items":[';
+  const i = line.indexOf(M);
+  if (i < 0 || line.indexOf(M, i + 1) >= 0) throw new Error('Shelf contents not found.');
+  const a = i + M.length - 1, e = arrayEnd(line, a);
+  if (e < 0) throw new Error('Shelf contents are malformed.');
+  const entry = '{"#5524":"' + ITEM_PREFIX + code + '","#887A":' + qty + ',"#F5CB":{"type":"#62C15888","state":{}},"#5287":' + tag + '}';
+  return line.slice(0, a) + '[' + Array(slots).fill(entry).join(',') + ']' + line.slice(e);
+}
+
+function readSales(o){
+  try {
+    const E = o['#E6D7'], pend = o['#D81F'];
+    if (!E || typeof E !== 'object' || !Array.isArray(pend)) return null;
+    const strip = m => { const r = {}; Object.keys(m || {}).forEach(k => { r[k.replace(ITEM_PREFIX, '')] = m[k]; }); return r; };
+    const days = Object.keys(E).map(Number).sort((a, b) => a - b).map(d => {
+      const v = E[d];
+      const delivered = (v['#B406'] || []).reduce((t, x) => t + ((x['#E6EF'] && x['#E6EF']['#D81F']) || 0), 0) + ((v['#0CE9'] && v['#0CE9']['#D81F']) || 0);
+      return { day: d, revenue: (v['#8600'] && v['#8600'].amount) || 0, sold: strip(v['#690A']), made: strip(v['#4F5A']), delivered };
+    });
+    const pendUnits = {};
+    pend.forEach(p => (p['#B931'] || []).forEach(x => { if (!x) return; const c = String(x['#5524']).replace(ITEM_PREFIX, ''); pendUnits[c] = (pendUnits[c] || 0) + (x['#887A'] || 0); }));
+    const prices = {}; Object.keys(o['#5A3F'] || {}).forEach(k => { prices[k.replace(ITEM_PREFIX, '')] = o['#5A3F'][k].amount; });
+    return { days, created: typeof o['#15F4'] === 'number' ? o['#15F4'] : null, delivered: typeof o['#ED24'] === 'number' ? o['#ED24'] : null, pending: pend.length, pendUnits, prices, totals: strip(o['#9292']) };
+  } catch(e){ return null; }
+}
 // CORE-END
 
 (function(){
@@ -786,17 +1100,25 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
     const sel = $('bizsel'); sel.innerHTML = '';
     model.bizs.forEach((b, i) => { const o = document.createElement('option'); o.value = i; o.textContent = b.name; sel.appendChild(o); });
     $('bizpick').classList.toggle('hidden', model.bizs.length < 2);
-    sel.onchange = () => { bizIdx = +sel.value; fillBiz(); refresh(); };
+    sel.onchange = () => { bizIdx = +sel.value; fillBiz(); renderSales(); refresh(); };
     bizIdx = 0; fillBiz();
     const tb = $('emps'); tb.innerHTML = '';
     if (!model.emps.length){ const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="6">No employees in this save.</td>'; tb.appendChild(tr); }
     model.emps.forEach((e, i) => {
       const tr = document.createElement('tr');
-      const nice = e.skill.toLowerCase().replace(/_/g, ' ').replace(/^./, s => s.toUpperCase());
+      const nice = SKILL_LABEL[e.skill] || e.skill.toLowerCase().replace(/_/g, ' ').replace(/^./, s => s.toUpperCase());
       tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td><td></td>';
       const bld = world.buildings.find(b => b.id === e.building);
       e.prop = bld ? bld.name : '—';
-      tr.children[0].textContent = e.name; tr.children[1].textContent = e.prop; tr.children[2].textContent = nice; tr.children[3].textContent = e.level;
+      tr.children[0].textContent = e.name; tr.children[2].textContent = nice; tr.children[3].textContent = e.level;
+      const ps = document.createElement('select'); ps.id = 'empb-' + i; ps.className = 'propsel'; ps.dataset.orig = e.building || '';
+      ps.setAttribute('aria-label', 'Property of ' + e.name);
+      world.buildings.filter(b => b.ownerKind === 'BUSINESS' && (b.id === e.building || (KIND_SKILLS[b.kind] || []).includes(e.skill))).forEach(b => {
+        const o = document.createElement('option'); o.value = b.id; o.textContent = b.name; if (b.id === e.building) o.selected = true; ps.appendChild(o);
+      });
+      if (!bld){ const o = document.createElement('option'); o.value = e.building || ''; o.textContent = '—'; o.selected = true; ps.prepend(o); }
+      ps.onchange = () => { e.prop = ps.selectedOptions[0].textContent; updatePropOptions(); renderProps(); refresh(); };
+      tr.children[1].appendChild(ps);
       const s = document.createElement('select'); s.id = 'emp-' + i; s.setAttribute('aria-label', 'New level for ' + e.name);
       [1,2,3].forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; if (v === e.level) o.selected = true; s.appendChild(o); });
       if (e.level < 1 || e.level > 3){ const o = document.createElement('option'); o.value = e.level; o.textContent = e.level; o.selected = true; s.prepend(o); }
@@ -816,16 +1138,181 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
       e.tr = tr; e.nice = nice; e.i = i;
     });
     sortEmps();
-    renderProps(); renderPending(); $('addMsg').innerHTML = '';
+    renderProps(); renderPending(); updatePropOptions(); $('addMsg').innerHTML = '';
     renderVehicles();
     renderPermits();
+    renderNeed();
     renderVehForm();
+    store = readStorage(save); refills = new Set(); renderStorage(); renderSales();
     $('editor').classList.remove('hidden');
     refresh();
   }
 
 
   let world = null, pending = [];
+  // ---------- Storage tab ----------
+  let store = null, refills = new Set();
+  const rkey = (pid, code) => pid + '|' + code;
+  function findRow(pid, code){ const P = store.find(p => p.id === pid); return P && P.rows.find(r => r.code === code); }
+  function renderStorage(){
+    const root = $('stor'); root.innerHTML = '';
+    if (!store.length){ root.innerHTML = '<p class="hint">No storage shelves were found in this save.</p>'; return; }
+    store.forEach(P => {
+      const sec = document.createElement('div'); sec.className = 'prop';
+      const head = document.createElement('div'); head.className = 'prophead';
+      const h = document.createElement('h3'); h.textContent = P.name + ' · ' + P.shelfCount + ' shelves';
+      const all = document.createElement('button'); all.type = 'button'; all.textContent = 'Refill everything';
+      const elig = P.rows.filter(r => r.plan && r.plan.add > 0);
+      all.disabled = !elig.length;
+      all.onclick = () => { const on = elig.every(r => refills.has(rkey(P.id, r.code))); elig.forEach(r => { on ? refills.delete(rkey(P.id, r.code)) : refills.add(rkey(P.id, r.code)); }); renderStorage(); refresh(); };
+      head.append(h, all); sec.appendChild(head);
+      const wrap = document.createElement('div'); wrap.className = 'wrap';
+      const tbl = document.createElement('table');
+      tbl.innerHTML = '<thead><tr><th>Item</th><th>Type</th><th>Stock</th><th>Capacity</th><th>Filled</th><th>Shelves</th><th></th></tr></thead>';
+      const tb = document.createElement('tbody');
+      P.rows.forEach(r => {
+        const tr = document.createElement('tr');
+        const on = refills.has(rkey(P.id, r.code));
+        const after = on ? r.stock + r.plan.add : r.stock;
+        const cap = r.capacity;
+        tr.innerHTML = '<td></td><td></td><td class="r"></td><td class="r"></td><td></td><td class="r"></td><td></td>';
+        tr.children[0].textContent = r.info.name; tr.children[1].textContent = CAT_LABEL[r.info.cat];
+        tr.children[2].textContent = fmt(r.stock) + (on ? ' → ' + fmt(after) : '');
+        tr.children[3].textContent = cap == null ? '—' : fmt(cap);
+        tr.children[5].textContent = r.shelves || '—';
+        if (cap){
+          const cur = Math.min(100, r.stock / cap * 100), aft = Math.min(100, after / cap * 100);
+          const bar = document.createElement('div'); bar.className = 'cap';
+          bar.innerHTML = '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + cap + '" aria-valuenow="' + after + '" aria-label="' + r.info.name + ' stock"><span class="fill" style="width:' + cur + '%"></span><span class="fill new" style="width:' + Math.max(0, aft - cur) + '%"></span></div><span class="captext short">' + Math.round(r.stock / cap * 100) + '%</span>';
+          tr.children[4].appendChild(bar);
+        } else tr.children[4].textContent = '—';
+        const btn = document.createElement('button'); btn.type = 'button';
+        if (!r.plan){ btn.textContent = 'Refill'; btn.disabled = true; btn.title = r.reason; }
+        else if (r.plan.add <= 0){ btn.textContent = 'Full'; btn.disabled = true; }
+        else {
+          btn.textContent = on ? 'Will refill (+' + fmt(r.plan.add) + ')' : 'Refill (+' + fmt(r.plan.add) + ')';
+          btn.setAttribute('aria-pressed', on); btn.className = on ? 'on' : '';
+          if (r.plan.skipped) btn.title = r.plan.skipped + ' assigned shelf(s) hold other items and will be left alone.';
+          btn.onclick = () => { on ? refills.delete(rkey(P.id, r.code)) : refills.add(rkey(P.id, r.code)); renderStorage(); refresh(); };
+        }
+        tr.children[6].appendChild(btn);
+        tb.appendChild(tr);
+      });
+      if (!P.rows.length){ const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="7">No item is assigned to these shelves and none are stored on them.</td>'; tb.appendChild(tr); }
+      tbl.appendChild(tb); wrap.appendChild(tbl); sec.appendChild(wrap); root.appendChild(sec);
+    });
+  }
+  function totalStock(code){ return store.reduce((t, P) => t + P.rows.reduce((u, r) => u + (r.code === code ? r.stock : 0), 0), 0); }
+
+  // ---------- Sales tab ----------
+  function niceTop(max){ const mag = Math.pow(10, Math.floor(Math.log10(max))), n = max / mag; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * mag; }
+  function barChart(labels, series, unit){
+    const W = 720, H = 250, L = 48, R = 10, T = 12, B = 30, n = labels.length;
+    const top = niceTop(Math.max(1, ...series.flatMap(s => s.values)));
+    const gw = (W - L - R) / Math.max(1, n), bw = Math.min(26, gw * 0.8 / series.length);
+    let g = '';
+    for (let i = 0; i <= 4; i++){
+      const y = T + (H - T - B) * (1 - i / 4);
+      g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y + '" y2="' + y + '" class="gl"/><text x="' + (L - 6) + '" y="' + (y + 4) + '" text-anchor="end">' + fmt(top * i / 4) + '</text>';
+    }
+    labels.forEach((lab, i) => {
+      const cx = L + gw * (i + 0.5);
+      g += '<text x="' + cx + '" y="' + (H - 10) + '" text-anchor="middle">' + lab + '</text>';
+      series.forEach((s, k) => {
+        const v = s.values[i], h = (H - T - B) * v / top, x = cx - bw * series.length / 2 + bw * k;
+        g += '<rect class="ch-s' + k + '" x="' + x + '" y="' + (H - B - h) + '" width="' + (bw - 1) + '" height="' + h + '" rx="2"><title>Day ' + lab + ' · ' + s.name + ': ' + fmt(v) + ' ' + unit + '</title></rect>';
+      });
+    });
+    return '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + series.map(s => s.name).join(' vs ') + ' per day">' + g + '</svg>';
+  }
+  function legend(series){ return '<div class="legend">' + series.map((s, k) => '<span><i class="sw ch-s' + k + '"></i>' + s.name + '</span>').join('') + '</div>'; }
+  let resSort = { key: 'sold', dir: -1 };
+  function renderSales(){
+    const root = $('sales'); root.innerHTML = '';
+    const b = model.bizs[bizIdx], rec = b && save.recs.find(r => r.idx === b.idx);
+    const S = rec ? readSales(rec.obj) : null;
+    if (!S){ root.innerHTML = '<p class="msg">No sales history was found in this save.</p>'; return; }
+    const packedCodes = PACKED_INFO.map(p => p.packed);
+    const labels = S.days.map(d => String(d.day));
+    const active = S.days.filter(d => d.delivered > 0), last3 = active.slice(-3);
+    const avgDel = last3.length ? last3.reduce((t, d) => t + d.delivered, 0) / last3.length : 0;
+    const revenue = S.days.reduce((t, d) => t + d.revenue, 0);
+    const consistent = S.created != null && S.delivered != null && S.created - S.delivered === S.pending;
+    const cards = [
+      ['Orders created', S.created == null ? '—' : fmt(S.created)],
+      ['Orders delivered', S.delivered == null ? '—' : fmt(S.delivered)],
+      ['Pending now', fmt(S.pending), consistent ? 'created − delivered' : ''],
+      ['Backlog', avgDel ? (S.pending / avgDel).toFixed(2) + ' days' : '—', avgDel ? 'at ' + fmt(Math.round(avgDel)) + ' deliveries/day (last ' + last3.length + ' active days)' : ''],
+      ['Revenue in history', '$' + fmt(revenue)]
+    ];
+    const sc = document.createElement('div'); sc.className = 'cards';
+    cards.forEach(c => { const d = document.createElement('div'); d.className = 'card'; d.innerHTML = '<div class="k"></div><div class="v"></div><div class="s"></div>'; d.children[0].textContent = c[0]; d.children[1].textContent = c[1]; d.children[2].textContent = c[2] || ''; sc.appendChild(d); });
+    root.appendChild(sc);
+
+    // Chart 1: units sold vs produced per day
+    const sec1 = document.createElement('section'); sec1.className = 'label inner';
+    sec1.innerHTML = '<h3>Units sold vs. produced per day</h3><div class="bulk"><label for="salesSel">Item</label><select id="salesSel" class="propsel"></select></div><div id="chart1"></div><div id="leg1"></div>';
+    root.appendChild(sec1);
+    const sel = sec1.querySelector('#salesSel');
+    [['ALL', 'All packed products']].concat(PACKED_INFO.map(p => [p.packed, itemInfo(p.packed).name]), [[STICKER, 'Sticker (production only)']]).forEach(([v, t]) => { const o = document.createElement('option'); o.value = v; o.textContent = t; sel.appendChild(o); });
+    const draw1 = () => {
+      const code = sel.value, pick = (m) => code === 'ALL' ? packedCodes.reduce((t, c) => t + (m[c] || 0), 0) : (m[code] || 0);
+      const series = [{ name: 'Sold', values: S.days.map(d => pick(d.sold)) }, { name: 'Produced', values: S.days.map(d => pick(d.made)) }];
+      $('chart1').innerHTML = barChart(labels, series, 'units'); $('leg1').innerHTML = legend(series);
+    };
+    sel.onchange = draw1; draw1();
+
+    // Chart 2: orders delivered per day
+    const sec2 = document.createElement('section'); sec2.className = 'label inner';
+    const ser2 = [{ name: 'Orders delivered', values: S.days.map(d => d.delivered) }];
+    sec2.innerHTML = '<h3>Orders delivered per day</h3>' + barChart(labels, ser2, 'orders') + '<p class="hint">The save keeps the running total of orders created (' + (S.created == null ? '—' : fmt(S.created)) + ') but not how many arrived on each day, so the backlog at the end of past days cannot be reconstructed. Only the current backlog (' + fmt(S.pending) + ' orders) is known.</p>';
+    root.appendChild(sec2);
+
+    // Table: per packed product
+    const sec3 = document.createElement('section'); sec3.className = 'label inner';
+    const COLS = [['name', 'Packed item'], ['sold', 'Sold'], ['perDay', 'Per day'], ['pend', 'Pending units'], ['pstock', 'Packed stock'], ['cover', 'Days of cover'], ['prod', 'Product stock'], ['box', 'Box stock'], ['can', 'Can still pack']];
+    sec3.innerHTML = '<h3>Resources per packed product</h3><div class="bulk"><label for="resSortKey">Sort by</label><select id="resSortKey" class="propsel"></select><button type="button" id="resSortDir"></button></div><div class="wrap"><table><thead><tr>' + COLS.map(c => '<th>' + c[1].replace('Box stock', 'Box') + '</th>').join('') + '</tr></thead><tbody id="resBody"></tbody></table></div><p class="hint">Per day uses the last ' + (last3.length || 3) + ' active days. Stock counts only what sits on storage shelves; items in vehicles, hands or workshops are not included. "Can still pack" is the lowest of product, box and sticker stock, ignoring that boxes and stickers are shared between products.</p>';
+    const tb = sec3.querySelector('#resBody'), keySel = sec3.querySelector('#resSortKey'), dirBtn = sec3.querySelector('#resSortDir');
+    const stickers = totalStock(STICKER);
+    const data = PACKED_INFO.map(p => {
+      const sold = S.totals[p.packed] != null ? S.totals[p.packed] : S.days.reduce((t, d) => t + (d.sold[p.packed] || 0), 0);
+      const perDay = last3.length ? last3.reduce((t, d) => t + (d.sold[p.packed] || 0), 0) / last3.length : 0;
+      const ps = totalStock(p.packed), pr = totalStock(p.product), bx = totalStock(p.box);
+      return { p, name: itemInfo(p.packed).name.replace(' (packed)', ''), sold, perDay, pend: S.pendUnits[p.packed] || 0, pstock: ps, cover: perDay ? ps / perDay : null, prod: pr, box: bx, can: Math.min(pr, bx, stickers) };
+    });
+    COLS.forEach(([k, t]) => { const o = document.createElement('option'); o.value = k; o.textContent = t; keySel.appendChild(o); });
+    keySel.value = resSort.key;
+    const drawRes = () => {
+      keySel.value = resSort.key; dirBtn.textContent = resSort.dir < 0 ? 'Descending ↓' : 'Ascending ↑';
+      dirBtn.setAttribute('aria-label', 'Sort direction: ' + (resSort.dir < 0 ? 'descending' : 'ascending') + '. Click to reverse.');
+      const k = resSort.key, d = resSort.dir;
+      const rows = data.slice().sort((x, y) => {
+        if (k === 'name') return d * x.name.localeCompare(y.name);
+        const a = x[k], b = y[k];
+        if (a == null && b == null) return 0; if (a == null) return 1; if (b == null) return -1;
+        return (d * (a - b)) || x.name.localeCompare(y.name);
+      });
+      tb.innerHTML = '';
+      rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td></td><td class="r"></td><td class="r"></td><td class="r"></td><td class="r"></td><td class="r"></td><td class="r"></td><td></td><td class="r"></td>';
+        tr.children[0].textContent = r.name + (r.p.inferred ? ' *' : '');
+        tr.children[1].textContent = fmt(r.sold); tr.children[2].textContent = r.perDay ? r.perDay.toFixed(1) : '0';
+        tr.children[3].textContent = fmt(r.pend); tr.children[4].textContent = fmt(r.pstock);
+        tr.children[5].textContent = r.cover == null ? '—' : r.cover.toFixed(1);
+        tr.children[6].textContent = fmt(r.prod);
+        tr.children[7].textContent = itemInfo(r.p.box).name.replace('Empty Box ', '') + ' · ' + fmt(r.box);
+        tr.children[8].textContent = fmt(r.can);
+        tb.appendChild(tr);
+      });
+    };
+    keySel.onchange = () => { resSort.key = keySel.value; resSort.dir = keySel.value === 'name' ? 1 : (keySel.value === 'cover' ? 1 : -1); drawRes(); };
+    dirBtn.onclick = () => { resSort.dir = -resSort.dir; drawRes(); };
+    drawRes();
+    root.appendChild(sec3);
+    if (PACKED_INFO.some(p => p.inferred)){ const n = document.createElement('p'); n.className = 'hint'; n.textContent = '* Matched to this product by elimination; not yet confirmed in the game.'; root.appendChild(n); }
+  }
+
   const FIRST = { Male: ['Lucas','Mateo','Hugo','Leo','Daniel','Tomas','Rafael','Diego','Martin','Adrian','Gabriel','Noah','Oliver','Felix','Marco','Elias','Andres','Simon','Pablo','Victor'],
                   Female: ['Sofia','Lucia','Valeria','Emma','Olivia','Clara','Julia','Martina','Elena','Ines','Laura','Mia','Alba','Noa','Paula','Carla','Daniela','Irene','Lara','Vera'] };
   function genName(gender, taken){
@@ -835,7 +1322,14 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
     return FIRST[gender][0] + ' ' + (taken.size + 1);
   }
   function bizBuildings(){ return world.buildings.filter(b => b.ownerKind === 'BUSINESS'); }
-  function freeOf(b){ return b.limit - b.count - pending.filter(p => p.buildingId === b.id).length; }
+  function moveDelta(bid){ let d = 0; if (!model) return 0; model.emps.forEach((e, i) => { const sel = $('empb-' + i); if (!sel || sel.value === sel.dataset.orig) return; if (sel.value === bid) d++; if (sel.dataset.orig === bid) d--; }); return d; }
+  function freeOf(b){ return b.limit - b.count - moveDelta(b.id) - pending.filter(p => p.buildingId === b.id).length; }
+  function updatePropOptions(){
+    model.emps.forEach((e, i) => { const sel = $('empb-' + i); if (!sel) return;
+      [...sel.options].forEach(o => { const b = world.buildings.find(x => x.id === o.value); if (!b) return;
+        const full = o.value !== sel.value && o.value !== sel.dataset.orig && freeOf(b) <= 0;
+        o.disabled = full; o.textContent = b.name + (full ? ' (full)' : ''); }); });
+  }
   function gendersFor(skill){ return ['Male','Female'].filter(g => (world.pool.dna[SKILL_ROLE[skill] + '|' + g.toLowerCase()] || []).length); }
 
   function renderProps(){
@@ -844,19 +1338,19 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
       const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td>';
       tr.children[0].textContent = b.name;
       tr.children[1].textContent = b.unknown ? 'Unknown' : KIND_LABEL[b.kind];
-      const add = pending.filter(p => p.buildingId === b.id).length;
+      const add = pending.filter(p => p.buildingId === b.id).length, mv = moveDelta(b.id), base = b.count + mv;
       if (b.unknown){ tr.children[2].textContent = b.count; }
       else {
-        const lim = Math.max(b.limit, 1), cur = Math.min(b.count, lim), extra = Math.min(add, lim - cur);
+        const lim = Math.max(b.limit, 1), cur = Math.min(Math.max(0, base), lim), extra = Math.min(add, lim - cur);
         const wrap = document.createElement('div'); wrap.className = 'cap';
         const bar = document.createElement('div'); bar.className = 'bar';
-        bar.setAttribute('role', 'progressbar'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', String(b.limit)); bar.setAttribute('aria-valuenow', String(b.count + add));
-        bar.setAttribute('aria-label', b.name + ': ' + (b.count + add) + ' of ' + b.limit + ' employees' + (add ? ', including ' + add + ' new' : ''));
+        bar.setAttribute('role', 'progressbar'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', String(b.limit)); bar.setAttribute('aria-valuenow', String(base + add));
+        bar.setAttribute('aria-label', b.name + ': ' + (base + add) + ' of ' + b.limit + ' employees' + (add ? ', including ' + add + ' new' : ''));
         const f1 = document.createElement('span'); f1.className = 'fill'; f1.style.width = (cur / lim * 100) + '%';
         const f2 = document.createElement('span'); f2.className = 'fill new'; f2.style.width = (extra / lim * 100) + '%';
         bar.append(f1, f2);
-        const t = document.createElement('span'); t.className = 'captext'; t.textContent = (b.count + add) + '/' + b.limit;
-        if (add){ const sm = document.createElement('span'); sm.className = 'muted'; sm.textContent = ' (+' + add + ' new)'; t.appendChild(sm); }
+        const t = document.createElement('span'); t.className = 'captext'; t.textContent = (base + add) + '/' + b.limit;
+        if (add || mv){ const sm = document.createElement('span'); sm.className = 'muted'; sm.textContent = ' (' + [add ? '+' + add + ' new' : '', mv ? (mv > 0 ? '+' : '') + mv + ' moved' : ''].filter(Boolean).join(', ') + ')'; t.appendChild(sm); }
         wrap.append(bar, t); tr.children[2].appendChild(wrap);
       }
       tr.children[3].textContent = b.unknown ? '—' : Math.max(0, freeOf(b));
@@ -874,6 +1368,7 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
     if (keep && [...sel.options].some(o => o.value === keep && !o.disabled)) sel.value = keep;
     else { const first = [...sel.options].find(o => !o.disabled); if (first) sel.value = first.value; }
     fillAddSkill();
+    if (model) updatePropOptions();
   }
   function fillAddSkill(){
     const b = world.buildings.find(x => x.id === $('addProp').value);
@@ -935,42 +1430,80 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
   function renderVehicles(){
     vehicles = readVehicles(save);
     const tb = $('vehs'); tb.innerHTML = '';
-    if (!vehicles.length){ const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="8">No vehicles in this save.</td>'; tb.appendChild(tr); }
+    if (!vehicles.length){ const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="10">No vehicles in this save.</td>'; tb.appendChild(tr); }
     vehicles.forEach((v, i) => {
-      const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
-      tr.children[2].textContent = v.name; tr.children[3].textContent = v.plate; tr.children[4].textContent = v.owner;
+      const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+      if (v.cargo == null){ tr.children[5].textContent = '—'; }
+      else {
+        const st = document.createElement('div'); st.className = 'stepper';
+        const minus = document.createElement('button'); minus.type = 'button'; minus.textContent = '−'; minus.setAttribute('aria-label', 'Remove a cargo slot from ' + v.name + ' ' + v.plate);
+        const inp = document.createElement('input'); inp.type = 'text'; inp.className = 'num cargo'; inp.inputMode = 'numeric'; inp.autocomplete = 'off'; inp.id = 'cargo-' + i; inp.value = v.cargo; inp.dataset.orig = v.cargo; inp.setAttribute('aria-label', 'Cargo slots of ' + v.name + ' ' + v.plate);
+        const plus = document.createElement('button'); plus.type = 'button'; plus.textContent = '+'; plus.setAttribute('aria-label', 'Add a cargo slot to ' + v.name + ' ' + v.plate);
+        const bump = d => { const n = readNum(inp); inp.value = Math.max(v.lastUsed + 1, Math.min(CARGO_MAX, (Number.isFinite(n) ? n : v.cargo) + d)); refresh(); };
+        minus.onclick = () => bump(-1); plus.onclick = () => bump(1); inp.oninput = refresh;
+        st.append(minus, inp, plus); tr.children[5].appendChild(st);
+      }
+      tr.children[3].textContent = v.plate; tr.children[4].textContent = v.owner;
+      const own = v.owner === 'Company' ? 'company' : 'personal';
+      const allowed = Object.keys(CARGO_SLOTS).filter(m => TANK_L[m] && canOwn(m, own));
+      if (!allowed.includes(v.model)) allowed.push(v.model);
+      const msel = document.createElement('select'); msel.id = 'vmod-' + i; msel.className = 'propsel'; msel.dataset.orig = v.model;
+      msel.setAttribute('aria-label', 'Model of ' + v.plate);
+      allowed.sort((a, b) => (MODEL_NAMES[a] || a).localeCompare(MODEL_NAMES[b] || b)).forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = MODEL_NAMES[m] || m; if (m === v.model) o.selected = true; msel.appendChild(o); });
+      msel.onchange = () => {
+        const m = msel.value, ci = $('cargo-' + i);
+        if (ci){ const def = m === v.model ? v.cargo : (CARGO_SLOTS[m] || v.cargo); ci.value = Math.max(def, v.lastUsed + 1); }
+        const fc = $('vehf-' + i), t = TANK_L[m];
+        if (fc){ fc.disabled = !(t && v.fuel != null && Math.round(Math.min(v.fuel, t) * 1000) < t * 1000); if (fc.disabled) fc.checked = false; }
+        const ft = tr.querySelector('.bar.fuel'), tx = tr.querySelector('.captext.mid');
+        if (ft && tx && t){ const f = Math.min(v.fuel, t); ft.querySelector('.fill').style.width = Math.min(100, f / t * 100) + '%'; tx.textContent = f.toLocaleString('de-DE', { maximumFractionDigits: 1 }) + ' / ' + t + ' L'; }
+        refresh();
+      };
+      tr.children[2].appendChild(msel);
       // Fuel
       const fmtL = n => n.toLocaleString('de-DE', { maximumFractionDigits: 1 });
-      if (v.fuel == null){ tr.children[5].textContent = '—'; }
+      if (v.fuel == null){ tr.children[6].textContent = '—'; }
       else if (v.tank){
         const pct = Math.min(100, v.fuel / v.tank * 100);
         const wrap = document.createElement('div'); wrap.className = 'cap';
         const bar = document.createElement('div'); bar.className = 'bar fuel'; bar.setAttribute('role', 'meter'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', String(v.tank)); bar.setAttribute('aria-valuenow', String(v.fuel)); bar.setAttribute('aria-label', 'Fuel of ' + v.name + ' ' + v.plate);
         const f = document.createElement('span'); f.className = 'fill'; f.style.width = pct + '%'; bar.appendChild(f);
         const t = document.createElement('span'); t.className = 'captext mid'; t.textContent = fmtL(v.fuel) + ' / ' + v.tank + ' L';
-        wrap.append(bar, t); tr.children[5].appendChild(wrap);
-      } else { const sp = document.createElement('span'); sp.textContent = fmtL(v.fuel) + ' L'; const u = document.createElement('span'); u.className = 'muted'; u.textContent = ' (tank size unknown)'; tr.children[5].append(sp, u); }
+        wrap.append(bar, t); tr.children[6].appendChild(wrap);
+      } else { const sp = document.createElement('span'); sp.textContent = fmtL(v.fuel) + ' L'; const u = document.createElement('span'); u.className = 'muted'; u.textContent = ' (tank size unknown)'; tr.children[6].append(sp, u); }
       const fc = document.createElement('input'); fc.type = 'checkbox'; fc.id = 'vehf-' + i; fc.className = 'chkf chk';
       fc.classList.remove('chk'); fc.classList.add('chkbox');
       fc.setAttribute('aria-label', 'Refuel ' + v.name + ' ' + v.plate);
       if (v.fuel == null || !v.tank || Math.round(v.fuel * 1000) >= v.tank * 1000){ fc.disabled = true; fc.title = !v.tank ? 'Tank size unknown' : 'Tank is full'; }
       fc.onchange = refresh; tr.children[1].appendChild(fc);
       // Damage
-      if (v.engine == null){ tr.children[6].textContent = 'Not found'; tr.children[7].textContent = '—'; tr.children[0].textContent = '—'; }
+      if (v.engine == null){ tr.children[7].textContent = 'Not found'; tr.children[8].textContent = '—'; tr.children[0].textContent = '—'; }
       else {
         const pct = Math.round(Math.min(1, Math.max(0, v.engine)) * 100);
         const wrap = document.createElement('div'); wrap.className = 'cap';
         const bar = document.createElement('div'); bar.className = 'bar dmg'; bar.setAttribute('role', 'meter'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', '100'); bar.setAttribute('aria-valuenow', String(pct)); bar.setAttribute('aria-label', 'Engine damage of ' + v.name + ' ' + v.plate);
         const f = document.createElement('span'); f.className = 'fill'; f.style.width = pct + '%'; bar.appendChild(f);
         const t = document.createElement('span'); t.className = 'captext short'; t.textContent = (v.engine > 0 && pct === 0 ? '<1' : pct) + '%';
-        wrap.append(bar, t); tr.children[6].appendChild(wrap);
+        wrap.append(bar, t); tr.children[7].appendChild(wrap);
         const dented = v.dents > 0;
-        const bs = document.createElement('span'); bs.className = dented ? 'tag bad' : 'tag'; bs.textContent = dented ? 'Dented' : 'OK'; tr.children[7].appendChild(bs);
+        const bs = document.createElement('span'); bs.className = dented ? 'tag bad' : 'tag'; bs.textContent = dented ? 'Dented' : 'OK'; tr.children[8].appendChild(bs);
         const cb = document.createElement('input'); cb.type = 'checkbox'; cb.id = 'veh-' + i; cb.className = 'chk chkbox';
         cb.setAttribute('aria-label', 'Repair ' + v.name + ' ' + v.plate);
         if (!(v.engine > 0) && !dented){ cb.disabled = true; cb.title = 'No damage'; }
         cb.onchange = refresh; tr.children[0].appendChild(cb);
       }
+      // Colour: built last and slotted in after the Vehicle cell
+      const ctd = document.createElement('td');
+      if (v.color == null){ ctd.textContent = '—'; }
+      else {
+        const csel = document.createElement('select'); csel.id = 'vcol-' + i; csel.className = 'propsel colsel'; csel.dataset.orig = v.color;
+        csel.setAttribute('aria-label', 'Colour of ' + v.name + ' ' + v.plate);
+        const known = VEH_COLORS.some(c => c[0] === v.color);
+        if (!known){ const o = document.createElement('option'); o.value = v.color; o.textContent = 'Unknown colour'; o.selected = true; csel.appendChild(o); }
+        VEH_COLORS.forEach(([code, name]) => { const o = document.createElement('option'); o.value = code; o.textContent = name; if (code === v.color) o.selected = true; csel.appendChild(o); });
+        csel.onchange = refresh; ctd.appendChild(csel);
+      }
+      tr.insertBefore(ctd, tr.children[3]);
       tb.appendChild(tr);
     });
   }
@@ -1078,19 +1611,40 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
     renderVPending(); renderFleet(); refresh();
   }
 
-  let sortKey = 'skill', sortDir = 1;
+
+  let needState = null;
+  function renderNeed(){
+    needState = readNeed(save);
+    $('needBox').classList.toggle('hidden', !needState);
+    $('needRestore').checked = false;
+    if (!needState) return;
+    const v = Math.max(0, Math.min(100, needState.value));
+    $('needFill').style.width = v + '%';
+    $('needBar').classList.toggle('low', v < 33.3);
+    $('needBar').setAttribute('aria-valuenow', String(Math.round(v)));
+    $('needText').textContent = Math.round(v) + '%';
+    $('needRestore').disabled = needState.value >= 100;
+  }
+
+  let sortKey = 'prop', sortDir = 1;
   function sortEmps(){
     if (!model || !model.emps.length || !model.emps[0].tr) return;
     const coll = new Intl.Collator('en', { sensitivity: 'base' });
     const val = e => sortKey === 'name' ? e.name : sortKey === 'prop' ? e.prop : sortKey === 'skill' ? e.nice : sortKey === 'level' ? e.level : sortKey === 'salary' ? ($('sal-' + e.i) ? (readNum($('sal-' + e.i)) || 0) : -1) : Number($('emp-' + e.i).value);
     const rows = model.emps.slice().sort((a, b) => {
       const va = val(a), vb = val(b);
-      let c = typeof va === 'number' ? va - vb : coll.compare(va, vb);
-      if (c === 0 && sortKey !== 'name') c = coll.compare(a.name, b.name);
-      if (c === 0 && sortKey !== 'skill') c = coll.compare(a.nice, b.nice);
-      return c * sortDir;
+      const c = typeof va === 'number' ? va - vb : coll.compare(va, vb);
+      if (c !== 0) return c * sortDir;
+      // Ties: group by property, then role, then name
+      return (sortKey !== 'prop' ? coll.compare(a.prop, b.prop) : 0) || (sortKey !== 'skill' ? coll.compare(a.nice, b.nice) : 0) || coll.compare(a.name, b.name);
     });
-    const tb = $('emps'); rows.forEach(e => tb.appendChild(e.tr));
+    const tb = $('emps');
+    rows.forEach((e, k) => {
+      const prev = rows[k - 1];
+      e.tr.classList.toggle('grp', sortKey === 'prop' && k > 0 && prev.prop !== e.prop);
+      e.tr.classList.toggle('subgrp', sortKey === 'prop' && k > 0 && prev.prop === e.prop && prev.nice !== e.nice);
+      tb.appendChild(e.tr);
+    });
     document.querySelectorAll('th[data-key]').forEach(th => {
       const on = th.dataset.key === sortKey;
       if (on) th.setAttribute('aria-sort', sortDir === 1 ? 'ascending' : 'descending'); else th.removeAttribute('aria-sort');
@@ -1121,6 +1675,7 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
     edits.cmoney = num('cmoney', 'Personal money');
     edits.cxp = num('cxp', 'Personal experience');
     edits.csp = num('csp', 'Skill points');
+    if (needState && $('needRestore').checked && !$('needRestore').disabled){ edits.need = 100; changes.push('Needs: ' + Math.round(needState.value) + '% → 100%'); }
     if (permState){
       const want = new Set(PERMITS.filter(p => permBox(p.id) && permBox(p.id).checked).map(p => p.id));
       const keep = permState.owned.filter(id => !PERMIT_BY_ID[id] || want.has(id));
@@ -1153,6 +1708,13 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
       if (v !== e.level){ edits.emps.push({ idx: e.idx, skill: e.skill, level: v }); empChanged++; }
     });
     if (empChanged) changes.push('Skills changed for ' + empChanged + ' employee' + (empChanged > 1 ? 's' : ''));
+    edits.moves = [];
+    model.emps.forEach((e, i) => { const sel = $('empb-' + i); if (!sel) return; sel.classList.toggle('changed', sel.value !== sel.dataset.orig);
+      if (sel.value !== sel.dataset.orig && !edits.moves.some(m => m.idx === e.idx)) edits.moves.push({ idx: e.idx, id: save.recs.find(r => r.idx === e.idx).obj._id, to: sel.value }); });
+    if (edits.moves.length){
+      changes.push('Moved ' + edits.moves.length + ' employee' + (edits.moves.length > 1 ? 's' : '') + ' to another property');
+      world.buildings.forEach(b => { if (!b.unknown && b.ownerKind === 'BUSINESS' && freeOf(b) < 0) errors.push(b.name + ' would have more employees than its limit of ' + b.limit + '.'); });
+    }
     edits.salaries = []; const salSeen = new Set();
     model.emps.forEach((e, i) => {
       const inp = $('sal-' + i); if (!inp || salSeen.has(e.idx)) return; salSeen.add(e.idx);
@@ -1164,7 +1726,23 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
     if (edits.salaries.length) changes.push('Salaries changed for ' + edits.salaries.length + ' employee' + (edits.salaries.length > 1 ? 's' : ''));
     edits.repairs = vehicles.map((v, i) => ({ v, c: $('veh-' + i) })).filter(x => x.c && x.c.checked && !x.c.disabled).map(x => ({ idx: x.v.idx, id: x.v.id, engine: x.v.engine > 0, body: x.v.dents > 0 }));
     if (edits.repairs.length) changes.push('Repair ' + edits.repairs.length + ' vehicle' + (edits.repairs.length > 1 ? 's' : ''));
-    edits.refuels = vehicles.map((v, i) => ({ v, c: $('vehf-' + i) })).filter(x => x.c && x.c.checked && !x.c.disabled).map(x => ({ idx: x.v.idx, id: x.v.id, litres: x.v.tank }));
+    edits.cargo = [];
+    vehicles.forEach((v, i) => {
+      const inp = $('cargo-' + i); if (!inp) return; inp.classList.remove('changed');
+      const n = readNum(inp);
+      if (!Number.isInteger(n) || n < 1 || n > CARGO_MAX){ errors.push('Cargo slots of ' + v.name + ' ' + v.plate + ': use a whole number from 1 to ' + CARGO_MAX + '.'); return; }
+      if (n <= v.lastUsed){ errors.push('Cargo slots of ' + v.name + ' ' + v.plate + ': slot ' + (v.lastUsed + 1) + ' holds items, so it needs at least ' + (v.lastUsed + 1) + ' slots.'); return; }
+      if (n !== v.cargo){ inp.classList.add('changed'); edits.cargo.push({ idx: v.idx, id: v.id, slots: n }); }
+    });
+    if (edits.cargo.length) changes.push('Cargo slots changed for ' + edits.cargo.length + ' vehicle' + (edits.cargo.length > 1 ? 's' : ''));
+    edits.colors = [];
+    vehicles.forEach((v, i) => { const sel = $('vcol-' + i); if (!sel) return; sel.classList.toggle('changed', sel.value !== v.color); if (sel.value !== v.color) edits.colors.push({ idx: v.idx, id: v.id, color: sel.value }); });
+    if (edits.colors.length) changes.push('Colour changed for ' + edits.colors.length + ' vehicle' + (edits.colors.length > 1 ? 's' : ''));
+    edits.models = [];
+    vehicles.forEach((v, i) => { const sel = $('vmod-' + i); if (!sel) return; sel.classList.toggle('changed', sel.value !== v.model); if (sel.value !== v.model) edits.models.push({ idx: v.idx, id: v.id, model: sel.value }); });
+    if (edits.models.length) changes.push('Model changed for ' + edits.models.length + ' vehicle' + (edits.models.length > 1 ? 's' : ''));
+    const modelOf = (v, i) => ($('vmod-' + i) ? $('vmod-' + i).value : v.model);
+    edits.refuels = vehicles.map((v, i) => ({ v, i, c: $('vehf-' + i) })).filter(x => x.c && x.c.checked && !x.c.disabled).map(x => ({ idx: x.v.idx, id: x.v.id, litres: TANK_L[modelOf(x.v, x.i)] }));
     if (edits.refuels.length) changes.push('Refuel ' + edits.refuels.length + ' vehicle' + (edits.refuels.length > 1 ? 's' : ''));
     if (vPending.length){
       const f = fleetFree('personal'), fc = fleetFree('company');
@@ -1185,6 +1763,15 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
       pending.forEach(p => { const n = world.buildings.find(b => b.id === p.buildingId).name; per[n] = (per[n] || 0) + 1; });
       changes.push('New employees: ' + Object.keys(per).map(k => per[k] + ' at ' + k).join(', '));
     }
+    if (store && refills.size){
+      const lines = [];
+      store.forEach(P => P.rows.forEach(r => {
+        if (!refills.has(rkey(P.id, r.code)) || !r.plan || r.plan.add <= 0) return;
+        r.plan.shelves.forEach(sh => { (edits.refill = edits.refill || []).push({ idx: sh.idx, id: sh.id, code: r.code, qty: r.plan.qty, tag: sh.tag, slots: sh.slots }); });
+        lines.push(r.info.name + ' at ' + P.name + ' (+' + fmt(r.plan.add) + ')');
+      }));
+      if (lines.length) changes.push('Stock refilled: ' + lines.join(', '));
+    }
     return { edits, changes, errors: [...new Set(errors)] };
   }
 
@@ -1200,11 +1787,18 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
   }
 
   $('selDamaged').onclick = () => { document.querySelectorAll('#vehs .chk').forEach(c => { if (!c.disabled) c.checked = true; }); refresh(); };
+  $('needRestore').onchange = refresh;
   $('permAll').onclick = () => { document.querySelectorAll('.permcb').forEach(c => { c.checked = true; }); refresh(); };
   $('permNone').onclick = () => { document.querySelectorAll('.permcb').forEach(c => { c.checked = false; }); refresh(); };
   $('permCharge').onchange = refresh;
   $('vAddBtn').onclick = addVehicles;
   $('vOwner').onchange = () => { fillVModels(); renderFleet(); };
+  function fillBulkModels(){
+    const own = $('bulkOwner').value === 'Company' ? 'company' : 'personal', bm = $('bulkModel'); bm.innerHTML = '';
+    Object.keys(CARGO_SLOTS).filter(m => TANK_L[m] && canOwn(m, own)).sort((a, b) => (MODEL_NAMES[a] || a).localeCompare(MODEL_NAMES[b] || b)).forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = MODEL_NAMES[m] || m; bm.appendChild(o); });
+  }
+  $('bulkOwner').onchange = fillBulkModels; fillBulkModels();
+  $('bulkModelBtn').onclick = () => { vehicles.forEach((v, i) => { const sel = $('vmod-' + i); if (sel && v.owner === $('bulkOwner').value && [...sel.options].some(o => o.value === $('bulkModel').value)){ sel.value = $('bulkModel').value; sel.onchange(); } }); refresh(); };
   $('selFuel').onclick = () => { document.querySelectorAll('#vehs .chkf').forEach(c => { if (!c.disabled) c.checked = true; }); refresh(); };
   $('selNone').onclick = () => { document.querySelectorAll('#vehs .chk, #vehs .chkf').forEach(c => { c.checked = false; }); refresh(); };
   $('addProp').onchange = fillAddSkill;
@@ -1224,7 +1818,7 @@ function buildVehicleLine(fleet, item, slot, count, takenIds){
       setTimeout(() => URL.revokeObjectURL(url), 5000);
       const box = $('saveMsg'); box.innerHTML = '';
       const p = document.createElement('p'); p.className = 'msg ok';
-      p.innerHTML = 'Exported and verified <span class="stamp">OK</span><br>With the game closed, replace the savegame.gz in your slot0 folder with this file.';
+      p.innerHTML = 'Exported and verified <span class="stamp">OK</span><br>With the game closed, replace the savegame.gz in the same slot folder (slot0, slot1…) with this file.';
       box.appendChild(p);
     } catch(err){ msg($('saveMsg'), err.message, 'bad'); }
   };
