@@ -78,15 +78,19 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .msg.ok{border-color:var(--ok)}
 ul.changes{margin:8px 0 0;padding-left:20px}
 .hidden{display:none}
-#bulkModel{width:170px}
-#bulkOwner{width:auto}
+#bulkModel,#pbulkModel{width:170px}
+table.vtab th:nth-child(6),table.vtab td:nth-child(6){display:none}
 #vehs select.propsel{width:128px}
+#pvehs select.propsel{width:128px}
 #vehs select.colsel{width:150px}
+#pvehs select.colsel{width:150px}
 #vehs .captext.mid{min-width:5.6em}
+#pvehs .captext.mid{min-width:5.6em}
 #vehs td{padding:7px 4px}
+#pvehs td{padding:7px 4px}
 #vehs .bar{min-width:48px;max-width:70px}
-#emps tr.grp td{border-top:2px solid var(--ink-soft)}
-#emps tr.subgrp td{border-top:1px dashed var(--ink-soft)}
+#pvehs .bar{min-width:48px;max-width:70px}
+#emps .grouprow td,#vehs .grouprow td{background:var(--surface-2);font-weight:650;padding-top:10px;border-bottom:1px solid var(--line)}
 select.propsel{width:150px;margin:0;padding:4px 8px;font-size:.95rem}
 select.changed{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .cap{display:flex;align-items:center;gap:10px;min-width:180px}
@@ -110,15 +114,25 @@ input.chkbox:disabled{cursor:not-allowed;opacity:.4}
 .bar.fuel .fill{background:var(--ok)}
 .captext.mid{min-width:6.5em;text-align:right}
 #vehs .cap{min-width:0;gap:8px}
+#pvehs .cap{min-width:0;gap:8px}
 #vehs .bar{min-width:56px;max-width:90px}
+#pvehs .bar{min-width:56px;max-width:90px}
 #vehs td{padding:7px 3px}
+#pvehs td{padding:7px 3px}
 #vehs select.propsel{width:130px;padding:4px 4px;font-size:.9rem}
+#pvehs select.propsel{width:130px;padding:4px 4px;font-size:.9rem}
 #vehs select.colsel{width:140px}
+#pvehs select.colsel{width:140px}
 #vehs .bar{min-width:36px;max-width:48px}
+#pvehs .bar{min-width:36px;max-width:48px}
 #vehs .captext.mid{min-width:4.6em;font-size:.9rem}
+#pvehs .captext.mid{min-width:4.6em;font-size:.9rem}
 #vehs .stepper button{padding:4px 7px;min-width:28px}
+#pvehs .stepper button{padding:4px 7px;min-width:28px}
 #vehs .stepper input.num.cargo{width:40px;margin:0 2px}
+#pvehs .stepper input.num.cargo{width:40px;margin:0 2px}
 #vehs th{padding-left:3px;padding-right:3px;font-size:.9rem}
+#pvehs th{padding-left:3px;padding-right:3px;font-size:.9rem}
 .stepper{display:inline-flex;align-items:center}
 .stepper button{padding:4px 10px;min-width:34px;font-size:1rem;line-height:1.2}
 .stepper input.num.cargo{width:48px}
@@ -144,10 +158,21 @@ h3{font-size:1rem;margin:18px 0 8px}
 footer{color:var(--ink-soft);font-size:.85rem}
 @media (prefers-reduced-motion:no-preference){ .stamp{animation:thud .25s ease-out} @keyframes thud{from{transform:rotate(-3deg) scale(1.4);opacity:0}} }
 
+#stor .grouprow td,.ghead{background:var(--surface-2);font-weight:650;padding:10px 12px 8px;border-bottom:1px solid var(--line)}
+#stor .grouprow .gline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.ghead{margin:16px 0 8px;border-radius:.25rem}
 #stor .prop{margin:0 0 22px}
 #stor .prophead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
 #salesSel{width:auto;min-width:220px}
 .bulk .sep{color:var(--ink-soft);margin:0 4px}
+#grantBody .grouprow td,#emps .grouprow td,#vehs .grouprow td{background:var(--surface-2);font-weight:650;padding-top:10px;border-bottom:1px solid var(--line)}
+#mgrs .mgr{border:1px solid var(--line);border-radius:.5rem;padding:12px 14px;margin:0 0 12px;background:var(--surface-2)}
+#mgrs .mgrhead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;margin-bottom:6px}
+#mgrs ul{list-style:none;margin:0 0 8px;padding:0}
+#mgrs li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 0;border-bottom:1px solid var(--line)}
+#mgrs .over{color:var(--accent-text);font-weight:650}
+#mgrs .addrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#mgrs .addrow select{width:auto;min-width:260px;margin:0}
 #stor h3,#sales h3{margin:0;font-size:1.1rem;font-weight:700}
 #stor td.r,#sales td.r{text-align:right}
 #stor .cap{min-width:0;gap:8px}
@@ -188,10 +213,11 @@ footer{color:var(--ink-soft);font-size:.85rem}
   <div id="editor" class="hidden">
     <div class="tabs" role="tablist" aria-label="Editor sections">
       <button type="button" class="tab" role="tab" id="tab-character" aria-controls="panel-character" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>Character</button>
+      <button type="button" class="tab" role="tab" id="tab-grants" aria-controls="panel-grants" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>Grants</button>
       <button type="button" class="tab" role="tab" id="tab-company" aria-controls="panel-company" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2M10 21v-3h4v3"/></svg>Company</button>
-      <button type="button" class="tab" role="tab" id="tab-vehicles" aria-controls="panel-vehicles" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16v-3l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v3a1 1 0 0 1-1 1h-1M5 17H4a1 1 0 0 1-1-1M9 17h6"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 12h14"/></svg>Vehicles</button>
+      <button type="button" class="tab" role="tab" id="tab-vehicles" aria-controls="panel-vehicles" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16v-3l2-5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 8l2 5v3a1 1 0 0 1-1 1h-1M5 17H4a1 1 0 0 1-1-1M9 17h6"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 12h14"/></svg>Company vehicles</button>
       <button type="button" class="tab" role="tab" id="tab-storage" aria-controls="panel-storage" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13"/><path d="M7 21v-6h10v6M7 11h10"/></svg>Storage</button>
-      <button type="button" class="tab" role="tab" id="tab-sales" aria-controls="panel-sales" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Sales</button>
+      <button type="button" class="tab" role="tab" id="tab-sales" aria-controls="panel-sales" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Production &amp; Sales</button>
     </div>
 
     <div class="panel" id="panel-character" role="tabpanel" aria-labelledby="tab-character">
@@ -199,6 +225,7 @@ footer{color:var(--ink-soft);font-size:.85rem}
       <h2>Character</h2>
       <div class="grid">
         <label class="field">Personal money ($)<span class="now" id="now-cmoney"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="cmoney"></label>
+        <label class="field">Level<span class="now" id="now-clvl"></span><select id="clvl"></select></label>
         <label class="field">Experience<span class="now" id="now-cxp"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="cxp"></label>
         <label class="field">Skill points<span class="now" id="now-csp"></span><input type="number" id="csp" min="0" step="1"></label>
       </div>
@@ -226,6 +253,49 @@ footer{color:var(--ink-soft);font-size:.85rem}
       </table></div>
       <p class="hint">Selecting a tier also selects the ones it depends on; clearing a tier also clears the ones that depend on it. Without charging, permits are unlocked for free and your skill points are left as they are.</p>
     </section>
+
+    <section class="label" id="pvehSection">
+      <h2>Personal Vehicles</h2>
+      <div class="bulk">
+        <button type="button" id="pselDamaged">Select all damaged</button>
+        <button type="button" id="pselFuel">Select all to refuel</button>
+        <button type="button" id="pselNone">Clear selection</button>
+      </div>
+      <div class="bulk">
+        <span>Change the model of all personal vehicles to</span>
+        <select id="pbulkModel" class="propsel"></select>
+        <button type="button" id="pbulkModelBtn">Apply</button>
+      </div>
+      <div class="wrap"><table class="vtab">
+        <thead><tr><th>Repair</th><th>Refuel</th><th>Vehicle</th><th>Colour</th><th>Plate</th><th>Owner</th><th>Cargo slots</th><th>Fuel</th><th>Engine damage</th><th>Body</th></tr></thead>
+        <tbody id="pvehs"></tbody>
+      </table></div>
+      <p class="hint">Engine damage builds up with collisions; when it is high the engine light comes on, the car smokes and loses speed. Body damage is the dents in the bodywork. Repairing a vehicle fixes both. Refuelling fills the tank to its full capacity; it is only available for models whose tank size is confirmed. Cargo slots can be raised up to 48 (six rows of 8 in the inventory screen); slots holding items cannot be removed. Changing a vehicle's model keeps its plate, colour, owner, driver and cargo, sets the cargo slots to the new model's size (never fewer than the slots in use), clears the dents and caps the fuel to the new tank.</p>
+      <h3>Add Personal Vehicles</h3>
+      <div class="wrap"><table>
+        <thead><tr><th>Fleet</th><th>Vehicles</th><th>Free Slots</th></tr></thead>
+        <tbody id="pfleet"></tbody>
+      </table></div>
+      <div class="addform">
+        <input type="hidden" id="pvOwner" value="personal">
+        <label class="field">Model<select id="pvModel"></select></label>
+        <label class="field">Colour<select id="pvColor"></select></label>
+        <label class="field">Quantity<input type="number" id="pvQty" min="1" step="1" value="1"></label>
+        <button type="button" id="pvAddBtn">Add to list</button>
+      </div>
+      <div id="pvMsg"></div>
+      <div class="wrap"><table id="pvPendingTbl" class="hidden">
+        <thead><tr><th>Vehicle</th><th>Colour</th><th>Owner</th><th>Plate</th><th></th></tr></thead>
+        <tbody id="pvPending"></tbody>
+      </table></div>
+      <p class="hint">New vehicles are delivered like new ones from the dealer: full tank, no damage, empty cargo. They appear in a row just in front of where your character was standing when the game was saved, so save while standing outside in an open area. The limit is 1 plus the Personal Vehicle permits you have, and the permit checkboxes above count towards it. Classic Endurance and Secuestrator can be either personal or company vehicles; Kabestie, Cangu and Cangu Deluxe are company only.</p>
+    </section>
+
+    <section class="label hidden" id="jobsBox">
+      <h2>Side Jobs</h2>
+      <div class="grid" id="jobsGrid"></div>
+      <p class="hint">Trucker and lumberjack levels (1 to 9, the maximum). Experience is for the current level and must stay below its cap; changing the level resets it to 0. Level 9 was tested in the game, where it unlocked the level grants; the levels in between have not been tried.</p>
+    </section>
     </div>
 
     <div class="panel" id="panel-company" role="tabpanel" aria-labelledby="tab-company" hidden>
@@ -234,9 +304,10 @@ footer{color:var(--ink-soft);font-size:.85rem}
       <div id="bizpick" class="hidden"><label class="field">Company<select id="bizsel"></select></label></div>
       <div class="grid">
         <label class="field">Company money ($)<span class="now" id="now-bmoney"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="bmoney"></label>
+        <label class="field">Level<span class="now" id="now-blvl"></span><select id="blvl"></select></label>
         <label class="field">Experience<span class="now" id="now-bxp"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="bxp"></label>
       </div>
-      <p class="hint">Experience is for the current level (the left value in "1.300 / 3.500"). The game moves in steps of 100. To level up, set XP 100 below the cap and earn the rest by playing, so unlocks trigger properly.</p>
+      <p class="hint">Experience is for the current level (the left value in "1.300 / 3.500") and must stay below that level's cap. Changing the level resets the experience to 0. <strong>Experimental:</strong> setting a level directly may skip rewards and unlocks that the game gives when you level up by playing.</p>
     </section>
 
     <section class="label">
@@ -284,35 +355,29 @@ footer{color:var(--ink-soft);font-size:.85rem}
 
     <div class="panel" id="panel-vehicles" role="tabpanel" aria-labelledby="tab-vehicles" hidden>
     <section class="label" id="vehSection">
-      <h2>Vehicles</h2>
+      <h2>Company Vehicles</h2>
       <div class="bulk">
         <button type="button" id="selDamaged">Select all damaged</button>
         <button type="button" id="selFuel">Select all to refuel</button>
         <button type="button" id="selNone">Clear selection</button>
       </div>
       <div class="bulk">
-        <span>Change the model of all</span>
-        <select id="bulkOwner" class="propsel"><option value="Company">company vehicles</option><option value="Personal">personal vehicles</option></select>
-        <span>to</span>
+        <span>Change the model of all company vehicles to</span>
         <select id="bulkModel" class="propsel"></select>
         <button type="button" id="bulkModelBtn">Apply</button>
       </div>
-      <div class="wrap"><table>
+      <div class="wrap"><table class="vtab">
         <thead><tr><th>Repair</th><th>Refuel</th><th>Vehicle</th><th>Colour</th><th>Plate</th><th>Owner</th><th>Cargo slots</th><th>Fuel</th><th>Engine damage</th><th>Body</th></tr></thead>
         <tbody id="vehs"></tbody>
       </table></div>
       <p class="hint">Engine damage builds up with collisions; when it is high the engine light comes on, the car smokes and loses speed. Body damage is the dents in the bodywork. Repairing a vehicle fixes both. Refuelling fills the tank to its full capacity; it is only available for models whose tank size is confirmed. Cargo slots can be raised up to 48 (six rows of 8 in the inventory screen); slots holding items cannot be removed. Changing a vehicle's model keeps its plate, colour, owner, driver and cargo, sets the cargo slots to the new model's size (never fewer than the slots in use), clears the dents and caps the fuel to the new tank.</p>
-    </section>
-
-    <section class="label" id="addVehSection">
-      <h2>Add Vehicles</h2>
+      <h3>Add Company Vehicles</h3>
       <div class="wrap"><table>
         <thead><tr><th>Fleet</th><th>Vehicles</th><th>Free Slots</th></tr></thead>
         <tbody id="fleet"></tbody>
       </table></div>
-      <h3>New vehicles</h3>
       <div class="addform">
-        <label class="field">Owner<select id="vOwner"><option value="personal">Personal</option><option value="company">Company</option></select></label>
+        <input type="hidden" id="vOwner" value="company">
         <label class="field">Model<select id="vModel"></select></label>
         <label class="field">Colour<select id="vColor"></select></label>
         <label class="field">Quantity<input type="number" id="vQty" min="1" step="1" value="1"></label>
@@ -323,7 +388,7 @@ footer{color:var(--ink-soft);font-size:.85rem}
         <thead><tr><th>Vehicle</th><th>Colour</th><th>Owner</th><th>Plate</th><th></th></tr></thead>
         <tbody id="vPending"></tbody>
       </table></div>
-      <p class="hint">New vehicles are delivered like new ones from the dealer: full tank, no damage, empty cargo. They appear in a row just in front of where your character was standing when the game was saved, so save while standing outside in an open area. Kabestie, Cangu and Cangu Deluxe can only be company vehicles, Classic Endurance and Secuestrator can be either, and all other models are personal only. Drive company vehicles into a warehouse yourself; parking spots (Iron Yard 6, Grand Depot 8 to 14, Cargo Garage 1 to 2) are assigned as they become free, and extra vehicles wait their turn.</p>
+      <p class="hint">New vehicles are delivered like new ones from the dealer: full tank, no damage, empty cargo. They appear in a row just in front of where your character was standing when the game was saved, so save while standing outside in an open area. Kabestie, Cangu and Cangu Deluxe can only be company vehicles, and Classic Endurance and Secuestrator can be either. Vehicles are grouped by the property they are parked at (worked out from their position, as the save has no property field for them). Drive company vehicles into a warehouse yourself; parking spots (Iron Yard 6, Grand Depot 8 to 14, Cargo Garage 1 to 2) are assigned as they become free, and extra vehicles wait their turn.</p>
     </section>
     </div>
 
@@ -334,11 +399,29 @@ footer{color:var(--ink-soft);font-size:.85rem}
       <div id="stor"></div>
       <p class="hint">Stack sizes: consumables 12, products 6, packed items 1. Refilled slots copy their hidden data from an existing item of the same kind in your save, so an item the save has never contained cannot be refilled. Shelves holding other items are left alone.</p>
     </section>
+    <section class="label" id="mgrSection">
+      <h2>Warehouse manager shelves</h2>
+      <p class="hint" style="margin-top:0">Each warehouse manager restocks the shelves assigned to him or her. The game allows 4 per manager; the editor lets you go beyond that. <strong>Experimental:</strong> the game may ignore the extra shelves. Make the change while the managers are idle (at night), and test with one manager first.</p>
+      <div id="mgrs"></div>
+      </section>
+    </div>
+
+    <div class="panel" id="panel-grants" role="tabpanel" aria-labelledby="tab-grants" hidden>
+    <section class="label" id="grantSection">
+      <h2>Grants</h2>
+      <p class="hint" style="margin-top:0">Completing a grant marks it as done but leaves the reward unclaimed, so it shows as "Claimable!" in the game and you claim it there. Tested in the game with counters, such as fuel bought, crafted products, trucker and lumberjack deliveries and trees. Grants that depend on permits, levels or story chapters follow those values, so change them in the places above.</p>
+      <div class="bulk"><button type="button" id="grantAll">Complete all in progress</button><button type="button" id="grantNone">Clear</button></div>
+      <div class="wrap"><table>
+        <thead><tr><th>Grant</th><th>Progress</th><th>State</th><th>Complete</th></tr></thead>
+        <tbody id="grantBody"></tbody>
+      </table></div>
+      <p class="hint" id="grantNote"></p>
+    </section>
     </div>
 
     <div class="panel" id="panel-sales" role="tabpanel" aria-labelledby="tab-sales" hidden>
     <section class="label">
-      <h2>Sales</h2>
+      <h2>Production &amp; Sales</h2>
       <div id="sales"></div>
     </section>
     </div>
@@ -360,6 +443,9 @@ const ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 // CORE-START
 const MAX_INT = 2147483647;
 const RE_MONEY = /("#7D07":\{"#5E7A":\{"DOLLARS":\{"currency":"DOLLARS","amount":)(\d+)/g;
+// Progression tables from the game data: XP needed to finish each level (index 0 = level 1).
+const CHAR_XP = [500,1000,1500,2000,2500,3000,4000,5000,6000,7000,8000,9000,10000,12000,14000,16000,18000,20000,25000,30000,35000,40000,45000,50000,60000,70000,80000,90000,100000];
+const BIZ_LEVELS = [[300,'Startup I'],[600,'Startup II'],[1300,'Startup III'],[3500,'Company I'],[7000,'Company II'],[22000,'Company III'],[60000,'Enterprise I'],[110000,'Enterprise II'],[240000,'Enterprise III'],[100000,'Monopoly']];
 const RE_XP = /("#85A3":\{"#AA97":)(\d+)(,"#85A3":)(\d+)(\})/g;
 const RE_SAL = /("#637B":\{"currency":"DOLLARS","amount":)(\d+)/g;
 const RE_SP = /("SKILLPOINTS":\{"currency":"SKILLPOINTS","amount":)(\d+)/;
@@ -429,10 +515,10 @@ function setMoney(line, v){
   RE_MONEY.lastIndex = 0;
   return line.replace(RE_MONEY, (a, p, n) => p + v);
 }
-function setXP(line, v){
+function setXP(line, v, lvl){
   if (countMatches(RE_XP, line) !== 1) throw new Error('Experience field not found.');
   RE_XP.lastIndex = 0;
-  return line.replace(RE_XP, (a, p, x, mid, lv, end) => p + v + mid + lv + end);
+  return line.replace(RE_XP, (a, p, x, mid, lv, end) => p + (v != null ? v : x) + mid + (lvl != null ? lvl : lv) + end);
 }
 function setSP(line, v){
   const key = '"#7D07":{';
@@ -495,14 +581,14 @@ function applyEdits(save, model, edits){
   const lines = save.lines.slice();
   const ci = model.char && model.char.idx;
   if (edits.cmoney != null) lines[ci] = setMoney(lines[ci], edits.cmoney);
-  if (edits.cxp != null) lines[ci] = setXP(lines[ci], edits.cxp);
+  if (edits.cxp != null || edits.clvl != null) lines[ci] = setXP(lines[ci], edits.cxp, edits.clvl);
   if (edits.csp != null) lines[ci] = setSP(lines[ci], edits.csp);
   if (edits.need != null) lines[ci] = setNeed(lines[ci], edits.need);
   if (edits.permits){ lines[ci] = setPermits(lines[ci], edits.permits.list); if (edits.permits.spent != null) lines[ci] = setSpent(lines[ci], edits.permits.spent); }
   if (edits.biz){
     const bi = edits.biz.idx;
     if (edits.biz.bmoney != null) lines[bi] = setMoney(lines[bi], edits.biz.bmoney);
-    if (edits.biz.bxp != null) lines[bi] = setXP(lines[bi], edits.biz.bxp);
+    if (edits.biz.bxp != null || edits.biz.blvl != null) lines[bi] = setXP(lines[bi], edits.biz.bxp, edits.biz.blvl);
   }
   (edits.emps || []).forEach(e => { lines[e.idx] = setEmpSkill(lines[e.idx], e.skill, e.level); });
   (edits.salaries || []).forEach(e => { lines[e.idx] = setSalary(lines[e.idx], e.salary); });
@@ -518,6 +604,9 @@ function applyEdits(save, model, edits){
   (edits.colors || []).forEach(r => { lines[r.idx] = setColorLine(lines[r.idx], r.color); });
   (edits.cargo || []).forEach(r => { lines[r.idx] = setCargo(lines[r.idx], r.slots); });
   (edits.refill || []).forEach(r => { lines[r.idx] = fillShelfLine(lines[r.idx], r.code, r.qty, r.tag, r.slots); });
+  (edits.assign || []).forEach(r => { lines[r.idx] = setAssignLine(lines[r.idx], r.list); });
+  (edits.jobs || []).forEach(r => { lines[r.idx] = setJobLine(lines[r.idx], r.id, r.xp, r.lvl); });
+  (edits.grants || []).forEach(r => { lines[r.idx] = setGrantLine(lines[r.idx], r); });
   const addedVeh = [];
   if (edits.addVehicles && edits.addVehicles.length){
     const fleet = readFleet(save);
@@ -550,6 +639,7 @@ function applyEdits(save, model, edits){
   const fail = (what) => { throw new Error('Verification failed: ' + what + '. Nothing was saved.'); };
   if (edits.cmoney != null && check.char.money !== edits.cmoney) fail('personal money');
   if (edits.cxp != null && check.char.xp !== edits.cxp) fail('personal experience');
+  if (edits.clvl != null && check.char.level !== edits.clvl) fail('personal level');
   if (edits.csp != null && check.char.sp !== edits.csp) fail('skill points');
   if (edits.need != null){ const n = readNeed(parseSave(text)); if (!n || n.value !== edits.need) fail('needs'); }
   if (edits.permits){
@@ -561,6 +651,7 @@ function applyEdits(save, model, edits){
     const b = check.bizs.find(x => x.idx === edits.biz.idx);
     if (edits.biz.bmoney != null && b.money !== edits.biz.bmoney) fail('company money');
     if (edits.biz.bxp != null && b.xp !== edits.biz.bxp) fail('company experience');
+    if (edits.biz.blvl != null && b.level !== edits.biz.blvl) fail('company level');
   }
   (edits.emps || []).forEach(e => {
     const r = check.emps.find(x => x.idx === e.idx && x.skill === e.skill);
@@ -602,6 +693,25 @@ function applyEdits(save, model, edits){
   if (edits.repairs && edits.repairs.length){
     const vs = readVehicles(parseSave(text));
     edits.repairs.forEach(r => { const v = vs.find(x => x.id === r.id); if (!v || (r.engine && v.engine !== 0) || (r.body && v.dents !== 0)) fail('repair of ' + (v ? v.name + ' ' + v.plate : 'vehicle')); });
+  }
+  if (edits.jobs && edits.jobs.length){
+    const jb = readJobs(parseSave(text));
+    edits.jobs.forEach(r => { const j = jb.find(x => x.id === r.id); if (!j || (r.xp != null && j.xp !== r.xp) || (r.lvl != null && j.level !== r.lvl)) fail('level of ' + r.id); });
+  }
+  if (edits.grants && edits.grants.length){
+    const before = readGrants(save), after = readGrants(parseSave(text)), done = new Set(edits.grants.map(x => x.gid));
+    edits.grants.forEach(r => { const g = after && after.find(x => x.gid === r.gid); const cur = g && g.cur; if (!g || g.status !== 'COMPLETED' || g.claimed || Math.floor(cur) !== r.target) fail('grant ' + (g ? g.name : r.gid)); });
+    const chB = save.recs.find(r => r.col === 'character').obj['#1A81'], chA = parseSave(text).recs.find(r => r.col === 'character').obj['#1A81'];
+    Object.keys(chB).forEach(k => { if (!done.has(k.replace('#8B6C.', '')) && JSON.stringify(chB[k]) !== JSON.stringify(chA[k])) fail('another grant changed'); });
+    if (Object.keys(chB).length !== Object.keys(chA).length) fail('grant count');
+  }
+  if (edits.assign && edits.assign.length){
+    const ns = parseSave(text), mg = readManagers(ns), seen = new Set();
+    edits.assign.forEach(r => {
+      const m = mg.find(x => x.id === r.id);
+      if (!m || !m.ok || JSON.stringify(m.list) !== JSON.stringify(r.list)) fail('shelf list of ' + (m ? m.name : 'a warehouse manager'));
+    });
+    mg.forEach(m => m.list.forEach(x => { if (seen.has(x.id)) fail('a shelf is assigned to two managers'); seen.add(x.id); }));
   }
   if (edits.refill && edits.refill.length){
     const ns = parseSave(text);
@@ -751,7 +861,18 @@ function clearArray(line, key){
   if (e < 0) throw new Error('Damage data (' + key + ') is malformed.');
   return line.slice(0, a) + '[]' + line.slice(e);
 }
+// A vehicle record has no property field filled in by the game's normal flow (#40FF is empty in every save seen), so the property is
+// inferred: the world cell the vehicle is parked in (#96F6.#B50F.#7F2C) is the cell shared by the employees of one building.
+function cellBuildings(save){
+  const cnt = {};
+  save.recs.forEach(r => { if (r.col !== 'employees') return; try {
+    const c = r.obj['#D623']['#7F2C'], b = r.obj['#1563'].id; if (!c || !b) return;
+    (cnt[c] = cnt[c] || {})[b] = (cnt[c][b] || 0) + 1; } catch(e){} });
+  const m = {}; Object.keys(cnt).forEach(c => { m[c] = Object.keys(cnt[c]).sort((a, b) => cnt[c][b] - cnt[c][a])[0]; });
+  return m;
+}
 function readVehicles(save){
+  const cellB = cellBuildings(save);
   return save.recs.filter(r => r.col === 'privatevehicles').map(r => {
     const o = r.obj, L = save.lines[r.idx];
     const d = (o['#96F6'] && o['#96F6']['#083D']) || {};
@@ -764,7 +885,8 @@ function readVehicles(save){
     let cargo = null, lastUsed = -1;
     try { const it = o['#96F6']['#B746'].items; if (Array.isArray(it) && L.split('"#B746":{"items":[').length === 2){ cargo = it.length; it.forEach((x, i) => { if (x != null) lastUsed = i; }); } } catch(e){}
     const color = typeof d['#AC72'] === 'string' && countMatches(RE_COLOR, L) === 1 ? d['#AC72'] : null;
-    return { idx: r.idx, id: o._id, model, color, name: MODEL_NAMES[model] || model, plate: fmtPlate(d['#9229']), owner, engine: ok ? d['#CD0D'] : null, dents: imp, ok, fuel, tank, cargo, lastUsed };
+    let propId = null; try { propId = (o['#40FF'] && o['#40FF'].id) || cellB[o['#96F6']['#B50F']['#7F2C']] || null; } catch(e){}
+    return { idx: r.idx, id: o._id, propId, model, color, name: MODEL_NAMES[model] || model, plate: fmtPlate(d['#9229']), owner, engine: ok ? d['#CD0D'] : null, dents: imp, ok, fuel, tank, cargo, lastUsed };
   });
 }
 function fmtPlate(p){ const m = /^([A-Z])(\d{2})(\d{2})$/.exec(p || ''); return m ? m[1] + '-' + m[2] + '-' + m[3] : (p || '—'); }
@@ -1033,10 +1155,91 @@ function readStorage(save){
       }
       return { code, info, shelves: own.length, slots, capacity, stock, plan, reason };
     }).sort((a, b) => (CAT_ORDER[a.info.cat] - CAT_ORDER[b.info.cat]) || a.info.name.localeCompare(b.info.name));
-    return { id: P.id, name: P.name, shelfCount: P.shelves.length, rows };
+    return { id: P.id, name: P.name, shelfCount: P.shelves.length, rows, shelves: P.shelves };
   });
 }
 
+// Jobs (trucker, lumberjack): level and XP live in the character record, field #A51D.
+const JOBS = [
+  { id: '#9029.DhjB0Z', name: 'Trucker', caps: [875,2000,3300,7072,13125,23370,41325,73525,15000] },
+  { id: '#9029.5lkVzx', name: 'Lumberjack', caps: [650,1360,2200,3910,6500,11590,20805,34425,15000] }
+];
+function jobRe(id){ return new RegExp('("' + id.replace(/[.#]/g, '\\$&') + '":\\{"#AA97":)(\\d+)(,"#85A3":)(\\d+)(\\})', 'g'); }
+function readJobs(save){
+  const ch = save.recs.find(r => r.col === 'character'); if (!ch) return [];
+  const L = save.lines[ch.idx], blk = ch.obj['#A51D'] || {}, out = [];
+  JOBS.forEach(j => {
+    const e = blk[j.id]; if (!e || typeof e['#AA97'] !== 'number' || typeof e['#85A3'] !== 'number') return;
+    out.push({ idx: ch.idx, id: j.id, name: j.name, caps: j.caps, xp: e['#AA97'], level: e['#85A3'], ok: countMatches(jobRe(j.id), L) === 1 });
+  });
+  return out;
+}
+function setJobLine(line, id, xp, lvl){
+  const re = jobRe(id); if (countMatches(re, line) !== 1) throw new Error('Job data (' + id + ') not found.');
+  re.lastIndex = 0;
+  return line.replace(re, (a, p, x, mid, lv, end) => p + (xp != null ? xp : x) + mid + (lvl != null ? lvl : lv) + end);
+}
+// Grants: character record, field #1A81. Entry: {first: reward claimed, second: {type, state: {counter, #6F50: {#2B12: status}}}}.
+// Name, counter field and target of each known grant come from the game data (kind: int / float / money / permits / none).
+const GRANTS = {"mhTiNK":["I Survived the Airport","none",null,null,"",0],"tlkrve":["All the Paperwork Is Done","none",null,null,"",0],"LTGH3K":["The First Box Left the Garage","none",null,null,"",0],"FAR6rl":["Now We Have a Van","none",null,null,"",0],"LHktFA":["Not Alone Anymore","none",null,null,"",0],"cyHfkB":["Bigger Than the Garage","none",null,null,"",0],"neGT3h":["An Office With a Real Desk","none",null,null,"",0],"cF6l0c":["Goodbye, Airport Clothes","int","#8211",1,"",0],"ER4can":["A Chair Is a Start","int","#8211",1,"",0],"tYpuzu":["I Have Business Cards Now","none",null,null,"",0],"SJUGln":["Freedom Is Sold by the Liter","int","#8211",1000,"ml",0],"ibf9YU":["It Was Making a Noise","int","#8211",1,"",0],"gu1tHC":["The Other Driver Was Wrong","int","#8211",1,"",0],"UKthT5":["It Was Cheap for a Reason","int","#8211",1,"",0],"KGnmny":["I Own a Door Now","none",null,null,"",0],"QrzBLZ":["Who Needs a Car?","float","#2B69",500000,"cm",0],"XOU4J4":["The Long Way, Every Time","float","#2B69",2500000,"cm",0],"K0dUER":["The Gas Station Knows My Name","int","#8211",500000,"ml",0],"t2uJaR":["Not a Tourist","none",null,null,"",0],"yQdPws":["Eight Hours, as the Doctor Said","none",null,null,"",0],"9Rz83I":["Someone Actually Bought It","int","#D81F",1,"",0],"GnOVZS":["This Is a Real Business","int","#D81F",100,"",0],"MgiZdq":["We Deliver to Everyone","int","#D81F",1000,"",0],"twhE8t":["Made by Hand, Mostly","int","#55E8",200,"",0],"2u0821":["People Have Heard of Us","none",null,null,"",0],"H5vTq1":["We Sell Everything Now","none",null,null,"",0],"bnIaTu":["I Am the Boss Now","int","#8211",5,"",0],"2wpdve":["An Investment in People","int","#8211",1,"",0],"K5tW6b":["Overqualified","none",null,null,"",0],"yL8YOI":["I Have Not Delivered in Weeks","int","#D81F",100,"",0],"mVnSx0":["Five Digits","money","#08D9",10000,"$",0],"2zUM9J":["Six Digits","money","#08D9",100000,"$",0],"FZP5OF":["The First Million","money","#08D9",1000000,"$",0],"ahBEWX":["Room for More Machines","int","#8211",1,"",0],"vpIyHU":["Too Big to Clean","int","#8211",1,"",0],"vQxjWR":["We Removed a Wall","int","#8211",1,"",0],"gCFQBq":["My Vans Have Names","int","#8211",3,"",0],"YWiVRD":["The Deluxe One","int","#8211",1,"",0],"yOg7al":["It Is Faster Now, Probably","int","#8211",1,"",0],"JdJc5J":["Someone to Blame","none",null,null,"",0],"XbBvyv":["50/50, as We Agreed","none",null,null,"",0],"KhcLNr":["Yes, I Am the Real Pionero","none",null,null,"",1],"RPmrKq":["Honest Work","int","#8F32",1,"",0],"4I5Ed1":["The Truck Is Not Mine","int","#8F32",5,"",0],"ht3XWH":["Not a Scratch","int","#8211",30,"",0],"Dn5PFz":["Night Shift","int","#8211",1,"",0],"SlNY2t":["Lives in the Cab","none",null,null,"",0],"Q0lr5M":["Trees Do Not Fight Back","int","#8F32",8,"",0],"pOdYmw":["One Hundred Trees","int","#8211",100,"",0],"LUEAZj":["Rain Is Not an Excuse","int","#8211",1,"",0],"WGo1D6":["The Forest Is Afraid","none",null,null,"",0],"BpwVGZ":["Still Lost, but Less","none",null,null,"",0],"yxgai7":["The State Believes in Me","permits",null,null,"",0],"HTEEaw":["Pockets Everywhere","permits",null,null,"",0],"SBAoou":["The Neighbors Say Hello","none",null,null,"",0],"3PoAzy":["Coffee Is Optional Now","permits",null,null,"",0],"op3AgK":["My Car Is Not Stock Anymore","permits",null,null,"",0],"A9wz2k":["A Car for Every Mood","permits",null,null,"",0],"8fEGF3":["A Local Now","none",null,null,"",0],"Mq0nWT":["Thirty Days, No Refunds","int","#3A1F",30,"",0]};
+const GRANT_GROUPS = [["Story",["mhTiNK","tlkrve","LTGH3K","FAR6rl","LHktFA","cyHfkB","neGT3h"]],["New Citizen",["cF6l0c","ER4can","tYpuzu","SJUGln","ibf9YU","gu1tHC","UKthT5","KGnmny"]],["Exploration",["QrzBLZ","XOU4J4","K0dUER","t2uJaR","yQdPws"]],["Company",["9Rz83I","GnOVZS","MgiZdq","twhE8t","2u0821","H5vTq1","bnIaTu","2wpdve","K5tW6b","yL8YOI","mVnSx0","2zUM9J","FZP5OF"]],["Facilities & Fleet",["ahBEWX","vpIyHU","vQxjWR","gCFQBq","YWiVRD","yOg7al"]],["Co-op",["JdJc5J","XbBvyv","KhcLNr"]],["Side Jobs",["RPmrKq","4I5Ed1","ht3XWH","Dn5PFz","SlNY2t","Q0lr5M","pOdYmw","LUEAZj","WGo1D6"]],["Character Progression",["BpwVGZ","yxgai7","HTEEaw","SBAoou","3PoAzy","op3AgK","A9wz2k","8fEGF3","Mq0nWT"]]];
+function readGrants(save){
+  const ch = save.recs.find(r => r.col === 'character'); if (!ch) return null;
+  const map = ch.obj['#1A81']; if (!map || typeof map !== 'object') return null;
+  const L = save.lines[ch.idx], out = [];
+  Object.keys(map).forEach(k => {
+    const m = /^#8B6C\.(.+)$/.exec(k), v = map[k]; if (!m || !v || !v.second || !v.second.state) return;
+    const gid = m[1], st = v.second.state, status = st['#6F50'] && st['#6F50']['#2B12'], def = GRANTS[gid];
+    let cur = null;
+    if (def && def[2] && st[def[2]] != null) cur = def[1] === 'money' ? (st[def[2]] && st[def[2]].amount) : st[def[2]];
+    out.push({ idx: ch.idx, gid, name: def ? def[0] : gid, known: !!def, kind: def ? def[1] : 'none', key: def && def[2], target: def && def[3], unit: def ? def[4] : '', claimed: v.first === true, status, cur, type: v.second.type, once: L.split('"#8B6C.' + gid + '":').length === 2 });
+  });
+  const have = new Set(out.map(g => g.gid));
+  GRANT_GROUPS.forEach(gr => gr[1].forEach(id => { const d = GRANTS[id]; if (d && !d[5] && !have.has(id)) out.push({ idx: ch.idx, gid: id, name: d[0], known: true, kind: d[1], key: d[2], target: d[3], unit: d[4], claimed: false, status: 'NOT_STARTED', cur: null, type: null, once: false, virtual: true }); }));
+  return out;
+}
+function grantEditable(g){ return !g.virtual && g.known && g.once && g.status === 'IN_PROGRESS' && !g.claimed && g.key && g.target != null && (g.kind === 'int' || g.kind === 'float' || g.kind === 'money') && g.cur != null; }
+function setGrantLine(line, g){
+  const head = '"#8B6C.' + g.gid + '":', a = line.indexOf(head);
+  if (a < 0 || line.indexOf(head, a + 1) >= 0) throw new Error('Grant ' + g.gid + ' not found.');
+  const b = a + head.length; if (line[b] !== '{') throw new Error('Grant ' + g.gid + ' is malformed.');
+  let depth = 0, inStr = false, esc = false, e = -1;
+  for (let i = b; i < line.length; i++){
+    const c = line[i];
+    if (inStr){ if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false; continue; }
+    if (c === '"') inStr = true; else if (c === '{') depth++; else if (c === '}'){ depth--; if (depth === 0){ e = i + 1; break; } }
+  }
+  if (e < 0) throw new Error('Grant ' + g.gid + ' is malformed.');
+  let t = line.slice(b, e);
+  if (t.split('"IN_PROGRESS"').length !== 2 || !t.startsWith('{"first":false,')) throw new Error('Grant ' + g.gid + ' is not in progress.');
+  t = t.replace('"IN_PROGRESS"', '"COMPLETED"');
+  const k = g.key.replace('#', '\\#');
+  if (g.kind === 'money'){ const r = new RegExp('("' + k + '":\\{"currency":"[A-Z]+","amount":)-?[\\d.]+'); if (!r.test(t)) throw new Error('Counter of ' + g.gid + ' not found.'); t = t.replace(r, '$1' + g.target); }
+  else { const r = new RegExp('("' + k + '":)-?[\\d.eE+-]+'); if (!r.test(t)) throw new Error('Counter of ' + g.gid + ' not found.'); t = t.replace(r, '$1' + (g.kind === 'float' ? g.target + '.0' : g.target)); }
+  JSON.parse(t);
+  return line.slice(0, b) + t + line.slice(e);
+}
+// Warehouse managers: the shelves each one looks after are a persistent list in the task state (#B73F).
+function readManagers(save){
+  const out = [];
+  save.recs.forEach(r => {
+    if (r.col !== 'employees') return;
+    const st = r.obj['#A30A'] && r.obj['#A30A'].state;
+    if (!st || !Array.isArray(st['#B73F'])) return;
+    const L = save.lines[r.idx], M = '"#B73F":[', i = L.indexOf(M);
+    let ok = i >= 0 && L.indexOf(M, i + 1) < 0 && st['#B73F'].every(x => x && x['#68EF'] && typeof x['#68EF'].id === 'string' && typeof x['#02B3'] === 'number');
+    if (ok){ const e = arrayEnd(L, i + M.length - 1); ok = e > 0 && JSON.stringify(st['#B73F']) === L.slice(i + M.length - 1, e); }
+    out.push({ idx: r.idx, id: r.obj._id, name: r.obj['#3BFC'] || r.obj._id, building: r.obj['#1563'] && r.obj['#1563'].id, state: st['#79D7'] || '', list: st['#B73F'].map(x => ({ id: x['#68EF'].id, n: x['#02B3'] })), ok });
+  });
+  return out;
+}
+function setAssignLine(line, list){
+  const M = '"#B73F":[', i = line.indexOf(M);
+  if (i < 0 || line.indexOf(M, i + 1) >= 0) throw new Error('Shelf assignments not found.');
+  const a = i + M.length - 1, e = arrayEnd(line, a);
+  if (e < 0) throw new Error('Shelf assignments are malformed.');
+  return line.slice(0, a) + JSON.stringify(list.map(x => ({ '#68EF': { id: x.id }, '#02B3': x.n }))) + line.slice(e);
+}
 function fillShelfLine(line, code, qty, tag, slots){
   const M = '"#7D40":{"items":[';
   const i = line.indexOf(M);
@@ -1124,19 +1327,41 @@ function readSales(o){
     inp.oninput = refresh;
   }
 
+  function fillLevel(id, cur, caps, names, xpId, bare){
+    const sel = $(id), now = $('now-' + id);
+    sel.innerHTML = '';
+    if (cur == null || !caps){ sel.disabled = true; now.textContent = 'Not found'; return; }
+    const top = caps.length - 1;
+    for (let i = 0; i <= Math.max(top, cur); i++){
+      const o = document.createElement('option'); o.value = i;
+      o.textContent = (bare && names && names[i] ? names[i] : (i + 1) + (names && names[i] ? ' · ' + names[i] : '')) + (i > top ? ' (not in the tables)' : '');
+      if (i > top && i !== cur) o.disabled = true;
+      sel.appendChild(o);
+    }
+    sel.value = String(cur); sel.dataset.orig = cur; sel.disabled = false;
+    now.textContent = 'Current: ' + (bare && names && names[cur] ? names[cur] : (cur + 1) + (names && names[cur] ? ' · ' + names[cur] : '')) + (caps[cur] != null ? ' · cap ' + fmt(caps[cur]) + ' XP' : '');
+    sel.onchange = () => {
+      const x = $(xpId);
+      if (!x.disabled) x.value = Number(sel.value) === cur ? groupDots(x.dataset.orig) : '0';
+      refresh();
+    };
+  }
+
   function fillBiz(){
     const b = model.bizs[bizIdx];
     $('bizname').textContent = b ? '· ' + b.name : '';
-    if (!b){ ['bmoney','bxp'].forEach(id => bindNum(id, null, 'Not found')); return; }
+    if (!b){ ['bmoney','bxp'].forEach(id => bindNum(id, null, 'Not found')); fillLevel('blvl', null); return; }
     bindNum('bmoney', b.money, 'Current: ' + fmt(b.money));
-    bindNum('bxp', b.xp, b.xp != null ? 'Current: ' + fmt(b.xp) + ' (level ' + (b.level + 1) + ')' : 'Not found');
+    bindNum('bxp', b.xp, b.xp != null ? 'Current: ' + fmt(b.xp) : 'Not found');
+    fillLevel('blvl', b.level, BIZ_LEVELS.map(x => x[0]), BIZ_LEVELS.map(x => x[1]), 'bxp');
   }
 
   function render(){
     world = readWorld(save); pending = [];
     const c = model.char || {};
     bindNum('cmoney', c.money, c.money != null ? 'Current: ' + fmt(c.money) : 'Not found');
-    bindNum('cxp', c.xp, c.xp != null ? 'Current: ' + fmt(c.xp) + ' (level ' + (c.level + 1) + ')' : 'Not found');
+    bindNum('cxp', c.xp, c.xp != null ? 'Current: ' + fmt(c.xp) : 'Not found');
+    fillLevel('clvl', c.level, CHAR_XP, CHAR_XP.map((x, i) => 'Citizen ' + (i + 1)), 'cxp', true);
     bindNum('csp', c.sp, c.sp != null ? 'Current: ' + fmt(c.sp) : 'Not found');
     const sel = $('bizsel'); sel.innerHTML = '';
     model.bizs.forEach((b, i) => { const o = document.createElement('option'); o.value = i; o.textContent = b.name; sel.appendChild(o); });
@@ -1158,7 +1383,7 @@ function readSales(o){
         const o = document.createElement('option'); o.value = b.id; o.textContent = b.name; if (b.id === e.building) o.selected = true; ps.appendChild(o);
       });
       if (!bld){ const o = document.createElement('option'); o.value = e.building || ''; o.textContent = '—'; o.selected = true; ps.prepend(o); }
-      ps.onchange = () => { e.prop = ps.selectedOptions[0].textContent; updatePropOptions(); renderProps(); refresh(); };
+      ps.onchange = () => { e.prop = ps.selectedOptions[0].textContent; sortEmps(); updatePropOptions(); renderProps(); refresh(); };
       tr.children[1].appendChild(ps);
       const s = document.createElement('select'); s.id = 'emp-' + i; s.setAttribute('aria-label', 'New level for ' + e.name);
       [1,2,3].forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; if (v === e.level) o.selected = true; s.appendChild(o); });
@@ -1193,12 +1418,115 @@ function readSales(o){
     renderNeed();
     renderVehForm();
     store = readStorage(save); refills = new Set(); renderStorage(); renderSales();
+    jobs = readJobs(save); renderJobs(); grants = readGrants(save) || []; grantSel = new Set(); renderGrants();
+    managers = readManagers(save); assign = {}; managers.forEach(m => { assign[m.id] = m.list.map(x => ({ id: x.id, n: x.n })); }); renderManagers();
     $('editor').classList.remove('hidden');
     refresh();
   }
 
 
   let world = null, pending = [];
+  // ---------- Jobs and grants (Character tab) ----------
+function grantUnit(u, v){
+    if (u === 'ml') return fmt(Math.floor(v / 1000)) + ' L';
+    if (u === 'cm') return (v / 100000).toFixed(1).replace('.', ',') + ' km';
+    if (u === '$') return '$' + fmt(Math.floor(v));
+    return fmt(Math.floor(v));
+  }
+  let jobs = [], grants = [], grantSel = new Set();
+  function renderJobs(){
+    const box = $('jobsBox'), grid = $('jobsGrid'); grid.innerHTML = '';
+    jobs.forEach((j, i) => {
+      const l = document.createElement('label'); l.className = 'field';
+      l.innerHTML = j.name + ' level<span class="now" id="now-jlvl' + i + '"></span><select id="jlvl' + i + '"></select>';
+      const x = document.createElement('label'); x.className = 'field';
+      x.innerHTML = j.name + ' experience<span class="now" id="now-jxp' + i + '"></span><input type="text" class="num" inputmode="numeric" autocomplete="off" id="jxp' + i + '">';
+      grid.append(l, x);
+      attachThousands($('jxp' + i));
+      bindNum('jxp' + i, j.ok ? j.xp : null, 'Current: ' + fmt(j.xp));
+      fillLevel('jlvl' + i, j.ok ? j.level : null, j.caps, null, 'jxp' + i);
+    });
+    box.classList.toggle('hidden', !jobs.length);
+  }
+  function renderGrants(){
+    const body = $('grantBody'); body.innerHTML = '';
+    const list = grants || [], by = {}; list.forEach(g => { by[g.gid] = g; });
+    const placed = new Set(), groups = GRANT_GROUPS.map(gr => [gr[0], gr[1].filter(id => by[id])]);
+    groups.forEach(gr => gr[1].forEach(id => placed.add(id)));
+    const rest = list.filter(g => !placed.has(g.gid)).map(g => g.gid);
+    if (rest.length) groups.push(['Other', rest]);
+    groups.forEach(([gname, ids]) => {
+      if (!ids.length) return;
+      const claimed = ids.filter(id => by[id].claimed).length;
+      const ht = document.createElement('tr'); ht.className = 'grouprow';
+      const hc = document.createElement('td'); hc.colSpan = 4; hc.textContent = gname + ' · ' + claimed + '/' + ids.length; ht.appendChild(hc); body.appendChild(ht);
+      ids.forEach(id => {
+        const g = by[id], tr = document.createElement('tr');
+        const prog = g.cur != null && g.target != null ? grantUnit(g.unit, g.cur) + ' / ' + grantUnit(g.unit, g.target) : (g.kind === 'permits' ? 'follows permits' : '—');
+        const state = g.claimed ? 'Claimed' : (g.status === 'COMPLETED' ? 'Claimable' : (g.status === 'IN_PROGRESS' ? 'In progress' : (g.status === 'NOT_STARTED' ? 'Not started' : (g.status || '—'))));
+        const c1 = document.createElement('td'); c1.textContent = g.name;
+        const c2 = document.createElement('td'); c2.textContent = prog;
+        const c3 = document.createElement('td'); const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = state; c3.appendChild(tag);
+        const c4 = document.createElement('td');
+        if (grantEditable(g)){
+          const cb = document.createElement('input'); cb.type = 'checkbox'; cb.className = 'chkbox grantcb'; cb.checked = grantSel.has(g.gid); cb.setAttribute('aria-label', 'Complete ' + g.name);
+          cb.onchange = () => { if (cb.checked) grantSel.add(g.gid); else grantSel.delete(g.gid); refresh(); };
+          c4.appendChild(cb);
+        } else if (g.status === 'IN_PROGRESS'){ c4.textContent = g.kind === 'permits' ? 'permits' : 'derived'; c4.className = 'hint'; }
+        else if (g.virtual){ c4.textContent = '—'; c4.className = 'hint'; }
+        tr.append(c1, c2, c3, c4); body.appendChild(tr);
+      });
+    });
+    const n = list.filter(grantEditable).length, real = list.filter(g => !g.virtual).length;
+    $('grantNote').textContent = list.length ? n + ' of ' + real + ' grants with a record in this save can be completed here. "Not started" grants have no record yet, so the game has to create them first.' : 'No grants found in this save.';
+    $('grantSection').classList.toggle('hidden', !list.length);
+  }
+  // ---------- Warehouse managers ----------
+  let managers = [], assign = {};
+  const MGR_LIMIT = 4;
+  function renderManagers(){
+    const root = $('mgrs'); root.innerHTML = '';
+    if (!managers.length){ root.innerHTML = '<p class="hint">No warehouse managers with shelf lists were found in this save.</p>'; return; }
+    const info = {};
+    store.forEach(P => P.shelves.forEach((sh, k) => { info[sh.id] = { prop: P.name, pid: P.id, k: k + 1, code: sh.assigned, slots: sh.slots, q: sh.q }; }));
+    const taken = new Set(); Object.keys(assign).forEach(id => assign[id].forEach(x => taken.add(x.id)));
+    const label = id => {
+      const i = info[id]; if (!i) return id;
+      const it = itemInfo(i.code), cap = it.stack ? i.slots * it.stack : null, st = i.q[i.code] || 0;
+      return (i.code ? it.name : 'No product') + (cap ? ' · ' + fmt(st) + '/' + fmt(cap) : '') + ' · shelf ' + i.k;
+    };
+    let lastP = null;
+    managers.slice().sort((x, y) => { const nx = (store.find(P => P.id === x.building) || {}).name || '', ny = (store.find(P => P.id === y.building) || {}).name || ''; return nx.localeCompare(ny) || String(x.name).localeCompare(String(y.name)); }).forEach(m => {
+      const gp = store.find(P => P.id === m.building);
+      if ((gp ? gp.id : '') !== lastP){ lastP = gp ? gp.id : ''; const cnt = managers.filter(z => z.building === m.building).length; const gh = document.createElement('div'); gh.className = 'ghead'; gh.textContent = (gp ? gp.name : '—') + ' · ' + cnt + (cnt === 1 ? ' manager' : ' managers'); root.appendChild(gh); }
+      const list = assign[m.id], box = document.createElement('div'); box.className = 'mgr';
+      const bld = store.find(P => P.id === m.building), changed = JSON.stringify(list) !== JSON.stringify(m.list);
+      const head = document.createElement('div'); head.className = 'mgrhead';
+      const t = document.createElement('strong'); t.textContent = m.name + ' · ' + (bld ? bld.name : '—');
+      const c = document.createElement('span'); c.className = list.length > MGR_LIMIT ? 'over' : 'hint'; c.style.margin = '0';
+      c.textContent = list.length + ' shelves' + (list.length > MGR_LIMIT ? ' (above the game limit of ' + MGR_LIMIT + ')' : '') + ' · now: ' + (m.state || '—').toLowerCase().replace(/_/g, ' ') + (changed ? ' · changed' : '');
+      head.append(t, c); box.appendChild(head);
+      if (!m.ok){ const p = document.createElement('p'); p.className = 'hint'; p.textContent = 'The shelf list of this manager has an unexpected format and is not editable.'; box.appendChild(p); root.appendChild(box); return; }
+      const ul = document.createElement('ul');
+      list.forEach((x, i) => {
+        const li = document.createElement('li'); const sp = document.createElement('span'); sp.textContent = label(x.id);
+        const rm = document.createElement('button'); rm.type = 'button'; rm.textContent = 'Remove'; rm.setAttribute('aria-label', 'Remove ' + label(x.id) + ' from ' + m.name);
+        rm.onclick = () => { assign[m.id].splice(i, 1); renderManagers(); refresh(); };
+        li.append(sp, rm); ul.appendChild(li);
+      });
+      if (!list.length){ const li = document.createElement('li'); li.textContent = 'No shelves assigned.'; ul.appendChild(li); }
+      box.appendChild(ul);
+      const free = Object.keys(info).filter(id => info[id].pid === m.building && info[id].code && !taken.has(id)).sort((a, b) => label(a).localeCompare(label(b)));
+      const add = document.createElement('div'); add.className = 'addrow';
+      const sel = document.createElement('select'); sel.setAttribute('aria-label', 'Shelf to add to ' + m.name);
+      free.forEach(id => { const o = document.createElement('option'); o.value = id; o.textContent = label(id); sel.appendChild(o); });
+      const btn = document.createElement('button'); btn.type = 'button'; btn.textContent = 'Add shelf'; btn.disabled = !free.length;
+      btn.onclick = () => { assign[m.id].push({ id: sel.value, n: info[sel.value].slots }); renderManagers(); refresh(); };
+      if (!free.length){ const o = document.createElement('option'); o.textContent = 'No unassigned shelves'; sel.appendChild(o); sel.disabled = true; }
+      add.append(sel, btn); box.appendChild(add); root.appendChild(box);
+    });
+  }
+
   // ---------- Storage tab ----------
   let store = null, refills = new Set();
   const rkey = (pid, code) => pid + '|' + code;
@@ -1206,19 +1534,20 @@ function readSales(o){
   function renderStorage(){
     const root = $('stor'); root.innerHTML = '';
     if (!store.length){ root.innerHTML = '<p class="hint">No storage shelves were found in this save.</p>'; return; }
+    const wrap = document.createElement('div'); wrap.className = 'wrap';
+    const tbl = document.createElement('table');
+    tbl.innerHTML = '<thead><tr><th>Item</th><th>Type</th><th>Stock</th><th>Capacity</th><th>Filled</th><th>Shelves</th><th></th></tr></thead>';
+    const tb = document.createElement('tbody');
     store.forEach(P => {
-      const sec = document.createElement('div'); sec.className = 'prop';
-      const head = document.createElement('div'); head.className = 'prophead';
-      const h = document.createElement('h3'); h.textContent = P.name + ' · ' + P.shelfCount + ' shelves';
+      const ht = document.createElement('tr'); ht.className = 'grouprow';
+      const hc = document.createElement('td'); hc.colSpan = 7;
+      const line = document.createElement('div'); line.className = 'gline';
+      const h = document.createElement('span'); h.textContent = P.name + ' · ' + P.shelfCount + ' shelves';
       const all = document.createElement('button'); all.type = 'button'; all.textContent = 'Refill everything';
       const elig = P.rows.filter(r => r.plan && r.plan.add > 0);
       all.disabled = !elig.length;
       all.onclick = () => { const on = elig.every(r => refills.has(rkey(P.id, r.code))); elig.forEach(r => { on ? refills.delete(rkey(P.id, r.code)) : refills.add(rkey(P.id, r.code)); }); renderStorage(); refresh(); };
-      head.append(h, all); sec.appendChild(head);
-      const wrap = document.createElement('div'); wrap.className = 'wrap';
-      const tbl = document.createElement('table');
-      tbl.innerHTML = '<thead><tr><th>Item</th><th>Type</th><th>Stock</th><th>Capacity</th><th>Filled</th><th>Shelves</th><th></th></tr></thead>';
-      const tb = document.createElement('tbody');
+      line.append(h, all); hc.appendChild(line); ht.appendChild(hc); tb.appendChild(ht);
       P.rows.forEach(r => {
         const tr = document.createElement('tr');
         const on = refills.has(rkey(P.id, r.code));
@@ -1248,8 +1577,8 @@ function readSales(o){
         tb.appendChild(tr);
       });
       if (!P.rows.length){ const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="7">No item is assigned to these shelves and none are stored on them.</td>'; tb.appendChild(tr); }
-      tbl.appendChild(tb); wrap.appendChild(tbl); sec.appendChild(wrap); root.appendChild(sec);
     });
+    tbl.appendChild(tb); wrap.appendChild(tbl); root.appendChild(wrap);
   }
   function totalStock(code){ return store.reduce((t, P) => t + P.rows.reduce((u, r) => u + (r.code === code ? r.stock : 0), 0), 0); }
 
@@ -1478,8 +1807,8 @@ function readSales(o){
   let vehicles = [];
   function renderVehicles(){
     vehicles = readVehicles(save);
-    const tb = $('vehs'); tb.innerHTML = '';
-    if (!vehicles.length){ const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="10">No vehicles in this save.</td>'; tb.appendChild(tr); }
+    const tbC = $('vehs'), tbP = $('pvehs'); tbC.innerHTML = ''; tbP.innerHTML = '';
+    [[tbC, 'Company', 'company'], [tbP, 'Personal', 'personal']].forEach(([tb, o, label]) => { if (!vehicles.some(v => (v.owner === 'Company') === (o === 'Company'))){ const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="9">No ' + label + ' vehicles in this save.</td>'; tb.appendChild(tr); } });
     vehicles.forEach((v, i) => {
       const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
       if (v.cargo == null){ tr.children[5].textContent = '—'; }
@@ -1553,8 +1882,22 @@ function readSales(o){
         csel.onchange = refresh; ctd.appendChild(csel);
       }
       tr.insertBefore(ctd, tr.children[3]);
-      tb.appendChild(tr);
+      v.tr = tr; (v.owner === 'Company' ? tbC : tbP).appendChild(tr);
     });
+    // Company vehicles grouped by (inferred) property, same header style as the grants
+    tbC.querySelectorAll('tr.grouprow').forEach(r => r.remove());
+    const cv = vehicles.filter(v => v.owner === 'Company' && v.tr);
+    if (cv.length){
+      const nm = id => { const b = world && world.buildings.find(x => x.id === id); return b ? b.name : null; };
+      const keyOf = v => (v.propId && nm(v.propId)) ? v.propId : '';
+      const keys = [...new Set(cv.map(keyOf))].sort((a, b) => (a === '' ? 1 : 0) - (b === '' ? 1 : 0) || (nm(a) || '').localeCompare(nm(b) || ''));
+      const cols = tbC.closest('table').querySelectorAll('thead th').length;
+      keys.forEach(k => {
+        const mem = cv.filter(v => keyOf(v) === k), ht = document.createElement('tr'); ht.className = 'grouprow';
+        const hc = document.createElement('td'); hc.colSpan = cols; hc.textContent = (k ? nm(k) : 'Elsewhere (not parked at a property)') + ' · ' + mem.length + (mem.length === 1 ? ' vehicle' : ' vehicles'); ht.appendChild(hc); tbC.appendChild(ht);
+        mem.forEach(v => tbC.appendChild(v.tr));
+      });
+    }
   }
 
 
@@ -1602,14 +1945,15 @@ function readSales(o){
   }
   function renderFleet(){
     if (!fleet) return;
-    const tb = $('fleet'); tb.innerHTML = '';
-    [['personal', 'Personal (1 + Personal Vehicle permits)'], ['company', 'Company']].forEach(([k, label]) => {
+    const blocked = !fleet.pos || fleet.indoors;
+    [['personal', 'Personal (1 + Personal Vehicle permits)', 'p'], ['company', 'Company', '']].forEach(([k, label, pre]) => {
+      const tb = $(pre + 'fleet'); tb.innerHTML = '';
       const f = fleetFree(k);
       const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td>';
       tr.children[0].textContent = label;
       const lim = Math.max(f.lim, 1), cur = Math.min(f.cur, lim), extra = Math.max(0, Math.min(f.add, lim - cur));
       const wrap = document.createElement('div'); wrap.className = 'cap';
-      const bar = document.createElement('div'); bar.className = 'bar'; bar.setAttribute('role', 'progressbar'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', String(f.lim)); bar.setAttribute('aria-valuenow', String(f.cur + f.add)); bar.setAttribute('aria-label', label + ': ' + (f.cur + f.add) + ' of ' + f.lim + ' vehicles');
+      const bar = document.createElement('div'); bar.className = 'bar'; bar.setAttribute('role', 'progressbar'); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', String(f.lim)); bar.setAttribute('aria-valuenow', String(f.cur + f.add)); bar.setAttribute('aria-label', label + ' vehicles');
       const f1 = document.createElement('span'); f1.className = 'fill'; f1.style.width = (cur / lim * 100) + '%';
       const f2 = document.createElement('span'); f2.className = 'fill new'; f2.style.width = (extra / lim * 100) + '%';
       bar.append(f1, f2);
@@ -1618,44 +1962,50 @@ function readSales(o){
       wrap.append(bar, t); tr.children[1].appendChild(wrap);
       tr.children[2].textContent = Math.max(0, f.free) + (f.free < 0 ? ' (over the limit)' : '');
       tb.appendChild(tr);
+      $(pre + 'vAddBtn').disabled = blocked || f.free <= 0;
+      if (blocked) msg($(pre + 'vMsg'), 'Your character was inside a building when this game was saved. Save again while standing outside to add vehicles.', 'bad');
     });
-    const blocked = !fleet.pos || fleet.indoors;
-    $('vAddBtn').disabled = blocked || fleetFree($('vOwner').value).free <= 0;
-    if (blocked) msg($('vMsg'), 'Your character was inside a building when this game was saved. Save again while standing outside to add vehicles.', 'bad');
   }
   function renderVehForm(){
     fleet = readFleet(save); vPending = [];
-    fillVModels();
-    const cs = $('vColor'); cs.innerHTML = '<option value="random">Random</option>';
-    VEH_COLORS.forEach(([code, name]) => { const o = document.createElement('option'); o.value = code; o.textContent = name; cs.appendChild(o); });
-    $('vMsg').innerHTML = ''; renderVPending(); renderFleet();
+    ['', 'p'].forEach(pre => {
+      fillVModels(pre);
+      const cs = $(pre + 'vColor'); cs.innerHTML = '<option value="random">Random</option>';
+      VEH_COLORS.forEach(([code, name]) => { const o = document.createElement('option'); o.value = code; o.textContent = name; cs.appendChild(o); });
+      $(pre + 'vMsg').innerHTML = '';
+    });
+    renderVPending(); renderFleet();
   }
-  function fillVModels(){
-    const ms = $('vModel'), keep = ms.value, owner = $('vOwner').value; ms.innerHTML = '';
+  function fillVModels(pre){
+    const ms = $(pre + 'vModel'), keep = ms.value, owner = $(pre + 'vOwner').value; ms.innerHTML = '';
     Object.keys(CARGO_SLOTS).filter(m => TANK_L[m] && canOwn(m, owner)).sort((a, b) => (MODEL_NAMES[a] || a).localeCompare(MODEL_NAMES[b] || b)).forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = MODEL_NAMES[m] || m; ms.appendChild(o); });
     if ([...ms.options].some(o => o.value === keep)) ms.value = keep;
   }
   function renderVPending(){
-    const tb = $('vPending'); tb.innerHTML = ''; $('vPendingTbl').classList.toggle('hidden', !vPending.length);
-    vPending.forEach((v, i) => {
-      const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td>';
-      tr.children[0].textContent = MODEL_NAMES[v.model] || v.model; tr.children[1].textContent = COLOR_NAME[v.color] || v.color;
-      tr.children[2].textContent = v.owner === 'company' ? 'Company' : 'Personal'; tr.children[3].textContent = fmtPlate(v.plate);
-      const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'link'; rm.textContent = 'Remove'; rm.setAttribute('aria-label', 'Remove ' + (MODEL_NAMES[v.model] || v.model) + ' ' + fmtPlate(v.plate));
-      rm.onclick = () => { vPending.splice(i, 1); renderVPending(); renderFleet(); refresh(); };
-      tr.children[4].appendChild(rm); tb.appendChild(tr);
+    ['', 'p'].forEach(pre => {
+      const tb = $(pre + 'vPending'); tb.innerHTML = '';
+      const items = vPending.map((v, i) => [v, i]).filter(([v]) => (v.owner === 'personal') === (pre === 'p'));
+      $(pre + 'vPendingTbl').classList.toggle('hidden', !items.length);
+      items.forEach(([v, i]) => {
+        const tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td>';
+        tr.children[0].textContent = MODEL_NAMES[v.model] || v.model; tr.children[1].textContent = COLOR_NAME[v.color] || v.color;
+        tr.children[2].textContent = v.owner === 'company' ? 'Company' : 'Personal'; tr.children[3].textContent = fmtPlate(v.plate);
+        const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'link'; rm.textContent = 'Remove'; rm.setAttribute('aria-label', 'Remove ' + (MODEL_NAMES[v.model] || v.model) + ' ' + fmtPlate(v.plate));
+        rm.onclick = () => { vPending.splice(i, 1); renderVPending(); renderFleet(); refresh(); };
+        tr.children[4].appendChild(rm); tb.appendChild(tr);
+      });
     });
   }
-  function addVehicles(){
-    const owner = $('vOwner').value, qty = Number($('vQty').value), f = fleetFree(owner);
-    if (!canOwn($('vModel').value, owner)){ msg($('vMsg'), (MODEL_NAMES[$('vModel').value] || $('vModel').value) + ' cannot be a ' + owner + ' vehicle.', 'bad'); return; }
-    if (!Number.isInteger(qty) || qty < 1){ msg($('vMsg'), 'Quantity must be a whole number of at least 1.', 'bad'); return; }
-    if (qty > f.free){ msg($('vMsg'), (owner === 'company' ? 'Company' : 'Personal') + ' vehicles only have ' + Math.max(0, f.free) + ' free slot' + (f.free === 1 ? '' : 's') + '.', 'bad'); return; }
-    $('vMsg').innerHTML = '';
+  function addVehicles(pre){
+    const owner = $(pre + 'vOwner').value, qty = Number($(pre + 'vQty').value), f = fleetFree(owner), M = $(pre + 'vMsg');
+    if (!canOwn($(pre + 'vModel').value, owner)){ msg(M, (MODEL_NAMES[$(pre + 'vModel').value] || $(pre + 'vModel').value) + ' cannot be a ' + owner + ' vehicle.', 'bad'); return; }
+    if (!Number.isInteger(qty) || qty < 1){ msg(M, 'Quantity must be a whole number of at least 1.', 'bad'); return; }
+    if (qty > f.free){ msg(M, (owner === 'company' ? 'Company' : 'Personal') + ' vehicles only have ' + Math.max(0, f.free) + ' free slot' + (f.free === 1 ? '' : 's') + '.', 'bad'); return; }
+    M.innerHTML = '';
     const taken = new Set([...fleet.plates, ...vPending.map(v => v.plate)]);
     for (let n = 0; n < qty; n++){
-      const color = $('vColor').value === 'random' ? VEH_COLORS[rnd(VEH_COLORS.length)][0] : $('vColor').value;
-      vPending.push({ model: $('vModel').value, color, owner, plate: newPlate(taken) });
+      const color = $(pre + 'vColor').value === 'random' ? VEH_COLORS[rnd(VEH_COLORS.length)][0] : $(pre + 'vColor').value;
+      vPending.push({ model: $(pre + 'vModel').value, color, owner, plate: newPlate(taken) });
     }
     renderVPending(); renderFleet(); refresh();
   }
@@ -1688,11 +2038,16 @@ function readSales(o){
       return (sortKey !== 'prop' ? coll.compare(a.prop, b.prop) : 0) || (sortKey !== 'skill' ? coll.compare(a.nice, b.nice) : 0) || coll.compare(a.name, b.name);
     });
     const tb = $('emps');
-    rows.forEach((e, k) => {
-      const prev = rows[k - 1];
-      e.tr.classList.toggle('grp', sortKey === 'prop' && k > 0 && prev.prop !== e.prop);
-      e.tr.classList.toggle('subgrp', sortKey === 'prop' && k > 0 && prev.prop === e.prop && prev.nice !== e.nice);
-      tb.appendChild(e.tr);
+    tb.querySelectorAll('tr.grouprow').forEach(r => r.remove());
+    // Always grouped by property; the chosen sort applies inside each group (or orders the groups when sorting by property)
+    const pkey = e => { const sel = $('empb-' + e.i); return sel ? sel.value : (e.building || ''); };
+    const gname = {}; rows.forEach(e => { gname[pkey(e)] = e.prop; });
+    const order = [...new Set(rows.map(pkey))].sort((a, b) => coll.compare(gname[a], gname[b]) * (sortKey === 'prop' ? sortDir : 1));
+    order.forEach(k => {
+      const mem = rows.filter(e => pkey(e) === k), b = world && world.buildings.find(x => x.id === k);
+      const ht = document.createElement('tr'); ht.className = 'grouprow';
+      const hc = document.createElement('td'); hc.colSpan = 7; hc.textContent = (gname[k] || '—') + ' · ' + mem.length + (b && !b.unknown && b.limit ? '/' + b.limit : ''); ht.appendChild(hc); tb.appendChild(ht);
+      mem.forEach(e => { e.tr.classList.remove('grp', 'subgrp'); tb.appendChild(e.tr); });
     });
     document.querySelectorAll('th[data-key]').forEach(th => {
       const on = th.dataset.key === sortKey;
@@ -1723,7 +2078,27 @@ function readSales(o){
     };
     edits.cmoney = num('cmoney', 'Personal money');
     edits.cxp = num('cxp', 'Personal experience');
+    if (model.char && model.char.level != null && !$('clvl').disabled){
+      const lv = Number($('clvl').value), o = model.char.level;
+      if (lv !== o){ edits.clvl = lv; $('clvl').classList.add('changed'); changes.push('Personal level: Citizen ' + (o + 1) + ' → Citizen ' + (lv + 1)); } else $('clvl').classList.remove('changed');
+      const xp = edits.cxp != null ? edits.cxp : model.char.xp, cap = CHAR_XP[lv];
+      if (cap != null && xp != null && xp >= cap) errors.push('Personal experience must be below ' + fmt(cap) + ' at level ' + (lv + 1) + '.');
+    }
     edits.csp = num('csp', 'Skill points');
+    jobs.forEach((j, i) => {
+      if (!j.ok || $('jlvl' + i).disabled) return;
+      const xpv = num('jxp' + i, j.name + ' experience'), lv = Number($('jlvl' + i).value);
+      let nl = null;
+      if (lv !== j.level){ nl = lv; $('jlvl' + i).classList.add('changed'); changes.push(j.name + ' level: ' + (j.level + 1) + ' → ' + (lv + 1)); } else $('jlvl' + i).classList.remove('changed');
+      const xp = xpv != null ? xpv : j.xp, cap = j.caps[lv], last = lv === j.caps.length - 1;
+      if (cap != null && (last ? xp > cap : xp >= cap)) errors.push(j.name + ' experience must be ' + (last ? 'at most ' : 'below ') + fmt(cap) + ' at level ' + (lv + 1) + '.');
+      if (xpv != null || nl != null){ (edits.jobs = edits.jobs || []).push({ idx: j.idx, id: j.id, xp: xpv, lvl: nl }); }
+    });
+    const gsel = grants.filter(g => grantSel.has(g.gid) && grantEditable(g));
+    if (gsel.length){
+      edits.grants = gsel.map(g => ({ idx: g.idx, gid: g.gid, key: g.key, kind: g.kind, target: g.target }));
+      changes.push('Grants completed (to claim in the game): ' + gsel.map(g => g.name).join(', '));
+    }
     if (needState && $('needRestore').checked && !$('needRestore').disabled){ edits.need = 100; changes.push('Needs: ' + Math.round(needState.value) + '% → 100%'); }
     if (permState){
       const want = new Set(PERMITS.filter(p => permBox(p.id) && permBox(p.id).checked).map(p => p.id));
@@ -1749,7 +2124,15 @@ function readSales(o){
     const b = model.bizs[bizIdx];
     if (b){
       const bm = num('bmoney', 'Company money'), bx = num('bxp', 'Company experience');
-      if (bm != null || bx != null) edits.biz = { idx: b.idx, bmoney: bm, bxp: bx };
+      let bl = null;
+      if (b.level != null && !$('blvl').disabled){
+        const lv = Number($('blvl').value);
+        if (lv !== b.level){ bl = lv; $('blvl').classList.add('changed'); changes.push('Company level: ' + (b.level + 1) + ' · ' + ((BIZ_LEVELS[b.level] || [])[1] || '') + ' → ' + (lv + 1) + ' · ' + BIZ_LEVELS[lv][1]); } else $('blvl').classList.remove('changed');
+        const xp = bx != null ? bx : b.xp, cap = BIZ_LEVELS[lv] && BIZ_LEVELS[lv][0];
+        const last = lv === BIZ_LEVELS.length - 1;
+        if (cap != null && xp != null && (last ? xp > cap : xp >= cap)) errors.push('Company experience must be ' + (last ? 'at most ' : 'below ') + fmt(cap) + ' at level ' + (lv + 1) + '.');
+      }
+      if (bm != null || bx != null || bl != null) edits.biz = { idx: b.idx, bmoney: bm, bxp: bx, blvl: bl };
     }
     let empChanged = 0;
     model.emps.forEach((e, i) => {
@@ -1819,6 +2202,10 @@ function readSales(o){
       pending.forEach(p => { const n = world.buildings.find(b => b.id === p.buildingId).name; per[n] = (per[n] || 0) + 1; });
       changes.push('New employees: ' + Object.keys(per).map(k => per[k] + ' at ' + k).join(', '));
     }
+    if (managers.length){
+      const ch = managers.filter(m => m.ok && JSON.stringify(assign[m.id]) !== JSON.stringify(m.list)).map(m => ({ idx: m.idx, id: m.id, list: assign[m.id] }));
+      if (ch.length){ edits.assign = ch; changes.push('Shelf assignments changed for ' + ch.length + ' warehouse manager' + (ch.length > 1 ? 's' : '') + (ch.some(x => x.list.length > MGR_LIMIT) ? ' (above the game limit of ' + MGR_LIMIT + ': experimental)' : '')); }
+    }
     if (store && refills.size){
       const lines = [];
       store.forEach(P => P.rows.forEach(r => {
@@ -1842,21 +2229,24 @@ function readSales(o){
     box.appendChild(ul); $('saveBtn').disabled = false; $('saveMsg').innerHTML = '';
   }
 
-  $('selDamaged').onclick = () => { document.querySelectorAll('#vehs .chk').forEach(c => { if (!c.disabled) c.checked = true; }); refresh(); };
   $('needRestore').onchange = refresh;
+  $('grantAll').onclick = () => { grants.forEach(g => { if (grantEditable(g)) grantSel.add(g.gid); }); renderGrants(); refresh(); };
+  $('grantNone').onclick = () => { grantSel.clear(); renderGrants(); refresh(); };
   $('permAll').onclick = () => { document.querySelectorAll('.permcb').forEach(c => { c.checked = true; }); refresh(); };
   $('permNone').onclick = () => { document.querySelectorAll('.permcb').forEach(c => { c.checked = false; }); refresh(); };
   $('permCharge').onchange = refresh;
-  $('vAddBtn').onclick = addVehicles;
-  $('vOwner').onchange = () => { fillVModels(); renderFleet(); };
-  function fillBulkModels(){
-    const own = $('bulkOwner').value === 'Company' ? 'company' : 'personal', bm = $('bulkModel'); bm.innerHTML = '';
+  $('vAddBtn').onclick = () => addVehicles('');
+  $('pvAddBtn').onclick = () => addVehicles('p');
+  function wireVehicleBulk(pre, ownerName){
+    const own = ownerName.toLowerCase(), bm = $(pre + 'bulkModel'); bm.innerHTML = '';
     Object.keys(CARGO_SLOTS).filter(m => TANK_L[m] && canOwn(m, own)).sort((a, b) => (MODEL_NAMES[a] || a).localeCompare(MODEL_NAMES[b] || b)).forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = MODEL_NAMES[m] || m; bm.appendChild(o); });
+    $(pre + 'bulkModelBtn').onclick = () => { vehicles.forEach((v, i) => { const sel = $('vmod-' + i); if (sel && v.owner === ownerName && [...sel.options].some(o => o.value === bm.value)){ sel.value = bm.value; sel.onchange(); } }); refresh(); };
+    const T = '#' + pre + 'vehs ';
+    $(pre + 'selDamaged').onclick = () => { document.querySelectorAll(T + '.chk').forEach(c => { if (!c.disabled) c.checked = true; }); refresh(); };
+    $(pre + 'selFuel').onclick = () => { document.querySelectorAll(T + '.chkf').forEach(c => { if (!c.disabled) c.checked = true; }); refresh(); };
+    $(pre + 'selNone').onclick = () => { document.querySelectorAll(T + '.chk, ' + T + '.chkf').forEach(c => { c.checked = false; }); refresh(); };
   }
-  $('bulkOwner').onchange = fillBulkModels; fillBulkModels();
-  $('bulkModelBtn').onclick = () => { vehicles.forEach((v, i) => { const sel = $('vmod-' + i); if (sel && v.owner === $('bulkOwner').value && [...sel.options].some(o => o.value === $('bulkModel').value)){ sel.value = $('bulkModel').value; sel.onchange(); } }); refresh(); };
-  $('selFuel').onclick = () => { document.querySelectorAll('#vehs .chkf').forEach(c => { if (!c.disabled) c.checked = true; }); refresh(); };
-  $('selNone').onclick = () => { document.querySelectorAll('#vehs .chk, #vehs .chkf').forEach(c => { c.checked = false; }); refresh(); };
+  wireVehicleBulk('', 'Company'); wireVehicleBulk('p', 'Personal');
   $('addProp').onchange = fillAddSkill;
   $('addSkill').onchange = fillAddGender;
   $('addBtn').onclick = addPending;
