@@ -62,7 +62,7 @@ Every change is re-parsed after export; the editor refuses to save if anything d
 - Company vehicle edits and adding vehicles (also validated in the editor test suite).
 
 ## Not tested in-game yet
-- Job levels 2–8.
+- Side Job levels 2–8.
 - Whether level edits skip unlock rewards.
 - Money-type grants in progress.
 - Personal vehicle additions (same code path as company vehicles, tested in the editor only).
