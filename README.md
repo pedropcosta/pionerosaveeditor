@@ -28,7 +28,7 @@ A browser-based editor for **Pionero Capital** save files.
   - Skill level (1 to 3), individually or for everyone at once
   - Property assignment (only properties that accept the role and have free places)
   - Salary, with − / + buttons in steps of 10
-  - Inventory slots (6 to 10), individually or for everyone at once
+  - Inventory slots (even values from 2 to 16), individually or for everyone at once
   - Sortable table, grouped by property and role by default
 - Add employees by property, role, gender, skill level and quantity
 - Employee count per property as an `x/y` bar, with free slots
@@ -54,7 +54,7 @@ A browser-based editor for **Pionero Capital** save files.
 
 ## Notes
 
-- Employee inventory slots have been checked in the game: changed employees show and use the new number of slots.
+- Employee inventory slots have been checked in the game up to 16: changed employees show and use the new number of slots. Values below 6 have not been tried yet.
 - Built for the current version of the game. An update may change the save format; if a field cannot be found, the editor disables it instead of guessing.
 - The save does not record daily order arrivals, only the running total, so past daily backlog cannot be reconstructed.
 - Stock counts only what is on storage shelves, not items in vehicles, hands or workshops.

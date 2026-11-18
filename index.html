@@ -247,7 +247,7 @@ footer{color:var(--ink-soft);font-size:.85rem}
         <button type="button" id="bulkBtn">Apply to all</button>
         <span class="sep" aria-hidden="true">|</span>
         <span>Inventory slots, set all to</span>
-        <select id="bulkSlots"><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option></select>
+        <select id="bulkSlots"><option>2</option><option>4</option><option>6</option><option>8</option><option selected>10</option><option>12</option><option>14</option><option>16</option></select>
         <button type="button" id="bulkSlotsBtn">Apply to all</button>
       </div>
       <div class="wrap"><table>
@@ -446,16 +446,18 @@ function setSP(line, v){
 }
 // Employee inventory capacity: the list length, #9FC4 and the trait code #F1AE always agree (6 to 10 slots).
 const SLOT_TRAIT = { 6: 887503681, 7: 1742810335, 8: -1807454463, 9: -196513505, 10: -1796951359 };
+const SLOT_MIN = 2, SLOT_MAX = 16; // 6 to 10 seen on employees; 16 is the player's own inventory
+const SLOT_CHOICES = [2, 4, 6, 8, 10, 12, 14, 16];
 const RE_SLOTS = /("#9FC4":)(\d+)/g, RE_TRAIT = /("#F1AE":)(-?\d+)/g;
 function empInventory(o, line){
   const it = o['#7D40'] && Array.isArray(o['#7D40'].items) ? o['#7D40'].items : null;
   if (!it || typeof o['#9FC4'] !== 'number') return { slots: null, ok: false, consistent: false, used: 0, trait: null };
   let used = 0; it.forEach((x, i) => { if (x != null) used = i + 1; });
-  const consistent = it.length === o['#9FC4'] && SLOT_TRAIT[it.length] !== undefined && countMatches(RE_SLOTS, line) === 1 && countMatches(RE_TRAIT, line) === 1 && line.split('"#7D40":{"items":[').length === 2;
+  const consistent = it.length === o['#9FC4'] && it.length >= SLOT_MIN && it.length <= SLOT_MAX && countMatches(RE_SLOTS, line) === 1 && countMatches(RE_TRAIT, line) === 1 && line.split('"#7D40":{"items":[').length === 2;
   return { slots: it.length, ok: consistent && SLOT_TRAIT[it.length] === o['#F1AE'], consistent, used, trait: o['#F1AE'] };
 }
 function setSlotsLine(line, n, keepTrait){
-  if (!SLOT_TRAIT[n]) throw new Error('Unsupported inventory size.');
+  if (!(n >= SLOT_MIN && n <= SLOT_MAX) || (!SLOT_TRAIT[n] && !keepTrait)) throw new Error('Unsupported inventory size.');
   const M = '"#7D40":{"items":[', i = line.indexOf(M);
   if (i < 0 || line.indexOf(M, i + 1) >= 0 || countMatches(RE_SLOTS, line) !== 1 || countMatches(RE_TRAIT, line) !== 1) throw new Error('Employee inventory not found.');
   const a = i + M.length - 1, e = arrayEnd(line, a);
@@ -1176,7 +1178,8 @@ function readSales(o){
       if (e.slots == null || !(e.slotsOk || e.slotsExp)){ tr.children[6].textContent = e.slots == null ? '—' : String(e.slots); if (e.slots != null) tr.children[6].title = 'This employee has a trait code the editor does not recognise, so the capacity is left unchanged.'; }
       else {
         const ss = document.createElement('select'); ss.id = 'slots-' + i; ss.dataset.orig = e.slots; ss.setAttribute('aria-label', 'Inventory slots of ' + e.name);
-        [6, 7, 8, 9, 10].forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; if (v === e.slots) o.selected = true; if (v < e.slotsUsed) o.disabled = true; ss.appendChild(o); });
+        const vals = SLOT_CHOICES.includes(e.slots) ? SLOT_CHOICES : SLOT_CHOICES.concat([e.slots]).sort((a, b) => a - b);
+        vals.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; if (v === e.slots) o.selected = true; if (v < e.slotsUsed) o.disabled = true; ss.appendChild(o); });
         if (e.slotsExp){ ss.dataset.exp = '1'; ss.title = 'This employee has a different trait code. Only the slot list and slot count are changed; the trait code is kept.'; }
         ss.onchange = refresh; tr.children[6].appendChild(ss);
       }
@@ -1774,7 +1777,7 @@ function readSales(o){
     model.emps.forEach((e, i) => {
       const ss = $('slots-' + i); if (!ss || slotSeen.has(e.idx)) return; slotSeen.add(e.idx);
       const changed = Number(ss.value) !== e.slots; ss.classList.toggle('changed', changed);
-      if (changed) edits.slots.push({ idx: e.idx, id: save.recs.find(r => r.idx === e.idx).obj._id, n: Number(ss.value), keep: !!ss.dataset.exp, trait: e.slotsTrait });
+      if (changed) edits.slots.push({ idx: e.idx, id: save.recs.find(r => r.idx === e.idx).obj._id, n: Number(ss.value), keep: !!ss.dataset.exp || !SLOT_TRAIT[Number(ss.value)], trait: e.slotsTrait });
     });
     if (edits.slots.length) changes.push('Inventory slots changed for ' + edits.slots.length + ' employee' + (edits.slots.length > 1 ? 's' : ''));
     edits.repairs = vehicles.map((v, i) => ({ v, c: $('veh-' + i) })).filter(x => x.c && x.c.checked && !x.c.disabled).map(x => ({ idx: x.v.idx, id: x.v.id, engine: x.v.engine > 0, body: x.v.dents > 0 }));
